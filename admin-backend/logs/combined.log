@@ -1718,3 +1718,68 @@
 {"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
 {"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
 {"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-09-10 09:35:00"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-09-10 09:35:00"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-09-10 09:35:00"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-09-10 09:35:00"}
+{"level":"info","message":"Database connection closed","service":"admin-backend","timestamp":"2025-09-10 09:35:00"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-09-10 09:35:11"}
+{"environment":"ppid","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"534d5306-c08a-4e7e-baa5-fc0473a626ca","timestamp":"2025-09-10 09:50:37"}
+{"category":"layanan","confidence":0.46786649698374483,"environment":"ppid","level":"info","message":"Chat interaction logged","question":"siapa bupati sukoharjo?","service":"admin-backend","sessionId":"66f57cfc-0aed-4609-a389-e7824863028a","timestamp":"2025-09-10 09:50:37"}
+{"environment":"ppid","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"d8a0ebb1-c83d-4f0e-87d8-89043251985c","timestamp":"2025-09-10 09:50:43"}
+{"category":"unknown","confidence":0.129,"environment":"ppid","level":"info","message":"Chat interaction logged","question":"bupati","service":"admin-backend","sessionId":"98f878b7-1e8a-4868-a708-0272f954700a","timestamp":"2025-09-10 09:50:43"}
+{"environment":"ppid","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"1a82c81f-d23a-4f73-9187-9fee15a059f5","timestamp":"2025-09-10 09:50:46"}
+{"category":"ppid_informasi","confidence":0.95,"environment":"ppid","level":"info","message":"Chat interaction logged","question":"sukoharjo","service":"admin-backend","sessionId":"9869991e-681e-4e8a-820a-857c72c27ef0","timestamp":"2025-09-10 09:50:46"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-09-10 09:50:51"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-09-10 09:50:51"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-09-10 09:50:51"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-09-10 09:50:51"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-09-10 09:51:01"}
+{"environment":"ppid","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"db238d3d-83b3-484d-ad72-15eaebe4e34b","timestamp":"2025-09-10 09:51:04"}
+{"category":"umum","confidence":0.7547117655053251,"environment":"ppid","level":"info","message":"Chat interaction logged","question":"Apakah ada biaya untuk meminta informasi publik?","service":"admin-backend","sessionId":"39ceb8e3-913d-44fa-80e7-d8cc3eb9f2b6","timestamp":"2025-09-10 09:51:04"}
+{"environment":"ppid","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"509bdc4a-5f8e-49ee-ac2c-7530e5e27fa2","timestamp":"2025-09-10 09:51:15"}
+{"category":"ppid_informasi","confidence":0.95,"environment":"ppid","level":"info","message":"Chat interaction logged","question":"bupati","service":"admin-backend","sessionId":"d2f408a9-56ed-4b54-9c4f-4617f7d404d8","timestamp":"2025-09-10 09:51:15"}
+{"environment":"ppid","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"584069cd-ab0d-40f0-aa02-69d913c1fae5","timestamp":"2025-09-10 09:51:20"}
+{"category":"umum","confidence":0.8361048043043805,"environment":"ppid","level":"info","message":"Chat interaction logged","question":"siapakah bupati","service":"admin-backend","sessionId":"7fbe6a6a-069a-4242-8f1c-05c1d14f8390","timestamp":"2025-09-10 09:51:20"}
+{"environment":"ppid","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"5acb4737-58bf-498b-bc26-d8f1870de21e","timestamp":"2025-09-10 09:52:09"}
+{"category":"umum","confidence":1,"environment":"ppid","level":"info","message":"Chat interaction logged","question":"siapakah bupati sukoharjo","service":"admin-backend","sessionId":"7b99fef4-6295-4939-a153-0df2195a5801","timestamp":"2025-09-10 09:52:09"}
+{"environment":"ppid","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"0c0b1172-4396-4ba8-92f3-8df1a5eec2f3","timestamp":"2025-09-10 10:59:35"}
+{"category":"umum","confidence":0.7547117655053251,"environment":"ppid","level":"info","message":"Chat interaction logged","question":"Apakah ada biaya untuk meminta informasi publik?","service":"admin-backend","sessionId":"b1f8932b-b04a-4bcc-a854-e4bbde17b291","timestamp":"2025-09-10 10:59:35"}
+{"environment":"ppid","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"1f8ed5ef-b471-47d0-9c2d-dab1659ccb43","timestamp":"2025-09-10 11:00:49"}
+{"category":"umum","confidence":0.8361048043043805,"environment":"ppid","level":"info","message":"Chat interaction logged","question":"siapakah bupati","service":"admin-backend","sessionId":"76ca5340-af39-4eac-af37-eb2912ead313","timestamp":"2025-09-10 11:00:49"}
+{"environment":"ppid","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"9db17724-0198-4a8b-8cff-0941a02f390f","timestamp":"2025-09-10 11:01:29"}
+{"category":"umum","confidence":0.8361048043043805,"environment":"ppid","level":"info","message":"Chat interaction logged","question":"siapakah bupati","service":"admin-backend","sessionId":"883e60e3-6c5b-48ff-82cb-cf764ccf5289","timestamp":"2025-09-10 11:01:29"}
+{"ip":"::1","level":"info","message":"User logged in successfully","service":"admin-backend","timestamp":"2025-09-10 11:12:45","username":"admin"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-09-10 11:56:31"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-09-10 11:56:31"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-09-10 11:56:31"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-09-10 11:56:31"}
+{"level":"info","message":"Database connection closed","service":"admin-backend","timestamp":"2025-09-10 11:56:31"}

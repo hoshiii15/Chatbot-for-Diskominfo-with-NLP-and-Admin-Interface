@@ -1,0 +1,91 @@
+# Combined demo image: builds frontend+backend and runs python-bot, admin-backend, admin-frontend + nginx under supervisord
+# Not intended for production. Use for single-container demo only.
+
+# Builder stage (node) to build admin-frontend and admin-backend
+FROM node:18-bullseye as builder
+
+WORKDIR /build
+
+# Build admin-frontend
+COPY admin-frontend/ ./admin-frontend/
+WORKDIR /build/admin-frontend
+# Install all dependencies (including dev deps) so the Next.js build can run
+# Prefer `npm ci` when a lockfile exists; use --legacy-peer-deps to avoid peer errors
+RUN if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then \
+    npm ci --legacy-peer-deps || npm i --legacy-peer-deps; \
+    else \
+    npm i --legacy-peer-deps; \
+    fi
+# Run the frontend build and fail the image build if it doesn't succeed
+RUN npm run build
+
+# Skip building admin-backend in builder stage.
+# The repo already contains a compiled `dist/` for admin-backend. We'll copy
+# the backend as-is into the final image and install runtime deps there.
+
+# Final image - include Node (runtime) and Python
+FROM node:18-bullseye-slim
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install system deps, Python, pip, supervisord and build tools for Python packages
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    python3 python3-pip python3-venv python3-dev build-essential \
+    supervisor curl ca-certificates git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create app directories
+WORKDIR /app
+RUN mkdir -p /app/python-bot /srv/admin-frontend /srv/admin-backend /app/logs /app/backups
+
+# Copy built frontend from builder
+COPY --from=builder /build/admin-frontend /srv/admin-frontend
+
+# Copy python-bot source early so admin-backend build (if needed) and data copy
+# can access the FAQ JSON files during image build
+COPY python-bot/ /app/python-bot/
+
+# Install Python requirements
+COPY python-bot/requirements.txt /app/python-bot/requirements.txt
+RUN python3 -m pip install --upgrade pip setuptools wheel \
+    && python3 -m pip install --no-cache-dir -r /app/python-bot/requirements.txt || echo "pip install had issues"
+
+# Copy admin-backend source directly
+COPY admin-backend/ /srv/admin-backend/
+
+# Build admin-backend during image build so a fresh build doesn't require in-container compilation.
+# Install dev deps, run the TypeScript build, then install production deps.
+WORKDIR /srv/admin-backend
+RUN if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then \
+    npm ci --legacy-peer-deps --include=dev || npm i --legacy-peer-deps; \
+    else \
+    npm i --legacy-peer-deps; \
+    fi \
+    && npm run build || true \
+    && if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then \
+    npm ci --omit=dev --legacy-peer-deps || npm install --omit=dev --legacy-peer-deps; \
+    else \
+    npm install --omit=dev --legacy-peer-deps; \
+    fi
+
+# Ensure python-bot data is present where admin-backend expects it (dist path)
+RUN mkdir -p /srv/admin-backend/dist/python-bot/data && cp -r /app/python-bot/data/* /srv/admin-backend/dist/python-bot/data || true
+
+# Install frontend runtime deps in final image (production only)
+WORKDIR /srv/admin-frontend
+RUN if [ -f package.json ]; then npm ci --production --legacy-peer-deps || npm install --omit=dev --legacy-peer-deps; fi
+
+# nginx removed for single-image demo; services will bind to their ports directly
+
+# Supervisord config
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Expose service ports (no nginx)
+EXPOSE 3000 3001 5000
+
+# Ensure correct permissions
+RUN chown -R root:root /app /srv/admin-frontend /srv/admin-backend
+
+# Start supervisord (foreground)
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

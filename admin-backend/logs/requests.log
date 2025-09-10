@@ -1704,3 +1704,41 @@
 {"contentLength":"542","level":"info","message":"Request completed","method":"PUT","responseTime":5,"statusCode":200,"timestamp":"2025-09-10 08:27:29","url":"/stunting-1"}
 {"ip":"::1","level":"info","message":"Incoming request","method":"GET","timestamp":"2025-09-10 08:27:29","url":"/api/faq","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"}
 {"contentLength":"12539","level":"info","message":"Request completed","method":"GET","responseTime":2,"statusCode":200,"timestamp":"2025-09-10 08:27:29","url":"/"}
+{"ip":"::1","level":"info","message":"Incoming request","method":"GET","timestamp":"2025-09-10 09:35:20","url":"/api/faq","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"}
+{"contentLength":"12539","level":"info","message":"Request completed","method":"GET","responseTime":8,"statusCode":200,"timestamp":"2025-09-10 09:35:20","url":"/"}
+{"contentLength":"1203","contentType":"application/json","ip":"::1","level":"info","message":"Incoming request","method":"POST","timestamp":"2025-09-10 09:50:37","url":"/api/chatbot/log","userAgent":"python-requests/2.32.5"}
+{"contentLength":"123","level":"info","message":"Request completed","method":"POST","responseTime":31,"statusCode":200,"timestamp":"2025-09-10 09:50:37","url":"/log"}
+{"contentLength":"745","contentType":"application/json","ip":"::1","level":"info","message":"Incoming request","method":"POST","timestamp":"2025-09-10 09:50:43","url":"/api/chatbot/log","userAgent":"python-requests/2.32.5"}
+{"contentLength":"123","level":"info","message":"Request completed","method":"POST","responseTime":21,"statusCode":200,"timestamp":"2025-09-10 09:50:43","url":"/log"}
+{"contentLength":"527","contentType":"application/json","ip":"::1","level":"info","message":"Incoming request","method":"POST","timestamp":"2025-09-10 09:50:46","url":"/api/chatbot/log","userAgent":"python-requests/2.32.5"}
+{"contentLength":"123","level":"info","message":"Request completed","method":"POST","responseTime":18,"statusCode":200,"timestamp":"2025-09-10 09:50:46","url":"/log"}
+{"contentLength":"614","contentType":"application/json","ip":"::1","level":"info","message":"Incoming request","method":"POST","timestamp":"2025-09-10 09:51:04","url":"/api/chatbot/log","userAgent":"python-requests/2.32.5"}
+{"contentLength":"123","level":"info","message":"Request completed","method":"POST","responseTime":20,"statusCode":200,"timestamp":"2025-09-10 09:51:04","url":"/log"}
+{"contentLength":"507","contentType":"application/json","ip":"::1","level":"info","message":"Incoming request","method":"POST","timestamp":"2025-09-10 09:51:14","url":"/api/chatbot/log","userAgent":"python-requests/2.32.5"}
+{"contentLength":"123","level":"info","message":"Request completed","method":"POST","responseTime":9,"statusCode":200,"timestamp":"2025-09-10 09:51:15","url":"/log"}
+{"contentLength":"528","contentType":"application/json","ip":"::1","level":"info","message":"Incoming request","method":"POST","timestamp":"2025-09-10 09:51:20","url":"/api/chatbot/log","userAgent":"python-requests/2.32.5"}
+{"contentLength":"123","level":"info","message":"Request completed","method":"POST","responseTime":16,"statusCode":200,"timestamp":"2025-09-10 09:51:20","url":"/log"}
+{"contentLength":"523","contentType":"application/json","ip":"::1","level":"info","message":"Incoming request","method":"POST","timestamp":"2025-09-10 09:52:09","url":"/api/chatbot/log","userAgent":"python-requests/2.32.5"}
+{"contentLength":"123","level":"info","message":"Request completed","method":"POST","responseTime":17,"statusCode":200,"timestamp":"2025-09-10 09:52:09","url":"/log"}
+{"contentLength":"614","contentType":"application/json","ip":"::1","level":"info","message":"Incoming request","method":"POST","timestamp":"2025-09-10 10:59:35","url":"/api/chatbot/log","userAgent":"python-requests/2.32.5"}
+{"contentLength":"123","level":"info","message":"Request completed","method":"POST","responseTime":14,"statusCode":200,"timestamp":"2025-09-10 10:59:35","url":"/log"}
+{"contentLength":"498","contentType":"application/json","ip":"::1","level":"info","message":"Incoming request","method":"POST","timestamp":"2025-09-10 11:00:49","url":"/api/chatbot/log","userAgent":"python-requests/2.32.5"}
+{"contentLength":"123","level":"info","message":"Request completed","method":"POST","responseTime":13,"statusCode":200,"timestamp":"2025-09-10 11:00:49","url":"/log"}
+{"contentLength":"498","contentType":"application/json","ip":"::1","level":"info","message":"Incoming request","method":"POST","timestamp":"2025-09-10 11:01:29","url":"/api/chatbot/log","userAgent":"python-requests/2.32.5"}
+{"contentLength":"123","level":"info","message":"Request completed","method":"POST","responseTime":17,"statusCode":200,"timestamp":"2025-09-10 11:01:29","url":"/log"}
+{"contentLength":"42","contentType":"application/json","ip":"::1","level":"info","message":"Incoming request","method":"POST","timestamp":"2025-09-10 11:12:45","url":"/api/auth/login","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"}
+{"contentLength":"644","level":"info","message":"Request completed","method":"POST","responseTime":338,"statusCode":200,"timestamp":"2025-09-10 11:12:45","url":"/login"}
+{"ip":"::1","level":"info","message":"Incoming request","method":"GET","timestamp":"2025-09-10 11:12:46","url":"/api/dashboard/stats","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"Incoming request","method":"GET","timestamp":"2025-09-10 11:12:46","url":"/api/health","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"}
+{"contentLength":"779","level":"info","message":"Request completed","method":"GET","responseTime":16,"statusCode":200,"timestamp":"2025-09-10 11:12:46","url":"/"}
+{"ip":"::1","level":"info","message":"Incoming request","method":"GET","timestamp":"2025-09-10 11:12:46","url":"/api/health","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"}
+{"contentLength":"779","level":"info","message":"Request completed","method":"GET","responseTime":8,"statusCode":200,"timestamp":"2025-09-10 11:12:46","url":"/"}
+{"contentLength":"177","level":"info","message":"Request completed","method":"GET","responseTime":48,"statusCode":200,"timestamp":"2025-09-10 11:12:46","url":"/stats"}
+{"ip":"::1","level":"info","message":"Incoming request","method":"GET","timestamp":"2025-09-10 11:12:46","url":"/api/dashboard/stats","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"}
+{"contentLength":"177","level":"info","message":"Request completed","method":"GET","responseTime":16,"statusCode":200,"timestamp":"2025-09-10 11:12:46","url":"/stats"}
+{"ip":"::1","level":"info","message":"Incoming request","method":"GET","timestamp":"2025-09-10 11:13:34","url":"/api/faq","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"}
+{"contentLength":"16499","level":"info","message":"Request completed","method":"GET","responseTime":9,"statusCode":200,"timestamp":"2025-09-10 11:13:34","url":"/"}
+{"ip":"::1","level":"info","message":"Incoming request","method":"GET","timestamp":"2025-09-10 11:13:34","url":"/api/faq","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"}
+{"contentLength":"16499","level":"info","message":"Request completed","method":"GET","responseTime":9,"statusCode":200,"timestamp":"2025-09-10 11:13:34","url":"/"}
+{"ip":"::1","level":"info","message":"Incoming request","method":"GET","timestamp":"2025-09-10 11:15:26","url":"/api/faq","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"}
+{"contentLength":"16499","level":"info","message":"Request completed","method":"GET","responseTime":4,"statusCode":200,"timestamp":"2025-09-10 11:15:26","url":"/"}
