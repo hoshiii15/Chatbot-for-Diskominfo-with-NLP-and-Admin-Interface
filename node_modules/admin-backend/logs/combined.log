@@ -1703,3 +1703,18 @@
 {"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-09-10 08:26:24"}
 {"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-09-10 08:26:24"}
 {"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-09-10 08:26:24"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-09-10 08:27:07"}
