@@ -20,6 +20,25 @@ const fs_1 = require("fs");
 const path_1 = __importDefault(require("path"));
 function getFilePathForEnv(env) {
     const repoRoot = path_1.default.resolve(__dirname, '../../../');
+    const candidates = [
+        path_1.default.join(repoRoot, 'python-bot', 'data'),
+        path_1.default.join(process.cwd(), 'python-bot', 'data'),
+        path_1.default.join(__dirname, '..', '..', '..', 'python-bot', 'data'),
+        path_1.default.join('/srv', 'admin-backend', 'dist', 'python-bot', 'data'),
+        path_1.default.join('/app', 'python-bot', 'data'),
+    ];
+    const fsSync = require('fs');
+    for (const d of candidates) {
+        const p = path_1.default.join(d, env === 'stunting' ? 'faq_stunting.json' : 'faq_ppid.json');
+        try {
+            const s = fsSync.statSync(p);
+            if (s)
+                return p;
+        }
+        catch (_a) {
+            // try next
+        }
+    }
     if (env === 'stunting')
         return path_1.default.join(repoRoot, 'python-bot', 'data', 'faq_stunting.json');
     return path_1.default.join(repoRoot, 'python-bot', 'data', 'faq_ppid.json');
@@ -49,7 +68,7 @@ async function loadFaqsFromFiles() {
                         })
                         : null;
                     results.push({
-                        id: f.id != null ? `stunting-${String(f.id)}` : undefined,
+                        id: f.id != null ? `stunting-${String(f.id)}` : `stunting-${i + 1}`,
                         question: Array.isArray(f.questions) ? f.questions[0] : (f.question || ''),
                         questions: f.questions || (f.question ? [f.question] : []),
                         answer: f.answer || '',
@@ -87,7 +106,7 @@ async function loadFaqsFromFiles() {
                         })
                         : null;
                     results.push({
-                        id: f.id != null ? `ppid-${String(f.id)}` : undefined,
+                        id: f.id != null ? `ppid-${String(f.id)}` : `ppid-${i + 1}`,
                         question: Array.isArray(f.questions) ? f.questions[0] : (f.question || ''),
                         questions: f.questions || (f.question ? [f.question] : []),
                         answer: f.answer || '',

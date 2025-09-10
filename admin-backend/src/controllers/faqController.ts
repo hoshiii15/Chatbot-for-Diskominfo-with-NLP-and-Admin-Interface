@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { logger } from '../utils/logger';
 import { FAQ } from '../models';
 import { promises as fs } from 'fs';
+import fsSync from 'fs';
 import path from 'path';
 
 interface FileFAQ {
@@ -17,6 +18,23 @@ interface FileFAQ {
 
 function getFilePathForEnv(env: 'stunting' | 'ppid') {
   const repoRoot = path.resolve(__dirname, '../../../');
+  const candidates = [
+    path.join(repoRoot, 'python-bot', 'data'),
+    path.join(process.cwd(), 'python-bot', 'data'),
+    path.join(__dirname, '..', '..', '..', 'python-bot', 'data'),
+    path.join('/srv', 'admin-backend', 'dist', 'python-bot', 'data'),
+    path.join('/app', 'python-bot', 'data'),
+  ];
+  for (const d of candidates) {
+    const p = path.join(d, env === 'stunting' ? 'faq_stunting.json' : 'faq_ppid.json');
+    try {
+      const s = fsSync.statSync(p);
+      if (s) return p;
+    } catch (_e) {
+      // try next
+    }
+  }
+  // fallback
   if (env === 'stunting') return path.join(repoRoot, 'python-bot', 'data', 'faq_stunting.json');
   return path.join(repoRoot, 'python-bot', 'data', 'faq_ppid.json');
 }
@@ -24,17 +42,37 @@ function getFilePathForEnv(env: 'stunting' | 'ppid') {
 export async function loadFaqsFromFiles(): Promise<FileFAQ[]> {
   try {
     const repoRoot = path.resolve(__dirname, '../../../');
-    const stuntingPath = path.join(repoRoot, 'python-bot', 'data', 'faq_stunting.json');
-    const ppidPath = path.join(repoRoot, 'python-bot', 'data', 'faq_ppid.json');
+    // Candidate paths to account for running from source, compiled dist, or container layout
+    const candidates = [
+      path.join(repoRoot, 'python-bot', 'data'),
+      path.join(process.cwd(), 'python-bot', 'data'),
+      path.join(__dirname, '..', '..', '..', 'python-bot', 'data'),
+      path.join(__dirname, '..', '..', '..', '..', 'python-bot', 'data'),
+      // Container/runtime locations where the build copies python-bot data
+      path.join('/srv', 'admin-backend', 'dist', 'python-bot', 'data'),
+      path.join('/app', 'python-bot', 'data'),
+    ];
+    const stuntingPathCandidates = candidates.map(d => path.join(d, 'faq_stunting.json'));
+    const ppidPathCandidates = candidates.map(d => path.join(d, 'faq_ppid.json'));
 
     const results: any[] = [];
 
     // Stunting file has shape { faqs: [...] }
     try {
-      const stuntingRaw = await fs.readFile(stuntingPath, 'utf-8');
-      const stuntingJson = JSON.parse(stuntingRaw);
-      if (stuntingJson && Array.isArray(stuntingJson.faqs)) {
-        for (const f of stuntingJson.faqs) {
+      let stuntingRaw: string | null = null;
+      for (const p of stuntingPathCandidates) {
+        try {
+          stuntingRaw = await fs.readFile(p, 'utf-8');
+          break;
+        } catch (_) {
+          // try next candidate
+        }
+      }
+      if (stuntingRaw) {
+        const stuntingJson = JSON.parse(stuntingRaw);
+        if (stuntingJson && Array.isArray(stuntingJson.faqs)) {
+        for (let i = 0; i < stuntingJson.faqs.length; i++) {
+          const f = stuntingJson.faqs[i];
           const now = new Date().toISOString();
           const metadata = Array.isArray(f.links)
             ? f.links.map((l: any) => {
@@ -50,7 +88,7 @@ export async function loadFaqsFromFiles(): Promise<FileFAQ[]> {
             : null;
 
           results.push({
-            id: f.id != null ? `stunting-${String(f.id)}` : undefined,
+            id: f.id != null ? `stunting-${String(f.id)}` : `stunting-${i + 1}`,
             question: Array.isArray(f.questions) ? f.questions[0] : (f.question || ''),
             questions: f.questions || (f.question ? [f.question] : []),
             answer: f.answer || '',
@@ -64,6 +102,7 @@ export async function loadFaqsFromFiles(): Promise<FileFAQ[]> {
             updatedAt: f.updatedAt || now,
           });
         }
+        }
       }
     } catch (e) {
       logger.debug('No stunting FAQ file or parse error', e instanceof Error ? e.message : e);
@@ -71,10 +110,20 @@ export async function loadFaqsFromFiles(): Promise<FileFAQ[]> {
 
     // PPID file is an array of faq objects
     try {
-      const ppidRaw = await fs.readFile(ppidPath, 'utf-8');
-      const ppidJson = JSON.parse(ppidRaw);
-      if (Array.isArray(ppidJson)) {
-        for (const f of ppidJson) {
+      let ppidRaw: string | null = null;
+      for (const p of ppidPathCandidates) {
+        try {
+          ppidRaw = await fs.readFile(p, 'utf-8');
+          break;
+        } catch (_) {
+          // try next candidate
+        }
+      }
+      if (ppidRaw) {
+        const ppidJson = JSON.parse(ppidRaw);
+        if (Array.isArray(ppidJson)) {
+        for (let i = 0; i < ppidJson.length; i++) {
+          const f = ppidJson[i];
           const now = new Date().toISOString();
           const metadata = Array.isArray(f.links)
             ? f.links.map((l: any) => {
@@ -90,7 +139,7 @@ export async function loadFaqsFromFiles(): Promise<FileFAQ[]> {
             : null;
 
           results.push({
-            id: f.id != null ? `ppid-${String(f.id)}` : undefined,
+            id: f.id != null ? `ppid-${String(f.id)}` : `ppid-${i + 1}`,
             question: Array.isArray(f.questions) ? f.questions[0] : (f.question || ''),
             questions: f.questions || (f.question ? [f.question] : []),
             answer: f.answer || '',
@@ -103,6 +152,7 @@ export async function loadFaqsFromFiles(): Promise<FileFAQ[]> {
             createdAt: f.createdAt || now,
             updatedAt: f.updatedAt || now,
           });
+        }
         }
       }
     } catch (e) {
