@@ -1,0 +1,121 @@
+version: '3.8'
+
+services:
+  # Python Flask Chatbot
+  python-bot:
+    build:
+      context: ./python-bot
+      dockerfile: Dockerfile.prod
+    expose:
+      - "5000"
+    volumes:
+      - faq-data:/app/data
+      - chatbot-logs:/app/logs
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=0
+    restart: unless-stopped
+    networks:
+      - chatbot-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=faq_admin
+      - POSTGRES_USER=faq_user
+      - POSTGRES_PASSWORD=secure_password_change_me
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - chatbot-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U faq_user -d faq_admin"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Express.js Admin Backend
+  admin-backend:
+    build:
+      context: ./admin-backend
+      dockerfile: Dockerfile.prod
+    expose:
+      - "3001"
+    volumes:
+      - faq-data:/app/data
+      - backend-logs:/app/logs
+      - backup-data:/app/backups
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://faq_user:secure_password_change_me@postgres:5432/faq_admin
+      - PYTHON_BOT_URL=http://python-bot:5000
+      - JWT_SECRET=${JWT_SECRET}
+      - CORS_ORIGIN=https://yourdomain.com
+    depends_on:
+      postgres:
+        condition: service_healthy
+      python-bot:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - chatbot-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Next.js Admin Frontend
+  admin-frontend:
+    build:
+      context: ./admin-frontend
+      dockerfile: Dockerfile.prod
+    expose:
+      - "3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=https://yourdomain.com/api
+      - NEXT_PUBLIC_SOCKET_URL=https://yourdomain.com
+    depends_on:
+      admin-backend:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - chatbot-network
+
+  # Nginx Reverse Proxy
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./ssl:/etc/nginx/ssl:ro
+      - nginx-logs:/var/log/nginx
+    depends_on:
+      - admin-frontend
+      - admin-backend
+    restart: unless-stopped
+    networks:
+      - chatbot-network
+
+volumes:
+  postgres-data:
+  faq-data:
+  chatbot-logs:
+  backend-logs:
+  backup-data:
+  nginx-logs:
+
+networks:
+  chatbot-network:
+    driver: bridge

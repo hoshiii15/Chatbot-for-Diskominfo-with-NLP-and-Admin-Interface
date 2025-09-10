@@ -1,0 +1,47 @@
+{
+  "name": "faq-chatbot-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Complete admin dashboard system for FAQ Chatbot with Express.js backend and Next.js frontend",
+  "workspaces": [
+    "admin-backend",
+    "admin-frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm:dev:*\"",
+    "dev:python": "cd python-bot && python app.py",
+    "dev:backend": "cd admin-backend && npm run dev",
+    "dev:frontend": "cd admin-frontend && npm run dev",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:backend": "cd admin-backend && npm run build",
+    "build:frontend": "cd admin-frontend && npm run build",
+    "install:all": "npm install && npm run install:backend && npm run install:frontend",
+    "install:backend": "cd admin-backend && npm install",
+    "install:frontend": "cd admin-frontend && npm install",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up",
+    "docker:prod": "docker-compose up -d",
+    "setup": "npm run install:all && cd python-bot && pip install -r requirements.txt"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hoshiii15/Chatbot-for-Diskominfo-with-NLP.git"
+  },
+  "keywords": [
+    "chatbot",
+    "admin-dashboard",
+    "nlp",
+    "faq",
+    "express",
+    "nextjs",
+    "typescript"
+  ],
+  "author": "Diskominfo",
+  "license": "MIT"
+}

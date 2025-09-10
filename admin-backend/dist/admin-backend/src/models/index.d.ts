@@ -1,0 +1,21 @@
+import { Sequelize } from 'sequelize';
+import { User } from './User';
+import { ChatLog } from './ChatLog';
+import { Session } from './Session';
+import { FAQ } from './FAQ';
+import { Analytics } from './Analytics';
+import { Website } from './Website';
+export { User, ChatLog, Session, FAQ, Analytics, Website };
+export type { UserAttributes, UserCreationAttributes } from './User';
+export type { ChatLogAttributes, ChatLogCreationAttributes } from './ChatLog';
+export type { SessionAttributes, SessionCreationAttributes } from './Session';
+export type { FAQAttributes, FAQCreationAttributes } from './FAQ';
+export type { AnalyticsAttributes, AnalyticsCreationAttributes } from './Analytics';
+export type { WebsiteAttributes, WebsiteCreationAttributes } from './Website';
+declare let sequelize: Sequelize;
+export declare const initializeDatabase: () => Promise<Sequelize>;
+export declare const getDatabase: () => Sequelize;
+export declare const closeDatabase: () => Promise<void>;
+export declare const checkDatabaseHealth: () => Promise<boolean>;
+export { sequelize };
+//# sourceMappingURL=index.d.ts.map

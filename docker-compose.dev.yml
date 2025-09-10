@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # Python Flask Chatbot (existing)
+  python-bot:
+    build:
+      context: ./python-bot
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./python-bot:/app
+      - chatbot-logs:/app/logs
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+    restart: unless-stopped
+    networks:
+      - chatbot-network
+
+  # Express.js Admin Backend
+  admin-backend:
+    build:
+      context: ./admin-backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./admin-backend:/app
+      - ./python-bot/data:/app/data
+      - ./python-bot/bot.log:/app/logs/bot.log:ro
+      - backend-logs:/app/logs
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=sqlite:./database.sqlite
+      - PYTHON_BOT_URL=http://python-bot:5000
+      - JWT_SECRET=dev-secret-key-change-in-production
+      - CORS_ORIGIN=http://localhost:3000
+    depends_on:
+      - python-bot
+    restart: unless-stopped
+    networks:
+      - chatbot-network
+
+  # Next.js Admin Frontend
+  admin-frontend:
+    build:
+      context: ./admin-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./admin-frontend:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:3001
+      - NEXT_PUBLIC_SOCKET_URL=http://localhost:3001
+    depends_on:
+      - admin-backend
+    restart: unless-stopped
+    networks:
+      - chatbot-network
+
+  # Nginx Reverse Proxy (optional for production)
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - admin-frontend
+      - admin-backend
+      - python-bot
+    restart: unless-stopped
+    networks:
+      - chatbot-network
+
+volumes:
+  chatbot-logs:
+  backend-logs:
+
+networks:
+  chatbot-network:
+    driver: bridge
