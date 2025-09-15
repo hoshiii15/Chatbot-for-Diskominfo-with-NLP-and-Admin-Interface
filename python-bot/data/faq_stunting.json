@@ -1,0 +1,146 @@
+{
+  "faqs": [
+    {
+      "id": 1,
+      "questions": [
+        "Apa itu stunting"
+      ],
+      "answer": "Stunting adalah kondisi gagal tumbuh pada anak balita akibat kekurangan gizi kronis, terutama dalam 1000 hari pertama kehidupan. Anak dikatakan stunting jika tinggi badannya berada di bawah standar WHO (-2 SD).",
+      "category": "definisi",
+      "links": []
+    },
+    {
+      "id": 2,
+      "questions": [
+        "penyebab stunting",
+        "apa yang menyebabkan stunting",
+        "faktor penyebab stunting",
+        "kenapa bisa stunting"
+      ],
+      "answer": "Penyebab stunting meliputi: 1) Kekurangan gizi kronis sejak dalam kandungan, 2) Praktek pemberian makan yang tidak tepat, 3) Infeksi berulang, 4) Sanitasi dan kebersihan yang buruk, 5) Akses terbatas ke pelayanan kesehatan, 6) Faktor kemiskinan dan pendidikan.",
+      "category": "penyebab"
+    },
+    {
+      "id": 3,
+      "questions": [
+        "ciri ciri stunting",
+        "gejala stunting",
+        "tanda tanda stunting",
+        "bagaimana mengetahui stunting"
+      ],
+      "answer": "Ciri-ciri stunting: 1) Tinggi badan lebih pendek dari anak seusianya, 2) Berat badan rendah, 3) Pertumbuhan tulang terlambat, 4) Performa buruk pada tes perhatian dan memori, 5) Mudah terserang penyakit infeksi, 6) Pubertas terlambat.",
+      "category": "gejala"
+    },
+    {
+      "id": 4,
+      "questions": [
+        "cara mencegah stunting",
+        "pencegahan stunting",
+        "bagaimana mencegah stunting",
+        "tips mencegah stunting"
+      ],
+      "answer": "Cara mencegah stunting: 1) Perbaikan gizi ibu hamil, 2) Inisiasi menyusu dini (IMD), 3) ASI eksklusif 6 bulan, 4) MPASI bergizi seimbang, 5) Imunisasi lengkap, 6) Sanitasi dan air bersih, 7) Pemantauan tumbuh kembang rutin.",
+      "category": "pencegahan"
+    },
+    {
+      "id": 5,
+      "questions": [
+        "dampak stunting",
+        "akibat stunting",
+        "efek stunting",
+        "bahaya stunting"
+      ],
+      "answer": "Dampak stunting: 1) Jangka pendek: mudah sakit, gangguan perkembangan kognitif, 2) Jangka panjang: prestasi sekolah menurun, produktivitas ekonomi rendah, risiko penyakit tidak menular, 3) Generasi: siklus kemiskinan dan malnutrisi.",
+      "category": "dampak"
+    },
+    {
+      "id": 6,
+      "questions": [
+        "asi eksklusif",
+        "pemberian asi",
+        "manfaat asi",
+        "asi untuk stunting"
+      ],
+      "answer": "ASI eksklusif selama 6 bulan sangat penting untuk mencegah stunting. ASI mengandung semua nutrisi yang dibutuhkan bayi, antibodi untuk kekebalan tubuh, dan mudah dicerna. Dilanjutkan dengan MPASI bergizi hingga anak berusia 2 tahun.",
+      "category": "asi"
+    },
+    {
+      "id": 7,
+      "questions": [
+        "mpasi",
+        "makanan pendamping asi",
+        "mpasi untuk stunting",
+        "makanan bayi 6 bulan"
+      ],
+      "answer": "MPASI harus diberikan setelah bayi berusia 6 bulan dengan prinsip: 1) Tepat waktu (6 bulan), 2) Adekuat (cukup energi, protein, vitamin, mineral), 3) Aman dan higienis, 4) Responsif (sesuai sinyal lapar-kenyang anak), 5) Beragam tekstur dan rasa.",
+      "category": "mpasi"
+    },
+    {
+      "id": 8,
+      "questions": [
+        "gizi ibu hamil",
+        "nutrisi kehamilan",
+        "makanan ibu hamil",
+        "gizi bumil"
+      ],
+      "answer": "Gizi ibu hamil sangat penting untuk mencegah stunting. Kebutuhan: 1) Asam folat untuk mencegah cacat tabung saraf, 2) Zat besi untuk mencegah anemia, 3) Kalsium untuk tulang, 4) Protein untuk pertumbuhan janin, 5) Vitamin D, 6) Omega-3 untuk perkembangan otak.",
+      "category": "gizi_ibu"
+    },
+    {
+      "id": 9,
+      "questions": [
+        "posyandu",
+        "pemantauan tumbuh kembang",
+        "kms",
+        "kartu menuju sehat"
+      ],
+      "answer": "Posyandu penting untuk memantau tumbuh kembang anak. Kegiatan meliputi: 1) Penimbangan berat badan, 2) Pengukuran tinggi badan, 3) Imunisasi, 4) Pemberian vitamin A, 5) Konseling gizi, 6) Deteksi dini gangguan tumbuh kembang.",
+      "category": "posyandu"
+    },
+    {
+      "id": 10,
+      "questions": [
+        "1000 hari pertama kehidupan",
+        "periode emas",
+        "golden period",
+        "1000 hpk"
+      ],
+      "answer": "1000 Hari Pertama Kehidupan (1000 HPK) adalah periode kritis dari kehamilan hingga anak berusia 2 tahun. Periode ini disebut 'jendela emas' karena pertumbuhan dan perkembangan otak sangat pesat. Intervensi gizi pada periode ini sangat efektif untuk mencegah stunting.",
+      "category": "periode_emas"
+    },
+    {
+      "id": 11,
+      "questions": [
+        "wleowleowleo"
+      ],
+      "answer": "alamokalamokalamok",
+      "category": "wleo",
+      "links": [
+        {
+          "text": "wleowleo",
+          "url": "wleo.com"
+        },
+        {
+          "text": "mleomleo",
+          "url": "mleo.com"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "questions": [
+        "siapakah yang membuat kamu?",
+        "siapa yang mengembangkan kamu?",
+        "developer yang membuatmu?"
+      ],
+      "answer": "Yang membuat saya adalah Hosea Raka Narwastudjati (Student Intern) dari Universitas Kristen Satya Wacana yang menjalani masa Kerja Praktek di Diskominfo Sukoharjo pada periode 19 Agustus - 19 November 2025",
+      "category": null,
+      "links": [
+        {
+          "text": "Portofolio",
+          "url": "hosearaka.vercel.app"
+        }
+      ]
+    }
+  ]
+}

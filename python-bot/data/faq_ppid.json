@@ -1,0 +1,418 @@
+[
+  {
+    "id": 1,
+    "questions": [
+      "Apa itu PPID?",
+      "Apa yang dimaksud dengan PPID?",
+      "PPID itu apa?"
+    ],
+    "answer": "PPID adalah singkatan dari Pejabat Pengelola Informasi dan Dokumentasi. Merupakan institusi resmi yang bertugas dalam mengelola, menyediakan, dan mendokumentasikan informasi publik kepada masyarakat sesuai UU No. 14 Tahun 2008 tentang Keterbukaan Informasi Publik.",
+    "keywords": [
+      "apa itu ppid",
+      "apa yang dimaksud dengan ppid",
+      "ppid itu apa"
+    ],
+    "category": "umum"
+  },
+  {
+    "id": 2,
+    "questions": [
+      "Bagaimana cara mengajukan permohonan informasi publik?"
+    ],
+    "answer": "Permohonan informasi publik dapat diajukan melalui website PPID Kabupaten Sukoharjo Dengan mengakses aplikasi SIPIPI, Melalui Instagram PPID, Melalui Email PPID, atau bisa datang langsung ke kantor PPID.",
+    "links": [],
+    "keywords": [
+      "cara mengajukan permohonan informasi publik",
+      "permohonan informasi publik"
+    ],
+    "category": "prosedur"
+  },
+  {
+    "id": 3,
+    "questions": [
+      "Apa saja jenis informasi yang dapat diakses publik?",
+      "Informasi apa saja yang bisa diminta di PPID?"
+    ],
+    "answer": "Informasi yang dapat diakses publik meliputi informasi berkala, serta merta, setiap saat, dan informasi yang dikecualikan sesuai peraturan perundang-undangan.",
+    "links": [
+      {
+        "text": "LHKPN",
+        "url": "https://ppid.sukoharjokab.go.id/lhkpn/"
+      },
+      {
+        "text": "Informasi Berkala",
+        "url": "https://ppid.sukoharjokab.go.id/daftar-informasi-berkala/"
+      },
+      {
+        "text": "Informasi Serta Merta",
+        "url": "https://ppid.sukoharjokab.go.id/informasi-serta-merta/"
+      },
+      {
+        "text": "Informasi Setiap Saat",
+        "url": "https://ppid.sukoharjokab.go.id/informasi-setiap-saat/"
+      },
+      {
+        "text": "Daftar Aset",
+        "url": "https://drive.google.com/drive/folders/1vEGhMooW2mMxtPBKWAv_dI3WjIwSXPmo"
+      },
+      {
+        "text": "Informasi Pengadaan Barang dan Jasa",
+        "url": "https://ppid.sukoharjokab.go.id/daftar-informasi-berkala/"
+      },
+      {
+        "text": "LKPD",
+        "url": "https://drive.google.com/drive/folders/1V86bwl93CqkX7LCA4-LaLHagMk8wdLh4"
+      },
+      {
+        "text": "Laporan Evaluasi Kinerja",
+        "url": "https://ppid.sukoharjokab.go.id/daftar-informasi-berkala/"
+      }
+    ],
+    "keywords": [
+      "lhkpn",
+      "informasi berkala",
+      "informasi serta merta",
+      "daftar aset",
+      "lkpd"
+    ],
+    "category": "informasi"
+  },
+  {
+    "id": 4,
+    "questions": [
+      "Berapa lama waktu penyelesaian permohonan informasi?",
+      "Permohonan informasi diproses berapa hari?"
+    ],
+    "answer": "Permohonan informasi publik diproses dalam waktu paling lambat 10 hari kerja, dan dapat diperpanjang 7 hari kerja apabila informasi yang diminta bersifat kompleks.",
+    "keywords": [
+      "berapa lama waktu penyelesaian permohonan informasi",
+      "permohonan informasi diproses berapa hari"
+    ],
+    "category": "prosedur"
+  },
+  {
+    "id": 5,
+    "questions": [
+      "Apakah ada biaya untuk memperoleh informasi publik?",
+      "Permohonan informasi di PPID bayar atau gratis?"
+    ],
+    "answer": "Pada umumnya, permohonan informasi publik tidak dipungut biaya, kecuali biaya penggandaan atau pengiriman dokumen.",
+    "links": [
+      {
+        "text": "Selangkapnya mengenai informasi biaya",
+        "url": "https://ppid.sukoharjokab.go.id/standar-biaya-perolehan-informasi-publik/"
+      }
+    ],
+    "keywords": [
+      "ada biaya untuk memperoleh informasi publik",
+      "biaya perolehan informasi publik",
+      "permohonan informasi bayar atau gratis"
+    ],
+    "category": "umum"
+  },
+  {
+    "id": 6,
+    "questions": [
+      "Bagaimana cara mengajukan keberatan jika permohonan informasi ditolak?",
+      "Apa yang harus dilakukan jika permohonan informasi tidak diberikan?"
+    ],
+    "answer": "Pemohon dapat mengajukan keberatan kepada atasan PPID. Jika tidak puas dengan keputusan tersebut, pemohon dapat mengajukan sengketa informasi ke Komisi Informasi Provinsi Jawa Tengah.",
+    "keywords": [
+      "cara mengajukan keberatan permohonan informasi",
+      "apa yang harus dilakukan jika permohonan informasi tidak diberikan",
+      "keberatan permohonan informasi"
+    ],
+    "category": "prosedur"
+  },
+  {
+    "id": 7,
+    "questions": [
+      "Apakah ada layanan untuk penyandang disabilitas di PPID Sukoharjo?",
+      "layanan penyangdang disabilitas di PPID Sukoharjo?"
+    ],
+    "answer": "Ya. Website PPID Kabupaten Sukoharjo berkomitmen menyediakan fitur aksesibilitas untuk penyandang disabilitas, seperti teks alternatif, kontras tinggi, dan navigasi yang ramah disabilitas. ",
+    "keywords": [
+      "layanan untuk penyandang disabilitas di ppid",
+      "layanan penyandang disabilitas"
+    ],
+    "category": "disabilitas"
+  },
+  {
+    "id": 8,
+    "questions": [
+      "Apa saja layanan yang tersedia di website PPID Sukoharjo?",
+      "Layanan apa saja di website PPID?"
+    ],
+    "answer": "Informasi yang dapat diakses publik meliputi informasi berkala, serta merta, setiap saat, dan informasi yang dikecualikan sesuai peraturan perundang-undangan.",
+    "links": [
+      {
+        "text": "LHKPN",
+        "url": "https://ppid.sukoharjokab.go.id/lhkpn/"
+      },
+      {
+        "text": "Informasi Berkala",
+        "url": "https://ppid.sukoharjokab.go.id/daftar-informasi-berkala/"
+      },
+      {
+        "text": "Informasi Serta Merta",
+        "url": "https://ppid.sukoharjokab.go.id/informasi-serta-merta/"
+      },
+      {
+        "text": "Informasi Setiap Saat",
+        "url": "https://ppid.sukoharjokab.go.id/informasi-setiap-saat/"
+      },
+      {
+        "text": "Daftar Aset",
+        "url": "https://drive.google.com/drive/folders/1vEGhMooW2mMxtPBKWAv_dI3WjIwSXPmo"
+      },
+      {
+        "text": "Informasi Pengadaan Barang dan Jasa",
+        "url": "https://ppid.sukoharjokab.go.id/daftar-informasi-berkala/"
+      },
+      {
+        "text": "LKPD",
+        "url": "https://drive.google.com/drive/folders/1V86bwl93CqkX7LCA4-LaLHagMk8wdLh4"
+      },
+      {
+        "text": "Laporan Evaluasi Kinerja",
+        "url": "https://ppid.sukoharjokab.go.id/daftar-informasi-berkala/"
+      }
+    ],
+    "keywords": [
+      "layanan yang tersedia di website ppid",
+      "layanan website ppid",
+      "layanan ppid"
+    ],
+    "category": "layanan"
+  },
+  {
+    "id": 9,
+    "questions": [
+      "Daftar Informasi Publik",
+      "daftar informasi publik",
+      "informasi publik daftar",
+      "daftar informasi publik 2025"
+    ],
+    "answer": "Daftar Informasi Publik Kabupaten Sukoharjo (per tahun) tersedia pada halaman resmi PPID.",
+    "links": [
+      {
+        "text": "Daftar Informasi Publik (PPID Sukoharjo)",
+        "url": "https://ppid.sukoharjokab.go.id/daftar-informasi-publik/"
+      }
+    ],
+    "keywords": [
+      "daftar informasi publik",
+      "informasi publik",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+    ],
+    "category": "informasi"
+  },
+  {
+    "id": 10,
+    "questions": [
+      "Daftar Informasi Berkala",
+      "informasi berkala",
+      "daftar informasi berkala",
+      "informasi berkala ppid"
+    ],
+    "answer": "Daftar Informasi Berkala berisi daftar jenis informasi yang dipublikasikan secara berkala oleh PPID (profil, program, kinerja, laporan keuangan, layanan informasi, peraturan, tata cara, pengaduan, pengadaan, ketenagakerjaan, kependudukan, bencana, SOP, dll).",
+    "links": [
+      {
+        "text": "Daftar Informasi Berkala (PPID Sukoharjo)",
+        "url": "https://ppid.sukoharjokab.go.id/daftar-informasi-berkala/"
+      }
+    ],
+    "keywords": [
+      "kedudukan",
+      "domisili",
+      "alamat kantor",
+      "visi misi",
+      "tugas fungsi",
+      "struktur organisasi",
+      "profil pimpinan",
+      "profil pegawai",
+      "profil ppid",
+      "struktur ppid",
+      "lhkpn",
+      "lhkan",
+      "program kegiatan",
+      "nama program",
+      "penanggungjawab program",
+      "target capaian",
+      "jadwal pelaksanaan",
+      "sumber anggaran",
+      "kak",
+      "agenda pelaksanaan",
+      "lapor",
+      "e-samsat",
+      "layanan online disdukcapil",
+      "harga barang kebutuhan pokok",
+      "penerimaan pegawai",
+      "penerimaan peserta didik",
+      "laporan kinerja",
+      "lkjip",
+      "sakip",
+      "ikplhd",
+      "lkpj",
+      "kua",
+      "ppas",
+      "apbd",
+      "daftar aset",
+      "calk",
+      "neraca keuangan",
+      "lra",
+      "laporan realisasi anggaran",
+      "rka",
+      "dpa",
+      "rko",
+      "rfk",
+      "lkpd",
+      "laporan layanan informasi",
+      "register permohonan",
+      "indeks kepuasan masyarakat",
+      "daftar peraturan",
+      "jdi h dprd",
+      "pengaduan",
+      "sop",
+      "pengumuman informasi",
+      "pengadaan barang",
+      "pengadaan jasa",
+      "sirup",
+      "lpse",
+      "e-makaryo",
+      "lowongan"
+    ],
+    "category": "informasi"
+  },
+  {
+    "id": 11,
+    "questions": [
+      "Profil Pimpinan",
+      "profil pimpinan ppid",
+      "siapa bupati sukoharjo",
+      "profil bupati sukoharjo"
+    ],
+    "answer": "Jawaban untuk pertanyaan anda dapat ditemukan di Halaman profil pimpinan memuat identitas, riwayat pekerjaan dan pendidikan pimpinan daerah.",
+    "links": [
+      {
+        "text": "Profil Pimpinan (PPID Sukoharjo)",
+        "url": "https://ppid.sukoharjokab.go.id/profil-pimpinan/"
+      }
+    ],
+    "keywords": [
+      "profil pimpinan",
+      "bupati",
+      "wakil bupati",
+      "sekretaris daerah",
+      "Etik Suryani",
+      "siapa bupati",
+      "profil bupati"
+    ],
+    "category": "umum"
+  },
+  {
+    "id": 12,
+    "questions": [
+      "Maklumat PPID",
+      "maklumat pelayanan ppid",
+      "maklumat"
+    ],
+    "answer": "Maklumat PPID menjelaskan komitmen pelayanan informasi publik oleh PPID Kabupaten Sukoharjo.",
+    "links": [
+      {
+        "text": "Maklumat PPID",
+        "url": "https://ppid.sukoharjokab.go.id/maklumat/"
+      }
+    ],
+    "keywords": [
+      "maklumat",
+      "maklumat ppid",
+      "maklumat pelayanan"
+    ],
+    "category": "umum"
+  },
+  {
+    "id": 13,
+    "questions": [
+      "Visi dan Misi",
+      "visi misi sukoharjo",
+      "visi dan misi ppid"
+    ],
+    "answer": "Halaman visi dan misi menampilkan visi dan misi kepala daerah dan prioritas pembangunan daerah.",
+    "links": [
+      {
+        "text": "Visi dan Misi (PPID Sukoharjo)",
+        "url": "https://ppid.sukoharjokab.go.id/visi-dan-misi/"
+      }
+    ],
+    "keywords": [
+      "visi",
+      "misi",
+      "visi dan misi"
+    ],
+    "category": "umum"
+  },
+  {
+    "id": 14,
+    "questions": [
+      "Tugas dan Wewenang PPID",
+      "tugas wewenang ppid",
+      "tugas ppid"
+    ],
+    "answer": "Halaman tugas dan wewenang merangkum tugas, wewenang dan kewajiban PPID sesuai SK dan peraturan terkait.",
+    "links": [
+      {
+        "text": "Tugas dan Wewenang (PPID Sukoharjo)",
+        "url": "https://ppid.sukoharjokab.go.id/tugas-dan-wewenang/"
+      }
+    ],
+    "keywords": [
+      "tugas dan wewenang",
+      "tugas ppid",
+      "kewenangan ppid",
+      "sk nomor 487.22/58"
+    ],
+    "category": "umum"
+  },
+  {
+    "id": 15,
+    "questions": [
+      "Dasar Hukum",
+      "regulasi ppid",
+      "peraturan ppid"
+    ],
+    "answer": "Halaman dasar hukum merangkum undang-undang, peraturan pemerintah, peraturan menteri, peraturan bupati, dan peraturan Komisi Informasi terkait keterbukaan informasi publik.",
+    "links": [
+      {
+        "text": "Dasar Hukum (PPID Sukoharjo)",
+        "url": "https://ppid.sukoharjokab.go.id/dasar-hukum/"
+      }
+    ],
+    "keywords": [
+      "undang-undang 14 2008",
+      "peraturan pemerintah 61 2010",
+      "peraturan bupati",
+      "peraturan komisi informasi"
+    ],
+    "category": "informasi"
+  },
+  {
+    "id": 16,
+    "questions": [
+      "siapakah yang membuat kamu?",
+      "siapa yang mengembangkan kamu?",
+      "developer yang membuatmu?"
+    ],
+    "answer": "Yang membuat saya adalah Hosea Raka Narwastudjati (Student Intern) dari Universitas Kristen Satya Wacana yang menjalani masa Kerja Praktek di Diskominfo Sukoharjo pada periode 19 Agustus - 19 November 2025",
+    "category": "umum",
+    "links": [
+      {
+        "text": "Portofolio",
+        "url": "hosearaka.vercel.app"
+      }
+    ]
+  }
+]
