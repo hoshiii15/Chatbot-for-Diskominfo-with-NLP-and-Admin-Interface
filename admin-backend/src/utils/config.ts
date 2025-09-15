@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -108,6 +109,24 @@ export function validateConfig(): void {
 
 // Get absolute paths for file operations
 export function getAbsolutePath(relativePath: string): string {
+  // Try multiple base directories to support running from source, compiled dist, or container
+  const bases = [
+    path.resolve(__dirname, '../../'), // normal layout
+    path.resolve(process.cwd()), // when running from repo root
+    path.join('/srv', 'admin-backend', 'dist'), // combined image layout
+    path.join('/app'), // alternate container layout
+  ];
+
+  for (const base of bases) {
+    try {
+      const candidate = path.resolve(base, relativePath);
+      if (fs.existsSync(candidate)) return candidate;
+    } catch (_e) {
+      // ignore and try next
+    }
+  }
+
+  // fallback to original resolution
   return path.resolve(__dirname, '../../', relativePath);
 }
 

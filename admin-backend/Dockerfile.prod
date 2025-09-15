@@ -1,19 +1,25 @@
 # Production
 FROM node:18-alpine AS builder
 
+# Copy full repository into /app so shared/ and python-bot are available
 WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm ci --only=production
-
-# Copy source code
 COPY . .
 
-# Build the application
+# Build only the admin-backend package
+WORKDIR /app/admin-backend
+
+# Copy package files for backend and install (including dev deps for build)
+COPY admin-backend/package*.json ./
+RUN npm install --no-audit --no-fund
+
+# Copy backend source into builder workdir
+COPY admin-backend/. ./
+
+# Build the backend
 RUN npm run build
+
+# Debug: list built dist folder to ensure artifacts are created at expected path
+RUN ls -la /app/admin-backend/dist || true
 
 # Production stage
 FROM node:18-alpine AS production
@@ -27,13 +33,22 @@ RUN apk add --no-cache dumb-init
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nodejs -u 1001
 
-# Copy built application
-COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
-COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nodejs:nodejs /app/package*.json ./
+# Copy built application (artifacts are under /app/admin-backend in the builder)
+COPY --from=builder --chown=nodejs:nodejs /app/admin-backend/dist ./dist
+COPY --from=builder --chown=nodejs:nodejs /app/admin-backend/node_modules ./node_modules
+COPY --from=builder --chown=nodejs:nodejs /app/admin-backend/package*.json ./
+
+# Also copy python-bot data and DB so runtime can access FAQ files and sqlite
+COPY --from=builder --chown=nodejs:nodejs /app/python-bot ./python-bot
+# When building from repository root the DB file will be at /app/admin-backend/database.sqlite
+COPY --from=builder --chown=nodejs:nodejs /app/admin-backend/database.sqlite ./database.sqlite
 
 # Create necessary directories
 RUN mkdir -p logs backups data && chown -R nodejs:nodejs logs backups data
+
+# Ensure runtime knows where to find the bundled FAQ files
+ENV FAQ_DATA_PATH=/app/python-bot/data
+ENV BOT_LOG_FILE=/app/python-bot/bot.log
 
 # Switch to non-root user
 USER nodejs

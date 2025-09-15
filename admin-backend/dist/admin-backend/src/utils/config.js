@@ -11,6 +11,7 @@ exports.getBotLogPath = getBotLogPath;
 exports.getBackupPath = getBackupPath;
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
 dotenv_1.default.config();
 exports.config = {
     nodeEnv: process.env.NODE_ENV || 'development',
@@ -84,6 +85,24 @@ function validateConfig() {
     }
 }
 function getAbsolutePath(relativePath) {
+    // Try multiple base directories to support running from source, compiled dist, or container
+    const bases = [
+        path_1.default.resolve(__dirname, '../../'), // normal layout
+        path_1.default.resolve(process.cwd()), // when running from repo root
+        path_1.default.join('/srv', 'admin-backend', 'dist'), // combined image layout
+        path_1.default.join('/app'), // alternate container layout
+    ];
+    for (const base of bases) {
+        try {
+            const candidate = path_1.default.resolve(base, relativePath);
+            if (fs_1.default.existsSync(candidate))
+                return candidate;
+        }
+        catch (_a) {
+            // ignore and try next
+        }
+    }
+    // fallback to original resolution
     return path_1.default.resolve(__dirname, '../../', relativePath);
 }
 function getFaqFilePath(env) {

@@ -1,6 +1,7 @@
 import winston from 'winston';
 import path from 'path';
 import fs from 'fs';
+import util from 'util';
 
 // Ensure logs directory exists
 const logsDir = path.join(__dirname, '../../logs');
@@ -15,7 +16,12 @@ const consoleFormat = winston.format.combine(
   winston.format.printf(({ timestamp, level, message, ...meta }) => {
     let msg = `${timestamp} [${level}]: ${message}`;
     if (Object.keys(meta).length > 0) {
-      msg += ` ${JSON.stringify(meta)}`;
+      try {
+        // Use util.inspect to safely stringify objects with circular refs
+        msg += ` ${util.inspect(meta, { depth: 4, colors: false, compact: true })}`;
+      } catch (e) {
+        msg += ` ${String(meta)}`;
+      }
     }
     return msg;
   })

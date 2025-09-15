@@ -1,19 +1,23 @@
 # Production
 FROM node:18-alpine AS builder
 
+# Copy full repository so shared/ and other folders are available
 WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm ci
-
-# Copy source code
 COPY . .
 
-# Build the application
+# Build frontend inside /app/admin-frontend
+WORKDIR /app/admin-frontend
+
+# Install dependencies
+COPY admin-frontend/package*.json ./
+RUN npm install --no-audit --no-fund
+
+# Copy frontend source and build
+COPY admin-frontend/. ./
 RUN npm run build
+
+# Debug: list .next contents to help troubleshoot missing standalone/static during Docker build
+RUN ls -la /app/admin-frontend/.next || true
 
 # Production stage
 FROM node:18-alpine AS production
@@ -27,10 +31,10 @@ RUN apk add --no-cache dumb-init
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nodejs -u 1001
 
-# Copy built application
-COPY --from=builder --chown=nodejs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nodejs:nodejs /app/.next/static ./.next/static
-COPY --from=builder --chown=nodejs:nodejs /app/public ./public
+# Copy built application from builder's /app/admin-frontend
+COPY --from=builder --chown=nodejs:nodejs /app/admin-frontend/.next/standalone ./
+COPY --from=builder --chown=nodejs:nodejs /app/admin-frontend/.next/static ./.next/static
+COPY --from=builder --chown=nodejs:nodejs /app/admin-frontend/public ./public
 
 # Switch to non-root user
 USER nodejs

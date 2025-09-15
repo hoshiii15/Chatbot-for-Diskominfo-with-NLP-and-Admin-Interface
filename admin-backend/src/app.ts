@@ -258,6 +258,35 @@ class App {
       logger.info(`🔗 Python Bot URL: ${config.pythonBot.url}`);
       logger.info(`💾 Database: ${config.database.dialect}`);
       logger.info(`📁 FAQ Data Path: ${config.files.faqDataPath}`);
+
+      // Diagnostic: report resolved FAQ data path and file-backed FAQ counts
+      try {
+        const { getAbsolutePath } = require('./utils/config');
+        const fs = require('fs');
+        const path = require('path');
+        const resolved = getAbsolutePath(config.files.faqDataPath);
+        let stCount = 0;
+        let ppCount = 0;
+        try {
+          const stPath = path.join(resolved, 'faq_stunting.json');
+          const ppPath = path.join(resolved, 'faq_ppid.json');
+          if (fs.existsSync(stPath)) {
+            const st = JSON.parse(fs.readFileSync(stPath, 'utf8'));
+            if (Array.isArray(st)) stCount = st.length;
+            else if (st && Array.isArray(st.faqs)) stCount = st.faqs.length;
+          }
+          if (fs.existsSync(ppPath)) {
+            const pp = JSON.parse(fs.readFileSync(ppPath, 'utf8'));
+            if (Array.isArray(pp)) ppCount = pp.length;
+            else if (pp && Array.isArray(pp.faqs)) ppCount = pp.faqs.length;
+          }
+        } catch (e) {
+          // ignore
+        }
+        logger.info(`📁 Resolved FAQ data directory: ${resolved} (stunting: ${stCount}, ppid: ${ppCount})`);
+      } catch (e) {
+        // ignore
+      }
     });
   }
 }

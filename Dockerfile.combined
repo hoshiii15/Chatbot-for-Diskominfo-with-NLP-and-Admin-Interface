@@ -2,26 +2,33 @@
 # Not intended for production. Use for single-container demo only.
 
 # Builder stage (node) to build admin-frontend and admin-backend
-FROM node:18-bullseye as builder
+FROM node:18-bullseye AS builder
 
 WORKDIR /build
 
-# Build admin-frontend
+# Copy frontend and backend source into builder
 COPY admin-frontend/ ./admin-frontend/
+COPY admin-backend/ ./admin-backend/
+COPY shared/ ./shared/
+
+# Build admin-frontend (install dev deps to allow Next.js build)
 WORKDIR /build/admin-frontend
-# Install all dependencies (including dev deps) so the Next.js build can run
-# Prefer `npm ci` when a lockfile exists; use --legacy-peer-deps to avoid peer errors
+# Use npm ci when lockfile present for reproducible installs
 RUN if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then \
-    npm ci --legacy-peer-deps || npm i --legacy-peer-deps; \
+    npm ci --legacy-peer-deps; \
     else \
     npm i --legacy-peer-deps; \
-    fi
-# Run the frontend build and fail the image build if it doesn't succeed
-RUN npm run build
+    fi \
+    && npm run build
 
-# Skip building admin-backend in builder stage.
-# The repo already contains a compiled `dist/` for admin-backend. We'll copy
-# the backend as-is into the final image and install runtime deps there.
+# Build admin-backend (TypeScript build). Install dev deps first, run tsc
+WORKDIR /build/admin-backend
+RUN if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then \
+    npm ci --legacy-peer-deps --include=dev; \
+    else \
+    npm i --legacy-peer-deps; \
+    fi \
+    && npm run build
 
 # Final image - include Node (runtime) and Python
 FROM node:18-bullseye-slim
@@ -39,44 +46,51 @@ RUN apt-get update \
 WORKDIR /app
 RUN mkdir -p /app/python-bot /srv/admin-frontend /srv/admin-backend /app/logs /app/backups
 
-# Copy built frontend from builder
-COPY --from=builder /build/admin-frontend /srv/admin-frontend
+# Copy built frontend from builder (next.js .next and public/static files)
+COPY --from=builder /build/admin-frontend/.next /srv/admin-frontend/.next
+COPY --from=builder /build/admin-frontend/package.json /srv/admin-frontend/package.json
 
-# Copy python-bot source early so admin-backend build (if needed) and data copy
-# can access the FAQ JSON files during image build
+# Copy built backend dist from builder
+COPY --from=builder /build/admin-backend/dist /srv/admin-backend/dist
+COPY --from=builder /build/admin-backend/package.json /srv/admin-backend/package.json
+# Copy SQLite DB if present in the repo so runtime has prepopulated data
+COPY admin-backend/database.sqlite /srv/admin-backend/database.sqlite
+RUN chmod 644 /srv/admin-backend/database.sqlite || true
+
+# Normalize backend dist layout: some builds nest compiled files under dist/admin-backend/src
+# Move JS files up so `node dist/app.js` exists at runtime
+RUN if [ -d /srv/admin-backend/dist/admin-backend/src ]; then \
+    mkdir -p /srv/admin-backend/dist && \
+    mv /srv/admin-backend/dist/admin-backend/src/* /srv/admin-backend/dist/ || true; \
+    fi || true
+
+# Copy python-bot source and requirements
 COPY python-bot/ /app/python-bot/
-
-# Install Python requirements
 COPY python-bot/requirements.txt /app/python-bot/requirements.txt
+
+# Copy helper scripts
+COPY admin-backend/start-backend.sh /srv/admin-backend/start-backend.sh
+RUN chmod +x /srv/admin-backend/start-backend.sh || true
+
+# Install Python requirements (allow image build to continue if pip has issues)
 RUN python3 -m pip install --upgrade pip setuptools wheel \
     && python3 -m pip install --no-cache-dir -r /app/python-bot/requirements.txt || echo "pip install had issues"
 
-# Copy admin-backend source directly
-COPY admin-backend/ /srv/admin-backend/
-
-# Build admin-backend during image build so a fresh build doesn't require in-container compilation.
-# Install dev deps, run the TypeScript build, then install production deps.
-WORKDIR /srv/admin-backend
-RUN if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then \
-    npm ci --legacy-peer-deps --include=dev || npm i --legacy-peer-deps; \
-    else \
-    npm i --legacy-peer-deps; \
-    fi \
-    && npm run build || true \
-    && if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then \
-    npm ci --omit=dev --legacy-peer-deps || npm install --omit=dev --legacy-peer-deps; \
-    else \
-    npm install --omit=dev --legacy-peer-deps; \
-    fi
-
-# Ensure python-bot data is present where admin-backend expects it (dist path)
-RUN mkdir -p /srv/admin-backend/dist/python-bot/data && cp -r /app/python-bot/data/* /srv/admin-backend/dist/python-bot/data || true
-
-# Install frontend runtime deps in final image (production only)
+# Install production node modules for frontend and backend
 WORKDIR /srv/admin-frontend
 RUN if [ -f package.json ]; then npm ci --production --legacy-peer-deps || npm install --omit=dev --legacy-peer-deps; fi
 
-# nginx removed for single-image demo; services will bind to their ports directly
+WORKDIR /srv/admin-backend
+RUN if [ -f package.json ]; then npm ci --production --legacy-peer-deps || npm install --omit=dev --legacy-peer-deps; fi
+
+# Ensure python-bot data is present where admin-backend expects it (copy to multiple candidate locations)
+RUN set -eux; \
+    mkdir -p /srv/admin-backend/dist/python-bot/data /srv/admin-backend/python-bot/data /app/python-bot/data /python-bot/data; \
+    cp -a /app/python-bot/data/. /srv/admin-backend/dist/python-bot/data || true; \
+    cp -a /app/python-bot/data/. /srv/admin-backend/python-bot/data || true; \
+    cp -a /app/python-bot/data/. /app/python-bot/data || true; \
+    cp -a /app/python-bot/data/. /python-bot/data || true; \
+    chmod -R a+rwX /srv/admin-backend/dist/python-bot /srv/admin-backend/python-bot /app/python-bot /python-bot || true
 
 # Supervisord config
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf

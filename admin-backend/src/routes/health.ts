@@ -168,7 +168,6 @@ export default router;
 /**
  * Extra endpoints:
  * - GET /api/health/logs?source=bot|backend  -> returns tail of log file
- * - POST /api/health/restart                  -> request a restart (noop in dev)
  * - GET /api/health/settings                  -> return non-sensitive runtime settings
  */
 
@@ -198,17 +197,7 @@ router.get('/logs', async (req: Request, res: Response) => {
   }
 });
 
-// Restart request (no-op for safety in development)
-router.post('/restart', async (req: Request, res: Response) => {
-  try {
-    logger.info('Restart requested via API', { source: 'ui' });
-    // In production this could trigger a service manager or orchestrator hook.
-    res.json({ success: true, message: 'Restart requested (noop in development)' });
-  } catch (error) {
-    logger.error('Failed to enqueue restart:', error);
-    res.status(500).json({ success: false, error: 'Failed to request restart' });
-  }
-});
+// Restart feature removed: restart requests are no longer supported via the admin API.
 
 // Settings (non-sensitive)
 router.get('/settings', async (req: Request, res: Response) => {

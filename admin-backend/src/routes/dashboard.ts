@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { logger } from '../utils/logger';
 import { ChatLog, FAQ, Session, Analytics, User } from '../models';
+import { loadFaqsFromFiles } from '../controllers/faqController';
 import { Op } from 'sequelize';
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -26,25 +27,12 @@ router.get('/stats', async (req: Request, res: Response) => {
       User.count()
     ]);
 
-    // Load file-backed FAQs (if present) to ensure dashboard reflects JSON source of truth
-    const repoRoot = path.resolve(__dirname, '../../../');
-    const stuntingPath = path.join(repoRoot, 'python-bot', 'data', 'faq_stunting.json');
-    const ppidPath = path.join(repoRoot, 'python-bot', 'data', 'faq_ppid.json');
+    // Load file-backed FAQs (if present) using shared loader so counting matches FAQ endpoints
     let fileFaqs: any[] = [];
     try {
-      // stunting file may be { faqs: [...] }
-      const stRaw = await fs.readFile(stuntingPath, 'utf-8');
-      const stJson = JSON.parse(stRaw);
-      if (stJson && Array.isArray(stJson.faqs)) fileFaqs = fileFaqs.concat(stJson.faqs);
+      fileFaqs = await loadFaqsFromFiles();
     } catch (e) {
-      // ignore
-    }
-    try {
-      const pRaw = await fs.readFile(ppidPath, 'utf-8');
-      const pJson = JSON.parse(pRaw);
-      if (Array.isArray(pJson)) fileFaqs = fileFaqs.concat(pJson);
-    } catch (e) {
-      // ignore
+      // ignore - fallback to DB counts below
     }
 
     // If file-backed FAQs exist, prefer them as the source of truth for totals
