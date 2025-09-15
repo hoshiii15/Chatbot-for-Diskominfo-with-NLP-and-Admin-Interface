@@ -50,7 +50,7 @@ export default function AnalyticsPage() {
           window.location.href = '/login'
           return
         }
-        const response = await fetch(`http://localhost:3001/api/analytics?environment=${selectedEnv}&days=30`, {
+  const response = await fetch(`/api/analytics?environment=${selectedEnv}&days=30`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         if (response.ok) {
@@ -347,16 +347,13 @@ export default function AnalyticsPage() {
         {/* Attribution */}
         <div className="mt-12 text-center">
           <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-sm border border-gray-100 max-w-md mx-auto">
-            <p className="text-gray-600 text-sm">
-              Made with{' '}
-              <span className="text-red-500 animate-pulse inline-block transform hover:scale-110 transition-transform duration-200">
-                ❤️
-              </span>{' '}
-              by{' '}
-              <span className="font-semibold text-gray-900">
-                Hosea Raka
-              </span>
-            </p>
+              <p className="text-gray-600 text-sm">
+                Made with{' '}
+                <span className="text-red-500 animate-pulse inline-block transform hover:scale-110 transition-transform duration-200">
+                  ❤️
+                </span>{' '}
+                for diskomindo sukoharjo
+              </p>
           </div>
         </div>
         </div>

@@ -161,16 +161,6 @@ router.get('/logs', async (req, res) => {
         res.status(500).json({ success: false, error: 'Failed to read logs' });
     }
 });
-router.post('/restart', async (req, res) => {
-    try {
-        logger_1.logger.info('Restart requested via API', { source: 'ui' });
-        res.json({ success: true, message: 'Restart requested (noop in development)' });
-    }
-    catch (error) {
-        logger_1.logger.error('Failed to enqueue restart:', error);
-        res.status(500).json({ success: false, error: 'Failed to request restart' });
-    }
-});
 router.get('/settings', async (req, res) => {
     try {
         const settings = {

@@ -107,7 +107,7 @@ class App {
         this.app.use('/api/logs', auth_2.authMiddleware, logs_1.default);
         this.app.use('/api/analytics', auth_2.authMiddleware, analytics_1.default);
         this.app.use('/api/websites', auth_2.authMiddleware, websites_1.default);
-        this.app.use('/api/dashboard', auth_2.authMiddleware, dashboard_1.default);
+        this.app.use('/api/dashboard', dashboard_1.default);
         this.app.get('/', (req, res) => {
             res.json({
                 name: 'FAQ Chatbot Admin Backend',
@@ -187,6 +187,37 @@ class App {
             logger_1.logger.info(`🔗 Python Bot URL: ${config_1.config.pythonBot.url}`);
             logger_1.logger.info(`💾 Database: ${config_1.config.database.dialect}`);
             logger_1.logger.info(`📁 FAQ Data Path: ${config_1.config.files.faqDataPath}`);
+            try {
+                const { getAbsolutePath } = require('./utils/config');
+                const fs = require('fs');
+                const path = require('path');
+                const resolved = getAbsolutePath(config_1.config.files.faqDataPath);
+                let stCount = 0;
+                let ppCount = 0;
+                try {
+                    const stPath = path.join(resolved, 'faq_stunting.json');
+                    const ppPath = path.join(resolved, 'faq_ppid.json');
+                    if (fs.existsSync(stPath)) {
+                        const st = JSON.parse(fs.readFileSync(stPath, 'utf8'));
+                        if (Array.isArray(st))
+                            stCount = st.length;
+                        else if (st && Array.isArray(st.faqs))
+                            stCount = st.faqs.length;
+                    }
+                    if (fs.existsSync(ppPath)) {
+                        const pp = JSON.parse(fs.readFileSync(ppPath, 'utf8'));
+                        if (Array.isArray(pp))
+                            ppCount = pp.length;
+                        else if (pp && Array.isArray(pp.faqs))
+                            ppCount = pp.faqs.length;
+                    }
+                }
+                catch (e) {
+                }
+                logger_1.logger.info(`📁 Resolved FAQ data directory: ${resolved} (stunting: ${stCount}, ppid: ${ppCount})`);
+            }
+            catch (e) {
+            }
         });
     }
 }

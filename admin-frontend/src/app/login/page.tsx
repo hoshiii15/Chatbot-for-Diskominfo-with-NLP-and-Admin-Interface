@@ -16,7 +16,7 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      const response = await fetch('http://localhost:3001/api/auth/login', {
+    const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials)
@@ -127,12 +127,12 @@ export default function LoginPage() {
 
         {/* Attribution */}
         <div className="text-center mt-8">
-          <p className="text-sm text-gray-500 flex items-center justify-center gap-1">
-            Made with 
-            <span className="text-red-500 animate-pulse">❤️</span> 
-            by 
-            <span className="font-semibold text-gray-700">Hosea Raka</span>
-          </p>
+            <p className="text-sm text-gray-500 flex items-center justify-center gap-1">
+              Made with 
+              <span className="text-red-500 animate-pulse">❤️</span>
+              for
+              <span className="font-semibold text-gray-700">diskomindo sukoharjo</span>
+            </p>
         </div>
       </div>
     </div>

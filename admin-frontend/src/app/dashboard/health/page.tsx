@@ -55,7 +55,7 @@ export default function SystemHealthPage() {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
       
-      const response = await fetch('http://localhost:3001/api/health', {
+  const response = await fetch('/api/health', {
         signal: controller.signal,
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ export default function SystemHealthPage() {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 5000)
       
-      const response = await fetch('http://localhost:3001/api/health/settings', {
+  const response = await fetch('/api/health/settings', {
         signal: controller.signal,
         headers: {
           'Content-Type': 'application/json',
@@ -129,7 +129,7 @@ export default function SystemHealthPage() {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 10000)
       
-      const response = await fetch('http://localhost:3001/api/health/logs?source=bot', {
+  const response = await fetch('/api/health/logs?source=bot', {
         signal: controller.signal,
         headers: {
           'Content-Type': 'application/json',
@@ -475,20 +475,17 @@ export default function SystemHealthPage() {
         </div>
 
         {/* Attribution */}
-        <div className="mt-12 text-center">
-          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-sm border border-gray-100 max-w-md mx-auto">
-            <p className="text-gray-600 text-sm">
-              Made with{' '}
-              <span className="text-red-500 animate-pulse inline-block transform hover:scale-110 transition-transform duration-200">
-                ❤️
-              </span>{' '}
-              by{' '}
-              <span className="font-semibold text-gray-900">
-                Hosea Raka
-              </span>
-            </p>
+          <div className="mt-12 text-center">
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-sm border border-gray-100 max-w-md mx-auto">
+              <p className="text-gray-600 text-sm">
+                Made with{' '}
+                <span className="text-red-500 animate-pulse inline-block transform hover:scale-110 transition-transform duration-200">
+                  ❤️
+                </span>{' '}
+                for diskomindo sukoharjo
+              </p>
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
@@ -739,7 +736,7 @@ export default function SystemHealthPage() {
               </div>
               <div className="flex gap-3">
                 <Button
-                  onClick={() => window.open('http://localhost:3001/api/health/logs?source=bot', '_blank')}
+                  onClick={() => window.open('/api/health/logs?source=bot', '_blank')}
                   variant="outline"
                   className="border-gray-300 text-gray-700 hover:bg-gray-50"
                 >

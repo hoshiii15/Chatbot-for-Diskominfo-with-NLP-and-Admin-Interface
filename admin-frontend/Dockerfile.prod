@@ -5,6 +5,13 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 COPY . .
 
+# Allow overriding API/socket URLs at build time. Default to host.docker.internal so
+# frontend built inside Docker can reach services running on the Docker host (Windows/Mac).
+ARG NEXT_PUBLIC_API_URL=http://host.docker.internal:3001
+ARG NEXT_PUBLIC_SOCKET_URL=http://host.docker.internal:3001
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV NEXT_PUBLIC_SOCKET_URL=${NEXT_PUBLIC_SOCKET_URL}
+
 # Build frontend inside /app/admin-frontend
 WORKDIR /app/admin-frontend
 

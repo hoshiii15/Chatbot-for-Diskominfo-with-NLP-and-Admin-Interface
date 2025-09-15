@@ -43,5 +43,8 @@
     "typescript"
   ],
   "author": "Diskominfo",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  }
 }

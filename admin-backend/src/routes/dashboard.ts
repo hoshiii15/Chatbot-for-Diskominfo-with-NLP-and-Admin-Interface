@@ -64,7 +64,7 @@ router.get('/stats', async (req: Request, res: Response) => {
       logger.error('Database health check failed:', error);
     }
 
-    const stats = {
+  const stats = {
       totalQuestions: effectiveTotalQuestions,
       totalFAQs: effectiveTotalFAQs,
       activeUsers: activeSessions,
@@ -72,6 +72,9 @@ router.get('/stats', async (req: Request, res: Response) => {
       totalSessions,
       totalUsers
     };
+
+  // Debug log to help troubleshooting frontend mismatches
+  logger.info('Dashboard stats computed', { stats, fileFaqsCount: fileFaqs.length, dbCounts: { totalQuestions, totalFAQs, totalSessions, totalUsers } });
 
     res.json({
       success: true,

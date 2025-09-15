@@ -80,30 +80,17 @@ export default function HomePage() {
             </div>
           </div>
           
-          {/* API Info */}
-          <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-lg max-w-md mx-auto">
-            <h4 className="font-semibold text-gray-800 mb-3">Development Environment</h4>
-            <div className="text-sm text-gray-600 space-y-2">
-              <div className="flex items-center justify-between">
-                <span>Backend API:</span>
-                <span className="font-mono bg-gray-100 px-2 py-1 rounded text-xs">http://localhost:3001</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Frontend:</span>
-                <span className="font-mono bg-gray-100 px-2 py-1 rounded text-xs">http://localhost:3000</span>
-              </div>
-            </div>
-          </div>
+          {/* API Info removed for production/demo */}
 
           {/* Attribution */}
-          <div className="pt-8">
-            <p className="text-sm text-gray-500 flex items-center justify-center gap-1">
-              Made with 
-              <span className="text-red-500 animate-pulse">❤️</span> 
-              by 
-              <span className="font-semibold text-gray-700">Hosea Raka</span>
-            </p>
-          </div>
+            <div className="pt-8">
+              <p className="text-sm text-gray-500 flex items-center justify-center gap-1">
+                Made with
+                <span className="text-red-500 animate-pulse">❤️</span>
+                for
+                <span className="font-semibold text-gray-700">diskomindo sukoharjo</span>
+              </p>
+            </div>
         </div>
       </div>
     </div>

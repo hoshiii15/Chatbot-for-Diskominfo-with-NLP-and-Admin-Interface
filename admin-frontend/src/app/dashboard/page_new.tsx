@@ -7,10 +7,13 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 interface DashboardStats {
-  totalQuestions: number
-  totalFAQs: number
-  activeUsers: number
-  systemHealth: string
+  totalQuestions?: number
+  totalFAQs?: number
+  activeUsers?: number
+  systemHealth?: string
+  uptime?: string
+  totalSessions?: number
+  totalUsers?: number
 }
 
 interface SystemStatus {
@@ -26,6 +29,7 @@ export default function DashboardPage() {
     database: 'Unknown',
     pythonBot: 'Unknown'
   })
+  const [logs, setLogs] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
 
@@ -108,7 +112,7 @@ export default function DashboardPage() {
           return
         }
 
-        const response = await fetch('http://localhost:3001/api/dashboard/stats', {
+  const response = await fetch('/api/dashboard/stats', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -132,23 +136,73 @@ export default function DashboardPage() {
 
     const fetchSystemHealth = async () => {
       try {
-        const healthResponse = await fetch('http://localhost:3001/api/health')
+        const healthResponse = await fetch('/api/health')
         if (healthResponse.ok) {
           const healthResult = await healthResponse.json()
           setSystemStatus(prev => ({
             ...prev,
             backend: 'Running',
-            database: healthResult.data.database.status === 'healthy' ? 'Connected' : 'Disconnected',
-            pythonBot: healthResult.data.services.chatbot.status === 'healthy' ? 'Running' : 'Check Required'
+            database: healthResult.data.database?.status === 'healthy' ? 'Connected' : 'Disconnected',
+            pythonBot: healthResult.data.services?.chatbot?.status === 'healthy' ? 'Running' : 'Check Required'
           }))
+          // set uptime if provided by health endpoint
+          if (healthResult.data && healthResult.data.uptime) {
+            setStats(prev => ({ ...(prev || {}), uptime: healthResult.data.uptime }))
+          }
         }
       } catch (error) {
         console.error('Failed to fetch system health:', error)
       }
     }
 
+    const fetchRecentLogs = async () => {
+      try {
+        // try to fetch bot-specific logs first
+        const resp = await fetch('/api/logs?limit=5&env=bot')
+        if (resp.ok) {
+          const r = await resp.json()
+          setLogs(r.data?.logs || [])
+          return
+        }
+
+        // fallback to general logs
+        const fallback = await fetch('/api/logs?limit=5')
+        if (fallback.ok) {
+          const f = await fallback.json()
+          setLogs(f.data?.logs || [])
+        }
+      } catch (error) {
+        console.error('Failed to fetch recent logs:', error)
+      }
+    }
+
+    const fetchAnalyticsTotals = async () => {
+      try {
+        const token = localStorage.getItem('authToken')
+        if (!token) {
+          // not logged in — keep existing behaviour (other fetches will redirect)
+          return
+        }
+
+        const resp = await fetch('/api/analytics?environment=all&days=30', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+
+        if (resp.ok) {
+          const json = await resp.json()
+          const analytics = json.data
+          setStats(prev => ({ ...(prev || {}), totalQuestions: analytics?.total_questions || 0, totalSessions: analytics?.total_sessions || 0 }))
+        } else if (resp.status === 401) {
+          localStorage.removeItem('authToken')
+          window.location.href = '/login'
+        }
+      } catch (error) {
+        console.error('Failed to fetch analytics totals:', error)
+      }
+    }
+
     const loadData = async () => {
-      await Promise.all([fetchStats(), fetchSystemHealth()])
+      await Promise.all([fetchStats(), fetchSystemHealth(), fetchRecentLogs(), fetchAnalyticsTotals()])
       setIsLoading(false)
     }
 
@@ -220,15 +274,15 @@ export default function DashboardPage() {
             <Card className="backdrop-blur-sm bg-white/80 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-gray-600 flex items-center justify-between">
-                  Total Questions
+                  Uptime
                   <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3" />
                     </svg>
                   </div>
                 </CardTitle>
                 <CardDescription className="text-3xl font-bold text-gray-900">
-                  {stats?.totalQuestions || 0}
+                  {stats?.uptime || '—'}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -249,20 +303,31 @@ export default function DashboardPage() {
               </CardHeader>
             </Card>
 
-            <Card className="backdrop-blur-sm bg-white/80 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
+            <Card className="backdrop-blur-sm bg-white/80 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group col-span-1 md:col-span-1 lg:col-span-1">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-gray-600 flex items-center justify-between">
-                  Session Counted
-                  <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  Bot Logs
+                  <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h8m-8 4h6" />
                     </svg>
                   </div>
                 </CardTitle>
-                <CardDescription className="text-3xl font-bold text-gray-900">
-                  {stats?.activeUsers || 0}
+                <CardDescription className="text-sm text-gray-600">
+                  Recent bot activity
                 </CardDescription>
               </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {(logs && logs.length > 0) ? (
+                    logs.map((l, idx) => (
+                      <div key={idx} className="text-sm text-gray-700 truncate">{new Date(l.createdAt).toLocaleString()} — {l.message || l.question || l.answer || 'log entry'}</div>
+                    ))
+                  ) : (
+                    <div className="text-sm text-gray-500">No recent bot logs</div>
+                  )}
+                </div>
+              </CardContent>
             </Card>
 
             <Card className="backdrop-blur-sm bg-white/80 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
@@ -375,8 +440,8 @@ export default function DashboardPage() {
             <p className="text-sm text-gray-500 flex items-center justify-center gap-1">
               Made with 
               <span className="text-red-500 animate-pulse">❤️</span> 
-              by 
-              <span className="font-semibold text-gray-700">Hosea Raka</span>
+              for 
+              <span className="font-semibold text-gray-700">diskomindo sukoharjo</span>
             </p>
           </div>
         </div>

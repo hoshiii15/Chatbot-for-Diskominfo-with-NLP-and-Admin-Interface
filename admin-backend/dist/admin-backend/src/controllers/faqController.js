@@ -17,6 +17,7 @@ exports.fileFaqsDebug = fileFaqsDebug;
 const logger_1 = require("../utils/logger");
 const models_1 = require("../models");
 const fs_1 = require("fs");
+const fs_2 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 function getFilePathForEnv(env) {
     const repoRoot = path_1.default.resolve(__dirname, '../../../');
@@ -27,16 +28,14 @@ function getFilePathForEnv(env) {
         path_1.default.join('/srv', 'admin-backend', 'dist', 'python-bot', 'data'),
         path_1.default.join('/app', 'python-bot', 'data'),
     ];
-    const fsSync = require('fs');
     for (const d of candidates) {
         const p = path_1.default.join(d, env === 'stunting' ? 'faq_stunting.json' : 'faq_ppid.json');
         try {
-            const s = fsSync.statSync(p);
+            const s = fs_2.default.statSync(p);
             if (s)
                 return p;
         }
-        catch (_a) {
-            // try next
+        catch (_e) {
         }
     }
     if (env === 'stunting')
@@ -46,41 +45,60 @@ function getFilePathForEnv(env) {
 async function loadFaqsFromFiles() {
     try {
         const repoRoot = path_1.default.resolve(__dirname, '../../../');
-        const stuntingPath = path_1.default.join(repoRoot, 'python-bot', 'data', 'faq_stunting.json');
-        const ppidPath = path_1.default.join(repoRoot, 'python-bot', 'data', 'faq_ppid.json');
+        const candidates = [
+            path_1.default.join(repoRoot, 'python-bot', 'data'),
+            path_1.default.join(process.cwd(), 'python-bot', 'data'),
+            path_1.default.join(__dirname, '..', '..', '..', 'python-bot', 'data'),
+            path_1.default.join(__dirname, '..', '..', '..', '..', 'python-bot', 'data'),
+            path_1.default.join('/srv', 'admin-backend', 'dist', 'python-bot', 'data'),
+            path_1.default.join('/app', 'python-bot', 'data'),
+        ];
+        const stuntingPathCandidates = candidates.map(d => path_1.default.join(d, 'faq_stunting.json'));
+        const ppidPathCandidates = candidates.map(d => path_1.default.join(d, 'faq_ppid.json'));
         const results = [];
         try {
-            const stuntingRaw = await fs_1.promises.readFile(stuntingPath, 'utf-8');
-            const stuntingJson = JSON.parse(stuntingRaw);
-            if (stuntingJson && Array.isArray(stuntingJson.faqs)) {
-                for (const f of stuntingJson.faqs) {
-                    const now = new Date().toISOString();
-                    const metadata = Array.isArray(f.links)
-                        ? f.links.map((l) => {
-                            const text = typeof l === 'string' ? l : (l && (l.text ?? l.title ?? l.name)) ?? '';
-                            const url = (l && (l.url ?? l.href)) ?? '';
-                            const questionRef = l && (l.question ?? null);
-                            const questionIndex = l && (typeof l.questionIndex !== 'undefined' ? Number(l.questionIndex) : undefined);
-                            const question = typeof questionIndex === 'number' && Array.isArray(f.questions)
-                                ? f.questions[questionIndex] ?? questionRef
-                                : questionRef ?? null;
-                            return { text, url, question };
-                        })
-                        : null;
-                    results.push({
-                        id: f.id != null ? `stunting-${String(f.id)}` : `stunting-${i + 1}`,
-                        question: Array.isArray(f.questions) ? f.questions[0] : (f.question || ''),
-                        questions: f.questions || (f.question ? [f.question] : []),
-                        answer: f.answer || '',
-                        category: f.category || null,
-                        environment: 'stunting',
-                        isActive: f.isActive !== undefined ? f.isActive : true,
-                        priority: f.priority || 0,
-                        views: f.views || 0,
-                        metadata,
-                        createdAt: f.createdAt || now,
-                        updatedAt: f.updatedAt || now,
-                    });
+            let stuntingRaw = null;
+            for (const p of stuntingPathCandidates) {
+                try {
+                    stuntingRaw = await fs_1.promises.readFile(p, 'utf-8');
+                    break;
+                }
+                catch (_) {
+                }
+            }
+            if (stuntingRaw) {
+                const stuntingJson = JSON.parse(stuntingRaw);
+                if (stuntingJson && Array.isArray(stuntingJson.faqs)) {
+                    for (let i = 0; i < stuntingJson.faqs.length; i++) {
+                        const f = stuntingJson.faqs[i];
+                        const now = new Date().toISOString();
+                        const metadata = Array.isArray(f.links)
+                            ? f.links.map((l) => {
+                                const text = typeof l === 'string' ? l : (l && (l.text ?? l.title ?? l.name)) ?? '';
+                                const url = (l && (l.url ?? l.href)) ?? '';
+                                const questionRef = l && (l.question ?? null);
+                                const questionIndex = l && (typeof l.questionIndex !== 'undefined' ? Number(l.questionIndex) : undefined);
+                                const question = typeof questionIndex === 'number' && Array.isArray(f.questions)
+                                    ? f.questions[questionIndex] ?? questionRef
+                                    : questionRef ?? null;
+                                return { text, url, question };
+                            })
+                            : null;
+                        results.push({
+                            id: f.id != null ? `stunting-${String(f.id)}` : `stunting-${i + 1}`,
+                            question: Array.isArray(f.questions) ? f.questions[0] : (f.question || ''),
+                            questions: f.questions || (f.question ? [f.question] : []),
+                            answer: f.answer || '',
+                            category: f.category || null,
+                            environment: 'stunting',
+                            isActive: f.isActive !== undefined ? f.isActive : true,
+                            priority: f.priority || 0,
+                            views: f.views || 0,
+                            metadata,
+                            createdAt: f.createdAt || now,
+                            updatedAt: f.updatedAt || now,
+                        });
+                    }
                 }
             }
         }
@@ -88,37 +106,48 @@ async function loadFaqsFromFiles() {
             logger_1.logger.debug('No stunting FAQ file or parse error', e instanceof Error ? e.message : e);
         }
         try {
-            const ppidRaw = await fs_1.promises.readFile(ppidPath, 'utf-8');
-            const ppidJson = JSON.parse(ppidRaw);
-            if (Array.isArray(ppidJson)) {
-                for (const f of ppidJson) {
-                    const now = new Date().toISOString();
-                    const metadata = Array.isArray(f.links)
-                        ? f.links.map((l) => {
-                            const text = typeof l === 'string' ? l : (l && (l.text ?? l.title ?? l.name)) ?? '';
-                            const url = (l && (l.url ?? l.href)) ?? '';
-                            const questionRef = l && (l.question ?? null);
-                            const questionIndex = l && (typeof l.questionIndex !== 'undefined' ? Number(l.questionIndex) : undefined);
-                            const question = typeof questionIndex === 'number' && Array.isArray(f.questions)
-                                ? f.questions[questionIndex] ?? questionRef
-                                : questionRef ?? null;
-                            return { text, url, question };
-                        })
-                        : null;
-                    results.push({
-                        id: f.id != null ? `ppid-${String(f.id)}` : `ppid-${i + 1}`,
-                        question: Array.isArray(f.questions) ? f.questions[0] : (f.question || ''),
-                        questions: f.questions || (f.question ? [f.question] : []),
-                        answer: f.answer || '',
-                        category: f.category || null,
-                        environment: 'ppid',
-                        isActive: f.isActive !== undefined ? f.isActive : true,
-                        priority: f.priority || 0,
-                        views: f.views || 0,
-                        metadata,
-                        createdAt: f.createdAt || now,
-                        updatedAt: f.updatedAt || now,
-                    });
+            let ppidRaw = null;
+            for (const p of ppidPathCandidates) {
+                try {
+                    ppidRaw = await fs_1.promises.readFile(p, 'utf-8');
+                    break;
+                }
+                catch (_) {
+                }
+            }
+            if (ppidRaw) {
+                const ppidJson = JSON.parse(ppidRaw);
+                if (Array.isArray(ppidJson)) {
+                    for (let i = 0; i < ppidJson.length; i++) {
+                        const f = ppidJson[i];
+                        const now = new Date().toISOString();
+                        const metadata = Array.isArray(f.links)
+                            ? f.links.map((l) => {
+                                const text = typeof l === 'string' ? l : (l && (l.text ?? l.title ?? l.name)) ?? '';
+                                const url = (l && (l.url ?? l.href)) ?? '';
+                                const questionRef = l && (l.question ?? null);
+                                const questionIndex = l && (typeof l.questionIndex !== 'undefined' ? Number(l.questionIndex) : undefined);
+                                const question = typeof questionIndex === 'number' && Array.isArray(f.questions)
+                                    ? f.questions[questionIndex] ?? questionRef
+                                    : questionRef ?? null;
+                                return { text, url, question };
+                            })
+                            : null;
+                        results.push({
+                            id: f.id != null ? `ppid-${String(f.id)}` : `ppid-${i + 1}`,
+                            question: Array.isArray(f.questions) ? f.questions[0] : (f.question || ''),
+                            questions: f.questions || (f.question ? [f.question] : []),
+                            answer: f.answer || '',
+                            category: f.category || null,
+                            environment: 'ppid',
+                            isActive: f.isActive !== undefined ? f.isActive : true,
+                            priority: f.priority || 0,
+                            views: f.views || 0,
+                            metadata,
+                            createdAt: f.createdAt || now,
+                            updatedAt: f.updatedAt || now,
+                        });
+                    }
                 }
             }
         }

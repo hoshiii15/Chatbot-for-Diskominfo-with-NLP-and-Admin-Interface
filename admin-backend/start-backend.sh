@@ -13,10 +13,12 @@ try_node() {
 
 # Candidate paths in order of preference
 CANDIDATES="\
-$BASEDIR/dist/app.js \
-$BASEDIR/dist/simple-app.js \
+# Prefer nested compiled path produced by tsc (ensures latest source changes are used),
+# then fall back to root dist files for older builds.
 $BASEDIR/dist/admin-backend/src/app.js \
 $BASEDIR/dist/admin-backend/src/simple-app.js \
+$BASEDIR/dist/app.js \
+$BASEDIR/dist/simple-app.js \
 "
 
 for p in $CANDIDATES; do

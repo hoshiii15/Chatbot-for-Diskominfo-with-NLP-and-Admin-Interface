@@ -1,14 +1,10 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const logger_1 = require("../utils/logger");
 const models_1 = require("../models");
+const faqController_1 = require("../controllers/faqController");
 const sequelize_1 = require("sequelize");
-const fs_1 = require("fs");
-const path_1 = __importDefault(require("path"));
 const router = (0, express_1.Router)();
 router.get('/stats', async (req, res) => {
     try {
@@ -18,23 +14,9 @@ router.get('/stats', async (req, res) => {
             models_1.Session.count(),
             models_1.User.count()
         ]);
-        const repoRoot = path_1.default.resolve(__dirname, '../../../');
-        const stuntingPath = path_1.default.join(repoRoot, 'python-bot', 'data', 'faq_stunting.json');
-        const ppidPath = path_1.default.join(repoRoot, 'python-bot', 'data', 'faq_ppid.json');
         let fileFaqs = [];
         try {
-            const stRaw = await fs_1.promises.readFile(stuntingPath, 'utf-8');
-            const stJson = JSON.parse(stRaw);
-            if (stJson && Array.isArray(stJson.faqs))
-                fileFaqs = fileFaqs.concat(stJson.faqs);
-        }
-        catch (e) {
-        }
-        try {
-            const pRaw = await fs_1.promises.readFile(ppidPath, 'utf-8');
-            const pJson = JSON.parse(pRaw);
-            if (Array.isArray(pJson))
-                fileFaqs = fileFaqs.concat(pJson);
+            fileFaqs = await (0, faqController_1.loadFaqsFromFiles)();
         }
         catch (e) {
         }
@@ -69,6 +51,7 @@ router.get('/stats', async (req, res) => {
             totalSessions,
             totalUsers
         };
+        logger_1.logger.info('Dashboard stats computed', { stats, fileFaqsCount: fileFaqs.length, dbCounts: { totalQuestions, totalFAQs, totalSessions, totalUsers } });
         res.json({
             success: true,
             data: stats,

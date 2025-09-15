@@ -7,10 +7,12 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 interface DashboardStats {
-  totalQuestions: number
-  totalFAQs: number
-  activeUsers: number
-  systemHealth: string
+  totalQuestions?: number
+  totalFAQs?: number
+  activeUsers?: number
+  systemHealth?: string
+  totalSessions?: number
+  totalUsers?: number
 }
 
 interface SystemStatus {
@@ -108,7 +110,7 @@ export default function DashboardPage() {
           return
         }
 
-        const response = await fetch('http://localhost:3001/api/dashboard/stats', {
+  const response = await fetch('/api/dashboard/stats', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -130,9 +132,9 @@ export default function DashboardPage() {
       }
     }
 
-    const fetchSystemHealth = async () => {
+        const fetchSystemHealth = async () => {
       try {
-        const healthResponse = await fetch('http://localhost:3001/api/health')
+        const healthResponse = await fetch('/api/health')
         if (healthResponse.ok) {
           const healthResult = await healthResponse.json()
           setSystemStatus(prev => ({
@@ -147,8 +149,30 @@ export default function DashboardPage() {
       }
     }
 
+    const fetchAnalyticsTotals = async () => {
+      try {
+        const token = localStorage.getItem('authToken')
+        if (!token) return
+
+        const resp = await fetch('/api/analytics?environment=all&days=30', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+
+        if (resp.ok) {
+          const json = await resp.json()
+          const analytics = json.data
+          setStats(prev => ({ ...(prev || {}), totalQuestions: analytics?.total_questions || 0, totalSessions: analytics?.total_sessions || 0 }))
+        } else if (resp.status === 401) {
+          localStorage.removeItem('authToken')
+          window.location.href = '/login'
+        }
+      } catch (error) {
+        console.error('Failed to fetch analytics totals:', error)
+      }
+    }
+
     const loadData = async () => {
-      await Promise.all([fetchStats(), fetchSystemHealth()])
+      await Promise.all([fetchStats(), fetchSystemHealth(), fetchAnalyticsTotals()])
       setIsLoading(false)
     }
 
@@ -252,7 +276,7 @@ export default function DashboardPage() {
             <Card className="backdrop-blur-sm bg-white/80 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-gray-600 flex items-center justify-between">
-                  Session Counted
+                  Total Sessions
                   <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
@@ -260,7 +284,7 @@ export default function DashboardPage() {
                   </div>
                 </CardTitle>
                 <CardDescription className="text-3xl font-bold text-gray-900">
-                  {stats?.activeUsers || 0}
+                  {stats?.totalSessions || 0}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -372,12 +396,12 @@ export default function DashboardPage() {
 
           {/* Attribution */}
           <div className="text-center mt-12 pb-6">
-            <p className="text-sm text-gray-500 flex items-center justify-center gap-1">
-              Made with 
-              <span className="text-red-500 animate-pulse">❤️</span> 
-              by 
-              <span className="font-semibold text-gray-700">Hosea Raka</span>
-            </p>
+              <p className="text-sm text-gray-500 flex items-center justify-center gap-1">
+                Made with
+                <span className="text-red-500 animate-pulse">❤️</span>
+                for
+                <span className="font-semibold text-gray-700">diskomindo sukoharjo</span>
+              </p>
           </div>
         </div>
       </div>

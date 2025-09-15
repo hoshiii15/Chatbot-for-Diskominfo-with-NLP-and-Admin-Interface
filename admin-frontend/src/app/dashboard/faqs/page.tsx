@@ -38,7 +38,7 @@ export default function FAQsPage() {
   const fetchFAQs = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('http://localhost:3001/api/faq')
+  const response = await fetch('/api/faq')
       if (response.ok) {
         const data = await response.json()
         setFaqs(data.data || [])
@@ -92,7 +92,7 @@ export default function FAQsPage() {
 
     setIsMutating(true)
     try {
-      const res = await fetch(`http://localhost:3001/api/faq/${encodeURIComponent(faq.id)}`, {
+  const res = await fetch(`/api/faq/${encodeURIComponent(faq.id)}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       })
@@ -359,10 +359,10 @@ export default function FAQsPage() {
           {/* Attribution */}
           <div className="text-center mt-12 pb-6">
             <p className="text-sm text-gray-500 flex items-center justify-center gap-1">
-              Made with 
-              <span className="text-red-500 animate-pulse">❤️</span> 
-              by 
-              <span className="font-semibold text-gray-700">Hosea Raka</span>
+              Made with
+              <span className="text-red-500 animate-pulse">❤️</span>
+              for
+              <span className="font-semibold text-gray-700">diskomindo sukoharjo</span>
             </p>
           </div>
         </div>
@@ -516,14 +516,14 @@ export default function FAQsPage() {
                     setIsMutating(true)
                     try {
                       if (editingFaq) {
-                        const res = await fetch(`http://localhost:3001/api/faq/${encodeURIComponent(editingFaq.id)}`, { 
+                                          const res = await fetch(`/api/faq/${encodeURIComponent(editingFaq.id)}`, { 
                           method: 'PUT', 
                           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, 
                           body: JSON.stringify(payload) 
                         })
                         if (!res.ok) throw new Error('Edit failed')
                       } else {
-                        const res = await fetch('http://localhost:3001/api/faq', { 
+                        const res = await fetch('/api/faq', { 
                           method: 'POST', 
                           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, 
                           body: JSON.stringify({ ...payload, environment: formState.environment }) 

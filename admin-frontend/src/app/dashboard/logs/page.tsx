@@ -30,7 +30,7 @@ export default function ChatLogsPage() {
       try {
         const token = localStorage.getItem('authToken')
         const response = await fetch(
-          `http://localhost:3001/api/logs?page=${currentPage}&limit=20&environment=${selectedEnv}`,
+          `/api/logs?page=${currentPage}&limit=20&environment=${selectedEnv}`,
           {
             headers: token ? { Authorization: `Bearer ${token}` } : undefined,
           }
@@ -275,10 +275,7 @@ export default function ChatLogsPage() {
               <span className="text-red-500 animate-pulse inline-block transform hover:scale-110 transition-transform duration-200">
                 ❤️
               </span>{' '}
-              by{' '}
-              <span className="font-semibold text-gray-900">
-                Hosea Raka
-              </span>
+              for diskomindo sukoharjo
             </p>
           </div>
         </div>

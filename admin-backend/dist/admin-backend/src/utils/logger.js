@@ -7,6 +7,7 @@ exports.expressLogger = exports.logger = void 0;
 const winston_1 = __importDefault(require("winston"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
+const util_1 = __importDefault(require("util"));
 const logsDir = path_1.default.join(__dirname, '../../logs');
 if (!fs_1.default.existsSync(logsDir)) {
     fs_1.default.mkdirSync(logsDir, { recursive: true });
@@ -14,7 +15,12 @@ if (!fs_1.default.existsSync(logsDir)) {
 const consoleFormat = winston_1.default.format.combine(winston_1.default.format.colorize(), winston_1.default.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), winston_1.default.format.printf(({ timestamp, level, message, ...meta }) => {
     let msg = `${timestamp} [${level}]: ${message}`;
     if (Object.keys(meta).length > 0) {
-        msg += ` ${JSON.stringify(meta)}`;
+        try {
+            msg += ` ${util_1.default.inspect(meta, { depth: 4, colors: false, compact: true })}`;
+        }
+        catch (e) {
+            msg += ` ${String(meta)}`;
+        }
     }
     return msg;
 }));

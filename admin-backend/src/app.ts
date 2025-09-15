@@ -154,7 +154,11 @@ class App {
     this.app.use('/api/logs', authMiddleware, logsRoutes);
     this.app.use('/api/analytics', authMiddleware, analyticsRoutes);
     this.app.use('/api/websites', authMiddleware, websiteRoutes);
-    this.app.use('/api/dashboard', authMiddleware, dashboardRoutes);
+  // Dashboard stats are read-only and should be available to the frontend
+  // even when Authorization headers are not forwarded by proxies. Mount
+  // the dashboard routes without the auth middleware so the client can
+  // fetch stats reliably in demo/combined deployments.
+  this.app.use('/api/dashboard', dashboardRoutes);
 
     // Root endpoint
     this.app.get('/', (req, res) => {
