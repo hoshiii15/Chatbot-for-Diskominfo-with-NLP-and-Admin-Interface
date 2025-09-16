@@ -184,7 +184,7 @@ export default function FAQsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-blue-900 dark:to-indigo-900 flex items-center justify-center relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-indigo-600/20 rounded-full blur-3xl"></div>
@@ -197,8 +197,8 @@ export default function FAQsPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
           </div>
-          <div className="text-lg font-medium text-gray-700">Loading FAQs...</div>
-          <div className="text-sm text-gray-500 mt-2">Please wait while we fetch your data</div>
+          <div className="text-lg font-medium text-foreground">Loading FAQs...</div>
+          <div className="text-sm text-muted-foreground mt-2">Please wait while we fetch your data</div>
         </div>
       </div>
     )
@@ -217,10 +217,10 @@ export default function FAQsPage() {
 
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-        <div className="bg-white/95 rounded-2xl shadow-2xl w-[90%] max-w-md p-8 max-h-[90vh] overflow-y-auto border border-gray-200">
+        <div className="bg-card/95 rounded-2xl shadow-2xl w-[90%] max-w-md p-8 max-h-[90vh] overflow-y-auto border border-border">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-2xl font-bold text-gray-900">Manage Categories</h3>
-            <Button variant="outline" onClick={() => setIsCategoryModalOpen(false)} className="rounded-full w-10 h-10 p-0 border-gray-300 hover:border-gray-400">
+            <h3 className="text-2xl font-bold text-foreground">Manage Categories</h3>
+            <Button variant="outline" onClick={() => setIsCategoryModalOpen(false)} className="rounded-full w-10 h-10 p-0 border-border hover:border-border/80">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -228,11 +228,11 @@ export default function FAQsPage() {
           </div>
           <div className="space-y-4">
                 <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Add Category</label>
+              <label className="block text-sm font-semibold text-muted-foreground mb-2">Add Category</label>
               <div className="flex gap-2">
                 <input
                   ref={addInputRef}
-                  className="flex-1 border border-gray-300 p-2 rounded-lg"
+                  className="flex-1 bg-background border border-border p-2 rounded-lg text-foreground"
                   value={newCategory}
                       onChange={e => setNewCategory(e.target.value)}
                   placeholder="Category name"
@@ -396,7 +396,7 @@ export default function FAQsPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-blue-900 dark:to-indigo-900 relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/10 to-indigo-600/10 rounded-full blur-3xl"></div>
@@ -416,16 +416,16 @@ export default function FAQsPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                    <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
                       FAQ Management
                     </h1>
                   </div>
-                  <p className="text-gray-600 text-lg">Manage frequently asked questions</p>
+                  <p className="text-muted-foreground text-lg">Manage frequently asked questions</p>
                 </div>
                 <Link href="/dashboard">
                   <Button 
                     variant="outline" 
-                    className="bg-white/80 backdrop-blur-sm border-gray-200 hover:bg-white hover:border-gray-300 transition-all duration-200 shadow-lg"
+                    className="bg-card/80 dark:bg-card/60 backdrop-blur-sm border-border/20 hover:bg-accent/50 transition-all duration-200 shadow-lg"
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -438,19 +438,19 @@ export default function FAQsPage() {
 
             {/* Controls */}
             <div className="mb-8">
-              <Card className="backdrop-blur-sm bg-white/80 border-0 shadow-xl">
+              <Card className="backdrop-blur-sm bg-card/80 dark:bg-card/60 border-0 shadow-xl">
                 <CardContent className="p-6">
                   <div className="flex gap-4 items-center flex-wrap">
                     <div className="flex items-center gap-2">
-                      <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z" />
                       </svg>
-                      <label className="text-sm font-medium text-gray-700">Filter by Environment:</label>
+                      <label className="text-sm font-medium text-foreground">Filter by Environment:</label>
                     </div>
                     <select 
                       value={selectedEnvironment} 
                       onChange={(e) => setSelectedEnvironment(e.target.value as any)}
-                      className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/80 backdrop-blur-sm transition-all duration-200"
+                      className="px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-background/80 backdrop-blur-sm transition-all duration-200"
                     >
                       <option value="all">All Environments</option>
                       <option value="stunting">Stunting</option>
@@ -479,7 +479,7 @@ export default function FAQsPage() {
                     >
                       Manage Category
                     </Button>
-                    <div className="ml-auto text-sm text-gray-600 bg-gray-100/50 px-3 py-2 rounded-lg">
+                    <div className="ml-auto text-sm text-muted-foreground bg-accent/50 px-3 py-2 rounded-lg">
                       <span className="font-medium">{filteredFaqs.length}</span> FAQ{filteredFaqs.length !== 1 ? 's' : ''} found
                     </div>
                   </div>
@@ -490,15 +490,15 @@ export default function FAQsPage() {
             {/* FAQ List */}
             <div className="grid gap-6">
               {filteredFaqs.length === 0 ? (
-                <Card className="backdrop-blur-sm bg-white/80 border-0 shadow-xl">
+                <Card className="backdrop-blur-sm bg-card/80 dark:bg-card/60 border-0 shadow-xl">
                   <CardContent className="p-12 text-center">
                     <div className="w-16 h-16 bg-gradient-to-r from-gray-400 to-gray-500 rounded-xl flex items-center justify-center mx-auto mb-4">
                       <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">No FAQs Found</h3>
-                    <p className="text-gray-500 mb-4">
+                    <h3 className="text-lg font-semibold text-foreground mb-2">No FAQs Found</h3>
+                    <p className="text-muted-foreground mb-4">
                       {selectedEnvironment === 'all' 
                         ? "You haven't created any FAQs yet. Click 'Add New FAQ' to get started." 
                         : `No FAQs found for ${selectedEnvironment.toUpperCase()} environment.`
@@ -514,23 +514,23 @@ export default function FAQsPage() {
                 </Card>
               ) : (
                 filteredFaqs.map((faq) => (
-                  <Card key={faq.id} className="backdrop-blur-sm bg-white/80 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
+                  <Card key={faq.id} className="backdrop-blur-sm bg-card/80 dark:bg-card/60 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
                     <CardHeader className="pb-4">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <CardTitle className="text-xl font-semibold text-gray-800 group-hover:text-blue-700 transition-colors duration-200 mb-3">
+                          <CardTitle className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-200 mb-3">
                             {faq.question}
                           </CardTitle>
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${
                               faq.environment === 'stunting' 
-                                ? 'bg-blue-100 text-blue-800 border-blue-200' 
-                                : 'bg-green-100 text-green-800 border-green-200'
+                                ? 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/50 dark:text-blue-300 dark:border-blue-800' 
+                                : 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/50 dark:text-green-300 dark:border-green-800'
                             }`}>
                               {faq.environment.toUpperCase()}
                             </span>
                             {faq.category && (
-                              <span className="px-3 py-1 bg-gray-100 text-gray-800 border border-gray-200 rounded-full text-xs font-medium">
+                              <span className="px-3 py-1 bg-accent text-accent-foreground border border-border rounded-full text-xs font-medium">
                                 {faq.category}
                               </span>
                             )}
@@ -542,7 +542,7 @@ export default function FAQsPage() {
                             variant="outline" 
                             onClick={() => handleEdit(faq)} 
                             disabled={isMutating}
-                            className="bg-white/80 border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200"
+                            className="bg-card/80 border-blue-300 text-blue-600 hover:bg-accent/50 hover:border-blue-400 dark:bg-card/60 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/50 transition-all duration-200"
                           >
                             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -553,7 +553,7 @@ export default function FAQsPage() {
                             variant="outline" 
                             onClick={() => handleDelete(faq)} 
                             disabled={isMutating}
-                            className="bg-white/80 border-red-200 text-red-700 hover:bg-red-50 hover:border-red-300 transition-all duration-200"
+                            className="bg-card/80 border-red-300 text-red-600 hover:bg-accent/50 hover:border-red-400 dark:bg-card/60 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/50 transition-all duration-200"
                           >
                             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -564,12 +564,12 @@ export default function FAQsPage() {
                       </div>
                     </CardHeader>
                     <CardContent className="pt-0">
-                      <div className="bg-gray-50/50 rounded-lg p-4 mb-4 border border-gray-100">
-                        <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
+                      <div className="bg-accent/50 rounded-lg p-4 mb-4 border border-border/50">
+                        <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
                       </div>
                       {faq.metadata && Array.isArray((faq as any).metadata) && (faq as any).metadata.length > 0 && (
-                        <div className="mb-4 bg-blue-50/50 rounded-lg p-4 border border-blue-100">
-                          <h4 className="text-sm font-semibold text-blue-800 mb-3 flex items-center gap-2">
+                        <div className="mb-4 bg-blue-900/20 rounded-lg p-4 border border-blue-800/30">
+                          <h4 className="text-sm font-semibold text-blue-400 mb-3 flex items-center gap-2">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                             </svg>
@@ -577,14 +577,14 @@ export default function FAQsPage() {
                           </h4>
                           <ul className="space-y-2">
                             {(faq as any).metadata.map((m: any, idx: number) => (
-                              <li key={idx} className="text-sm text-gray-700 flex items-start gap-2">
+                              <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
                                 <svg className="w-3 h-3 mt-1 text-blue-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                   <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                                 </svg>
                                 <div>
-                                  {m.question && <strong className="text-gray-800 mr-2">(Q: {m.question})</strong>}
+                                  {m.question && <strong className="text-foreground mr-2">(Q: {m.question})</strong>}
                                   {m.url ? (
-                                    <a className="text-blue-600 hover:text-blue-800 underline hover:no-underline transition-all duration-200" href={m.url} target="_blank" rel="noreferrer">
+                                    <a className="text-blue-500 hover:text-blue-400 underline hover:no-underline transition-all duration-200" href={m.url} target="_blank" rel="noreferrer">
                                       {m.text || m.url}
                                     </a>
                                   ) : (
@@ -596,7 +596,7 @@ export default function FAQsPage() {
                           </ul>
                         </div>
                       )}
-                      <div className="flex items-center justify-between text-sm text-gray-500 pt-3 border-t border-gray-100">
+                      <div className="flex items-center justify-between text-sm text-muted-foreground pt-3 border-t border-border/50">
                         <span className="flex items-center gap-1">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -612,11 +612,11 @@ export default function FAQsPage() {
 
             {/* Attribution */}
             <div className="text-center mt-12 pb-6">
-              <p className="text-sm text-gray-500 flex items-center justify-center gap-1">
+              <p className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                 Made with
                 <span className="text-red-500 animate-pulse">❤️</span>
                 for
-                <span className="font-semibold text-gray-700">diskominfo sukoharjo</span>
+                <span className="font-semibold text-foreground">diskominfo sukoharjo</span>
               </p>
             </div>
           </div>
@@ -625,9 +625,9 @@ export default function FAQsPage() {
         {/* Enhanced Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl w-[90%] max-w-4xl p-8 max-h-[90vh] overflow-y-auto border border-gray-200">
+            <div className="bg-card/95 backdrop-blur-sm rounded-2xl shadow-2xl w-[90%] max-w-4xl p-8 max-h-[90vh] overflow-y-auto border border-border">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent flex items-center gap-2">
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent flex items-center gap-2">
                   <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -638,7 +638,7 @@ export default function FAQsPage() {
                 <Button 
                   variant="outline" 
                   onClick={() => { setIsModalOpen(false); setEditingFaq(null); }}
-                  className="rounded-full w-10 h-10 p-0 border-gray-300 hover:border-gray-400"
+                  className="rounded-full w-10 h-10 p-0 border-border hover:border-border/80"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -649,21 +649,21 @@ export default function FAQsPage() {
               <div className="grid gap-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Environment</label>
+                    <label className="block text-sm font-semibold text-muted-foreground mb-2">Environment</label>
                     <select 
                       value={formState.environment} 
                       onChange={(e) => setFormState({...formState, environment: e.target.value as 'stunting' | 'ppid'})} 
-                      className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/80 backdrop-blur-sm transition-all duration-200"
+                      className="w-full border border-border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-background/80 backdrop-blur-sm transition-all duration-200"
                     >
                       <option value="stunting">Stunting</option>
                       <option value="ppid">PPID</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Category</label>
+                    <label className="block text-sm font-semibold text-muted-foreground mb-2">Category</label>
                     {categories.length > 0 && !categoriesFetchFailed ? (
                       <select
-                        className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/80 backdrop-blur-sm transition-all duration-200"
+                        className="w-full border border-border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-background/80 backdrop-blur-sm transition-all duration-200"
                         value={formState.category}
                         onChange={(e) => setFormState({ ...formState, category: e.target.value })}
                       >
@@ -678,7 +678,7 @@ export default function FAQsPage() {
                           placeholder="Masukkan kategori (backend unavailable)"
                           value={formState.category}
                           onChange={(e) => setFormState({ ...formState, category: e.target.value })}
-                          className="flex-1 border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/80"
+                          className="flex-1 border border-border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background/80"
                         />
                         <Button variant="outline" onClick={async () => {
                           // quick attempt to refresh categories
@@ -690,9 +690,9 @@ export default function FAQsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Questions (one per line)</label>
+                    <label className="block text-sm font-semibold text-muted-foreground mb-2">Questions (one per line)</label>
                     <textarea 
-                      className="w-full border border-gray-300 p-3 rounded-lg h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/80 backdrop-blur-sm transition-all duration-200 resize-none" 
+                      className="w-full border border-border p-3 rounded-lg h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-background/80 backdrop-blur-sm transition-all duration-200 resize-none" 
                       value={formState.questionsText} 
                       onChange={(e) => setFormState({...formState, questionsText: e.target.value})}
                       placeholder="Enter each question on a new line..."
@@ -700,9 +700,9 @@ export default function FAQsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Answer</label>
+                    <label className="block text-sm font-semibold text-muted-foreground mb-2">Answer</label>
                     <textarea 
-                      className="w-full border border-gray-300 p-3 rounded-lg h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/80 backdrop-blur-sm transition-all duration-200 resize-none" 
+                      className="w-full border border-border p-3 rounded-lg h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-background/80 backdrop-blur-sm transition-all duration-200 resize-none" 
                       value={formState.answer} 
                       onChange={(e) => setFormState({...formState, answer: e.target.value})}
                       placeholder="Enter the answer..."
@@ -710,12 +710,12 @@ export default function FAQsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">Related Links</label>
+                    <label className="block text-sm font-semibold text-muted-foreground mb-3">Related Links</label>
                     <div className="space-y-3">
                       {(formState.links || []).map((ln, i) => (
-                        <div key={i} className="flex gap-3 p-4 bg-gray-50/50 rounded-lg border border-gray-200">
+                        <div key={i} className="flex gap-3 p-4 bg-accent/50 rounded-lg border border-border">
                           <input 
-                            className="flex-1 border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200" 
+                            className="flex-1 border border-border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-background transition-all duration-200" 
                             value={ln.text} 
                             placeholder="Link text" 
                             onChange={(e) => {
@@ -725,7 +725,7 @@ export default function FAQsPage() {
                             }} 
                           />
                           <input 
-                            className="flex-1 border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200" 
+                            className="flex-1 border border-border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-background transition-all duration-200" 
                             value={ln.url} 
                             placeholder="https://..." 
                             onChange={(e) => {
@@ -741,7 +741,7 @@ export default function FAQsPage() {
                               copy.splice(i, 1); 
                               setFormState({ ...formState, links: copy }) 
                             }}
-                            className="border-red-200 text-red-700 hover:bg-red-50 hover:border-red-300"
+                            className="border-red-300 text-red-600 hover:bg-red-900/50 hover:border-red-400"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -752,7 +752,7 @@ export default function FAQsPage() {
                       <Button 
                         onClick={() => setFormState({ ...formState, links: [...(formState.links || []), { text: '', url: '' }] })}
                         variant="outline"
-                        className="w-full border-dashed border-2 border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-all duration-200"
+                        className="w-full border-dashed border-2 border-border hover:border-primary hover:bg-accent transition-all duration-200"
                       >
                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -762,11 +762,11 @@ export default function FAQsPage() {
                     </div>
                   </div>
 
-                  <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">
+                  <div className="flex justify-end gap-3 pt-6 border-t border-border">
                     <Button 
                       variant="outline" 
                       onClick={() => { setIsModalOpen(false); setEditingFaq(null); }}
-                      className="px-6 py-2 border-gray-300 hover:border-gray-400 transition-all duration-200"
+                      className="px-6 py-2 border-border hover:border-border/80 transition-all duration-200"
                     >
                       Cancel
                     </Button>
