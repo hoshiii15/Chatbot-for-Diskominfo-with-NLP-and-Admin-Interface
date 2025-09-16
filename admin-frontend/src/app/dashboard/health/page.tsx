@@ -50,6 +50,7 @@ export default function SystemHealthPage() {
   const [botLogsLoading, setBotLogsLoading] = useState(false)
   const [botLogsError, setBotLogsError] = useState<string | null>(null)
   const logContainerRef = useRef<HTMLDivElement | null>(null)
+  const [deletingOldLogs, setDeletingOldLogs] = useState(false)
 
   const fetchHealthStatus = async () => {
     setIsLoading(true)
@@ -751,7 +752,7 @@ export default function SystemHealthPage() {
                   Recent bot activity and system messages
                 </span>
               </div>
-              <div className="flex gap-3">
+                <div className="flex gap-3">
                 <Button
                   onClick={() => window.open('/api/health/logs?source=bot', '_blank')}
                   variant="outline"
@@ -761,6 +762,42 @@ export default function SystemHealthPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                   Open in New Tab
+                </Button>
+                <Button
+                  onClick={async () => {
+                    if (!confirm('Delete bot log entries older than 1 month? A backup will be created. Continue?')) return
+                    try {
+                      setDeletingOldLogs(true)
+                      const token = localStorage.getItem('authToken')
+                      const res = await fetch('/api/health/logs/deleteOlderThan', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                        },
+                        body: JSON.stringify({ days: 30 }),
+                      })
+                      if (res.ok) {
+                        const data = await res.json()
+                        window.alert(`Trimmed bot log: removed ${data.removed} lines. Backup: ${data.backup}`)
+                        // Refresh the displayed logs
+                        fetchBotLogs()
+                      } else {
+                        const txt = await res.text()
+                        console.error('Failed to trim bot log', txt)
+                        window.alert('Failed to trim bot log')
+                      }
+                    } catch (err) {
+                      console.error(err)
+                      window.alert('Failed to trim bot log')
+                    } finally {
+                      setDeletingOldLogs(false)
+                    }
+                  }}
+                  disabled={deletingOldLogs}
+                  className="text-xs border-red-400 text-red-700 bg-red-50 px-3 py-1"
+                >
+                  {deletingOldLogs ? 'Deleting...' : 'Delete >1 month'}
                 </Button>
                 <Button
                   onClick={() => setShowBotLogModal(false)}

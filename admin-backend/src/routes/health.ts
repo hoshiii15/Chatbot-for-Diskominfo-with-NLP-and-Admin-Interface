@@ -197,6 +197,73 @@ router.get('/logs', async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * POST /api/health/logs/deleteOlderThan
+ * Trim the bot log file by removing entries older than the provided number of days (default: 30)
+ * This endpoint will create a timestamped backup of the original log prior to truncation.
+ */
+router.post('/logs/deleteOlderThan', async (req: Request, res: Response) => {
+  try {
+    // optional body: days (number)
+    const days = Number(req.body?.days || req.query?.days || 30);
+    if (Number.isNaN(days) || days <= 0) {
+      return res.status(400).json({ success: false, error: 'Invalid days parameter' });
+    }
+
+    const botLogPath = getBotLogPath();
+    const stat = await fs.promises.stat(botLogPath).catch(() => null);
+    if (!stat) return res.status(404).json({ success: false, error: 'Bot log file not found' });
+
+    // Read file and split into lines
+    const content = await fs.promises.readFile(botLogPath, 'utf8');
+    const lines = content.split(/\r?\n/);
+
+    // Parse lines that start with a timestamp like `2025-09-16 07:36:40,123 - ...`
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - days);
+
+    const kept: string[] = [];
+    const removed: string[] = [];
+
+    const tsRegex = /^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3})/;
+    for (const line of lines) {
+      if (!line) continue;
+      const m = line.match(tsRegex);
+      if (!m) {
+        // if line doesn't have timestamp, conservatively keep it
+        kept.push(line);
+        continue;
+      }
+      const ts = m[1];
+      const parsed = new Date(ts.replace(',', '.'));
+      if (isNaN(parsed.getTime())) {
+        kept.push(line);
+      } else if (parsed >= cutoff) {
+        kept.push(line);
+      } else {
+        removed.push(line);
+      }
+    }
+
+    // Create backup
+    const backupDir = getBackupPath();
+    await fs.promises.mkdir(backupDir, { recursive: true }).catch(() => {});
+    const backupName = `bot.log.backup.${new Date().toISOString().replace(/[:.]/g, '-')}`;
+    const backupPath = path.join(backupDir, backupName);
+    await fs.promises.writeFile(backupPath, content, 'utf8');
+
+    // Write kept lines back to bot log (overwrite)
+    await fs.promises.writeFile(botLogPath, kept.join('\n') + '\n', 'utf8');
+
+    logger.info(`Trimmed bot log: kept ${kept.length} lines, removed ${removed.length} lines, backup created at ${backupPath}`);
+
+    res.json({ success: true, kept: kept.length, removed: removed.length, backup: backupPath, timestamp: new Date().toISOString() });
+  } catch (error) {
+    logger.error('Error trimming bot log:', error);
+    res.status(500).json({ success: false, error: error instanceof Error ? error.message : 'Failed to trim bot log' });
+  }
+});
+
 // Restart feature removed: restart requests are no longer supported via the admin API.
 
 // Settings (non-sensitive)

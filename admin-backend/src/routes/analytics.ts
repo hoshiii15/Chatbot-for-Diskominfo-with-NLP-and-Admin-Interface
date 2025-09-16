@@ -29,18 +29,22 @@ const router = Router();
  */
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const { startDate, endDate, environment } = req.query;
-    
-    const whereClause: any = {};
-    
+    // Coerce query params to string for safer typing
+    const startDate = typeof req.query.startDate === 'string' ? req.query.startDate : undefined
+    const endDate = typeof req.query.endDate === 'string' ? req.query.endDate : undefined
+    const environment = typeof req.query.environment === 'string' ? req.query.environment : undefined
+
+    const whereClause: any = {}
+
     if (startDate && endDate) {
+      // Analytics.date is stored as string YYYY-MM-DD in many places; use strings for date comparison when possible
       whereClause.date = {
-        [Op.between]: [new Date(startDate as string), new Date(endDate as string)]
-      };
+        [Op.between]: [startDate, endDate]
+      }
     }
-    
+
     if (environment && environment !== 'all') {
-      whereClause.environment = environment;
+      whereClause.environment = environment
     }
 
     const analytics = await Analytics.findAll({ where: whereClause, order: [['date', 'DESC']], limit: 100, raw: true });
@@ -49,8 +53,9 @@ router.get('/', async (req: Request, res: Response) => {
     const chatWhere: any = {};
     if (environment && environment !== 'all') chatWhere.environment = environment as string;
     if (startDate && endDate) {
+      // For ChatLog.createdAt use Date objects
       chatWhere.createdAt = {
-        [Op.between]: [new Date(startDate as string), new Date(endDate as string)]
+        [Op.between]: [new Date(startDate), new Date(endDate)]
       };
     }
 
@@ -62,7 +67,7 @@ router.get('/', async (req: Request, res: Response) => {
     if (environment && environment !== 'all') sessionWhere.environment = environment as string;
     if (startDate && endDate) {
       sessionWhere.startTime = {
-        [Op.between]: [new Date(startDate as string), new Date(endDate as string)]
+        [Op.between]: [new Date(startDate), new Date(endDate)]
       };
     }
     const totalSessions = await Session.count({ where: sessionWhere });
