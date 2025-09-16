@@ -398,5 +398,19 @@
       "peraturan komisi informasi"
     ],
     "category": "informasi"
+  },
+  {
+    "id": 16,
+    "questions": [
+      "test functional"
+    ],
+    "answer": "tes bisa fungsional",
+    "category": "umum",
+    "links": [
+      {
+        "text": "test",
+        "url": "https://test.com"
+      }
+    ]
   }
 ]
