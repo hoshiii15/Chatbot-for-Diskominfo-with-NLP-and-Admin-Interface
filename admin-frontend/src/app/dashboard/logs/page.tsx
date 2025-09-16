@@ -24,6 +24,11 @@ export default function ChatLogsPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedEnv, setSelectedEnv] = useState('all')
   const [totalPages, setTotalPages] = useState(1)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalRange, setModalRange] = useState<'1day'|'1week'|'1month'|'pickmonth'>('1day')
+  const [pickedMonth, setPickedMonth] = useState<string>('')
+  const [modalLogs, setModalLogs] = useState<ChatLog[] | null>(null)
+  const [isModalLoading, setIsModalLoading] = useState(false)
 
   useEffect(() => {
     const fetchLogs = async () => {
@@ -143,10 +148,146 @@ export default function ChatLogsPage() {
                   </svg>
                   Export Logs
                 </Button>
+                <Button
+                  onClick={() => setIsModalOpen(true)}
+                  className="ml-3 bg-white/90 border border-gray-200 text-gray-700 hover:bg-gray-50 transition-all duration-200"
+                >
+                  Manage Logs
+                </Button>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Modal for viewing/deleting logs */}
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+            <div className="bg-white rounded-2xl shadow-2xl w-[90%] max-w-3xl p-6 max-h-[85vh] overflow-y-auto">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold">Manage Chat Logs</h3>
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" onClick={() => { setIsModalOpen(false); setModalLogs(null); }} className="border-gray-200">Close</Button>
+                </div>
+              </div>
+
+              <div className="grid gap-4 mb-4">
+                <div className="flex items-center gap-3">
+                  <label className="text-sm font-medium">Range:</label>
+                  <select value={modalRange} onChange={(e) => setModalRange(e.target.value as any)} className="px-3 py-2 border rounded">
+                    <option value="1day">Last 1 day</option>
+                    <option value="1week">Last 1 week</option>
+                    <option value="1month">Last 1 month</option>
+                    <option value="pickmonth">Pick month</option>
+                  </select>
+                  {modalRange === 'pickmonth' && (
+                    <input type="month" value={pickedMonth} onChange={(e) => setPickedMonth(e.target.value)} className="ml-3 px-3 py-2 border rounded" />
+                  )}
+                  <Button onClick={async () => {
+                    // fetch logs for modal preview
+                    setIsModalLoading(true)
+                    try {
+                      const token = localStorage.getItem('authToken')
+                      const params = new URLSearchParams()
+                      params.set('range', modalRange)
+                      params.set('environment', selectedEnv)
+                      if (modalRange === 'pickmonth' && pickedMonth) params.set('month', pickedMonth)
+                      const res = await fetch(`/api/logs?preview=true&${params.toString()}`, { headers: token ? { Authorization: `Bearer ${token}` } : undefined })
+                      if (res.ok) {
+                        const data = await res.json()
+                        setModalLogs(data?.data?.logs || [])
+                      } else if (res.status === 401) {
+                        localStorage.removeItem('authToken')
+                        window.location.href = '/login'
+                        return
+                      } else {
+                        const txt = await res.text()
+                        console.error('Preview logs failed', txt)
+                        window.alert('Failed to preview logs')
+                      }
+                    } catch (err) {
+                      console.error(err)
+                      window.alert('Failed to preview logs')
+                    } finally {
+                      setIsModalLoading(false)
+                    }
+                  }} className="ml-2 bg-blue-600 text-white">Preview</Button>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Button onClick={async () => {
+                    if (!confirm('Are you sure you want to delete logs for the selected range? This cannot be undone.')) return
+                    try {
+                      const token = localStorage.getItem('authToken')
+                      const params = new URLSearchParams()
+                      params.set('range', modalRange)
+                      params.set('environment', selectedEnv)
+                      if (modalRange === 'pickmonth' && pickedMonth) params.set('month', pickedMonth)
+                      const res = await fetch(`/api/logs/delete?${params.toString()}`, { method: 'POST', headers: token ? { Authorization: `Bearer ${token}` } : undefined })
+                      if (res.ok) {
+                        window.alert('Logs deleted for selected range')
+                        // refresh main list
+                        setModalLogs(null)
+                        // reload page-level logs
+                        setCurrentPage(1)
+                        setSelectedEnv('all')
+                      } else {
+                        const txt = await res.text()
+                        console.error('Delete failed', txt)
+                        window.alert('Failed to delete logs')
+                      }
+                    } catch (err) {
+                      console.error(err)
+                      window.alert('Failed to delete logs')
+                    }
+                  }} className="bg-red-600 text-white">Delete Selected Range</Button>
+                  <Button onClick={async () => {
+                    if (!confirm('Delete ALL logs? This cannot be undone.')) return
+                    try {
+                      const token = localStorage.getItem('authToken')
+                      const res = await fetch(`/api/logs/deleteAll`, { method: 'POST', headers: token ? { Authorization: `Bearer ${token}` } : undefined })
+                      if (res.ok) {
+                        window.alert('All logs deleted')
+                        setModalLogs(null)
+                        setCurrentPage(1)
+                        setSelectedEnv('all')
+                      } else {
+                        const txt = await res.text()
+                        console.error('Delete all failed', txt)
+                        window.alert('Failed to delete all logs')
+                      }
+                    } catch (err) {
+                      console.error(err)
+                      window.alert('Failed to delete all logs')
+                    }
+                  }} className="bg-red-50 text-red-700 border border-red-200">Delete All Logs</Button>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="font-medium mb-3">Preview</h4>
+                {isModalLoading ? (
+                  <p>Loading...</p>
+                ) : modalLogs === null ? (
+                  <p className="text-sm text-gray-500">No preview loaded. Click Preview to fetch logs for the selected range.</p>
+                ) : modalLogs.length === 0 ? (
+                  <p className="text-sm text-gray-500">No logs found for selected range.</p>
+                ) : (
+                  <div className="space-y-4">
+                    {modalLogs.map(m => (
+                      <div key={m.id} className="p-3 border rounded bg-gray-50">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="text-sm font-medium max-w-[70%] break-words">{m.question}</div>
+                          <div className="text-xs text-gray-500">{new Date(m.createdAt).toLocaleString()}</div>
+                        </div>
+                        <div className="text-sm text-gray-700 whitespace-pre-wrap break-words max-h-48 overflow-auto">{sanitizeLogText(m.answer)}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Chat Logs */}
         <div className="space-y-6">
@@ -212,7 +353,7 @@ export default function ChatLogsPage() {
                         Answer:
                       </h4>
                       <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
-                        <p className="text-gray-700 leading-relaxed">{log.answer}</p>
+                        <p className="text-gray-700 leading-relaxed whitespace-pre-wrap break-words">{sanitizeLogText(log.answer)}</p>
                       </div>
                     </div>
                     <div className="flex items-center justify-between text-sm text-gray-500 pt-4 border-t border-gray-100">
@@ -283,6 +424,18 @@ export default function ChatLogsPage() {
       </div>
     </div>
   )
+}
+
+// Remove ANSI escape sequences and other non-printable control characters
+function sanitizeLogText(input: string | undefined | null) {
+  if (!input) return ''
+  // ANSI escape sequences regex
+  const ansi = /\x1B\[[0-?]*[ -\/]*[@-~]/g
+  // Remove ANSI sequences
+  let s = input.replace(ansi, '')
+  // Remove other control chars except common whitespace (tab, newline, carriage return)
+  s = s.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
+  return s
 }
 
 // CSV export helper

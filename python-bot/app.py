@@ -32,14 +32,23 @@ ADMIN_BACKEND_URL = "http://localhost:3001"
 # Configure logging: prefer stdout so container runtime captures logs.
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 root_logger = logging.getLogger()
-root_logger.setLevel(logging.ERROR)
+# Default to INFO so info/debug messages appear in local logs
+root_logger.setLevel(logging.INFO)
 
-# Always log to stdout/stderr only in production container
+# Stream handler for console output
 stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.ERROR)
+stream_handler.setLevel(logging.INFO)
 stream_handler.setFormatter(formatter)
+
+# File handler to append logs to python-bot/bot.log (useful for local development)
+log_file_path = os.path.join(os.path.dirname(__file__), 'bot.log')
+file_handler = logging.FileHandler(log_file_path, mode='a', encoding='utf-8')
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(formatter)
+
 root_logger.handlers = []
 root_logger.addHandler(stream_handler)
+root_logger.addHandler(file_handler)
 
 logger = logging.getLogger(__name__)
 

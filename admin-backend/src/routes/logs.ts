@@ -19,7 +19,11 @@ router.get('/', async (req: Request, res: Response) => {
       page = 1, 
       limit = 50,
       sessionId,
-      search 
+      search,
+      // new frontend-friendly params
+      preview,
+      range,
+      month
     } = req.query;
     
     const whereClause: any = {};
@@ -28,10 +32,43 @@ router.get('/', async (req: Request, res: Response) => {
       whereClause.environment = environment as string;
     }
     
+    // Support startDate/endDate if provided explicitly
     if (startDate && endDate) {
       whereClause.createdAt = {
         [Op.between]: [new Date(startDate as string), new Date(endDate as string)]
       };
+    }
+
+    // Support `range` param used by the frontend modal for quick selects
+    // range values: '1day', '1week', '1month', 'pickmonth'
+    if (!whereClause.createdAt && range) {
+      const now = new Date();
+      let start: Date | null = null;
+      let end = new Date();
+
+      if (range === '1day') {
+        start = new Date();
+        start.setDate(now.getDate() - 1);
+      } else if (range === '1week') {
+        start = new Date();
+        start.setDate(now.getDate() - 7);
+      } else if (range === '1month') {
+        start = new Date();
+        start.setMonth(now.getMonth() - 1);
+      } else if (range === 'pickmonth' && month) {
+        // month expected in YYYY-MM format
+        const [y, m] = (month as string).split('-').map(Number);
+        if (!Number.isNaN(y) && !Number.isNaN(m)) {
+          start = new Date(y, m - 1, 1);
+          end = new Date(y, m, 1);
+        }
+      }
+
+      if (start) {
+        whereClause.createdAt = {
+          [Op.between]: [start, end]
+        };
+      }
     }
     
     if (sessionId) {
@@ -132,3 +169,73 @@ router.get('/stats', async (req: Request, res: Response) => {
 });
 
 export default router;
+
+/**
+ * POST /api/logs/delete
+ * Delete chat logs by range (same params as GET range)
+ */
+router.post('/delete', requireEditor, async (req: Request, res: Response) => {
+  try {
+    const { range, month, startDate, endDate, environment } = req.body || req.query || {};
+
+    const whereClause: any = {};
+    if (environment && environment !== 'all') whereClause.environment = environment as string;
+
+    if (startDate && endDate) {
+      whereClause.createdAt = { [Op.between]: [new Date(startDate as string), new Date(endDate as string)] };
+    }
+
+    if (!whereClause.createdAt && range) {
+      const now = new Date();
+      let start: Date | null = null;
+      let end = new Date();
+
+      if (range === '1day') {
+        start = new Date();
+        start.setDate(now.getDate() - 1);
+      } else if (range === '1week') {
+        start = new Date();
+        start.setDate(now.getDate() - 7);
+      } else if (range === '1month') {
+        start = new Date();
+        start.setMonth(now.getMonth() - 1);
+      } else if (range === 'pickmonth' && month) {
+        const [y, m] = (month as string).split('-').map(Number);
+        if (!Number.isNaN(y) && !Number.isNaN(m)) {
+          start = new Date(y, m - 1, 1);
+          end = new Date(y, m, 1);
+        }
+      }
+
+      if (start) {
+        whereClause.createdAt = { [Op.between]: [start, end] };
+      }
+    }
+
+    // If no createdAt filter provided, avoid accidental full-delete; require explicit flag in body
+    if (!whereClause.createdAt) {
+      return res.status(400).json({ success: false, error: 'No range specified for delete' });
+    }
+
+    const deleted = await ChatLog.destroy({ where: whereClause });
+
+    res.json({ success: true, deleted, timestamp: new Date().toISOString() });
+  } catch (error) {
+    logger.error('Error deleting logs:', error);
+    res.status(500).json({ success: false, error: error instanceof Error ? error.message : 'Failed to delete logs' });
+  }
+});
+
+/**
+ * POST /api/logs/deleteAll
+ * Completely remove all chat logs (protected)
+ */
+router.post('/deleteAll', requireEditor, async (req: Request, res: Response) => {
+  try {
+    const deleted = await ChatLog.destroy({ where: {} });
+    res.json({ success: true, deleted, timestamp: new Date().toISOString() });
+  } catch (error) {
+    logger.error('Error deleting all logs:', error);
+    res.status(500).json({ success: false, error: error instanceof Error ? error.message : 'Failed to delete all logs' });
+  }
+});

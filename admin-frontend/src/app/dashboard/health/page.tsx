@@ -48,6 +48,7 @@ export default function SystemHealthPage() {
   const [showBotLogModal, setShowBotLogModal] = useState(false)
   const [botLogs, setBotLogs] = useState<string>('')
   const [botLogsLoading, setBotLogsLoading] = useState(false)
+  const [botLogsError, setBotLogsError] = useState<string | null>(null)
 
   const fetchHealthStatus = async () => {
     setIsLoading(true)
@@ -125,6 +126,7 @@ export default function SystemHealthPage() {
 
   const fetchBotLogs = async () => {
     setBotLogsLoading(true)
+  setBotLogsError(null)
     try {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 10000)
@@ -141,14 +143,17 @@ export default function SystemHealthPage() {
       if (response.ok) {
         const logText = await response.text()
         setBotLogs(logText)
+        setBotLogsError(null)
       } else {
         console.warn('Failed to fetch bot logs:', response.status)
-        setBotLogs('Failed to load bot logs')
+        setBotLogs('')
+        setBotLogsError('Failed to load bot logs')
       }
     } catch (error) {
       const err = error as Error
       console.warn('Bot logs fetch error:', err.message || 'Unknown error')
-      setBotLogs('Bot logs service unavailable')
+      setBotLogs('')
+      setBotLogsError('Bot logs service unavailable')
     } finally {
       setBotLogsLoading(false)
     }
@@ -702,7 +707,7 @@ export default function SystemHealthPage() {
                       <p className="text-gray-600">Loading bot logs...</p>
                     </div>
                   </div>
-                ) : botLogs.includes('unavailable') || botLogs.includes('Failed') ? (
+                ) : botLogsError ? (
                   <div className="flex items-center justify-center h-full">
                     <div className="text-center">
                       <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -710,15 +715,13 @@ export default function SystemHealthPage() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.99-.833-2.732 0L2.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                         </svg>
                       </div>
-                      <p className="text-red-600 font-medium">{botLogs}</p>
+                      <p className="text-red-600 font-medium">{botLogsError}</p>
                       <p className="text-gray-500 text-sm mt-2">Unable to retrieve bot logs</p>
                     </div>
                   </div>
                 ) : (
                   <div className="h-full overflow-y-auto bg-gray-900 text-green-400 p-4 font-mono text-sm">
-                    <pre className="whitespace-pre-wrap break-words leading-relaxed">
-                      {botLogs || 'No logs available'}
-                    </pre>
+                    <pre className="whitespace-pre-wrap break-words leading-relaxed">{sanitizeLogText(botLogs) || 'No logs available'}</pre>
                   </div>
                 )}
               </div>
@@ -758,4 +761,16 @@ export default function SystemHealthPage() {
       )}
     </div>
   )
+}
+
+// Remove ANSI escape sequences and other non-printable control characters
+function sanitizeLogText(input: string | undefined | null) {
+  if (!input) return ''
+  // ANSI escape sequences regex
+  const ansi = /\x1B\[[0-?]*[ -\/]*[@-~]/g
+  // Remove ANSI sequences
+  let s = input.replace(ansi, '')
+  // Remove other control chars except common whitespace (tab, newline, carriage return)
+  s = s.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
+  return s
 }
