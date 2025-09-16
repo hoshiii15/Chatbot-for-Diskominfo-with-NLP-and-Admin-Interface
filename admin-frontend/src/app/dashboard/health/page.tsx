@@ -502,7 +502,7 @@ export default function SystemHealthPage() {
                 <span className="text-red-500 animate-pulse inline-block transform hover:scale-110 transition-transform duration-200">
                   ❤️
                 </span>{' '}
-                for diskomindo sukoharjo
+                for diskominfo sukoharjo
               </p>
             </div>
           </div>

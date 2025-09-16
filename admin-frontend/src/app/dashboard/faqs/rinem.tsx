@@ -349,7 +349,7 @@ export default function FAQsPage() {
               Made with
               <span className="text-red-500 animate-pulse">❤️</span>
               for
-              <span className="font-semibold text-gray-700">diskomindo sukoharjo</span>
+              <span className="font-semibold text-gray-700">diskominfo sukoharjo</span>
             </p>
           </div>
         </div>
