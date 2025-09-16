@@ -40,6 +40,7 @@ export default function AnalyticsPage() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [selectedEnv, setSelectedEnv] = useState<string>('all')
+  const [lowConfidenceFilter, setLowConfidenceFilter] = useState<string>('all')
 
   useEffect(() => {
     let mounted = true
@@ -50,7 +51,7 @@ export default function AnalyticsPage() {
           window.location.href = '/login'
           return
         }
-  const response = await fetch(`/api/analytics?environment=${selectedEnv}&days=30`, {
+  const response = await fetch(`/api/analytics?environment=${selectedEnv}&days=30&lowConfidence=${lowConfidenceFilter}`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         if (response.ok) {
@@ -80,7 +81,7 @@ export default function AnalyticsPage() {
       mounted = false
       clearInterval(id)
     }
-  }, [selectedEnv])
+  }, [selectedEnv, lowConfidenceFilter])
 
   if (isLoading) {
     return (
@@ -153,6 +154,19 @@ export default function AnalyticsPage() {
               <option value="stunting">Stunting</option>
               <option value="ppid">PPID</option>
             </select>
+
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Confidence Filter</label>
+              <select
+                value={lowConfidenceFilter}
+                onChange={(e) => setLowConfidenceFilter(e.target.value)}
+                className="w-full max-w-xs px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white transition-all duration-200"
+              >
+                <option value="all">All Confidence</option>
+                <option value="low">Low (&lt;50%)</option>
+                <option value="high">High (≥50%)</option>
+              </select>
+            </div>
           </div>
         </div>
 

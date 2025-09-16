@@ -34,7 +34,7 @@ router.get('/', async (req: Request, res: Response) => {
     const endDate = typeof req.query.endDate === 'string' ? req.query.endDate : undefined
     const environment = typeof req.query.environment === 'string' ? req.query.environment : undefined
 
-    const whereClause: any = {}
+  const whereClause: any = {}
 
     if (startDate && endDate) {
       // Analytics.date is stored as string YYYY-MM-DD in many places; use strings for date comparison when possible
@@ -59,11 +59,19 @@ router.get('/', async (req: Request, res: Response) => {
       };
     }
 
+    // Support lowConfidence filter: 'all' (default), 'low' (confidence < 0.5), 'high' (confidence >= 0.5)
+    const lowConfidenceParam = typeof req.query.lowConfidence === 'string' ? req.query.lowConfidence : 'all';
+    if (lowConfidenceParam === 'low') {
+      chatWhere.confidence = { [Op.lt]: 0.5 };
+    } else if (lowConfidenceParam === 'high') {
+      chatWhere.confidence = { [Op.gte]: 0.5 };
+    }
+
     // total questions (interactions)
     const totalInteractions = await ChatLog.count({ where: chatWhere });
 
     // total sessions (count of sessions)
-    const sessionWhere: any = {};
+  const sessionWhere: any = {};
     if (environment && environment !== 'all') sessionWhere.environment = environment as string;
     if (startDate && endDate) {
       sessionWhere.startTime = {
@@ -172,16 +180,20 @@ router.get('/', async (req: Request, res: Response) => {
  */
 router.get('/overview', async (req: Request, res: Response) => {
   try {
-    const { environment } = req.query;
+  const { environment } = req.query;
     
-    const environmentFilter = environment && environment !== 'all' ? { environment: environment as string } : {};
+  const environmentFilter = environment && environment !== 'all' ? { environment: environment as string } : {};
+  const lowConfidenceParam = typeof req.query.lowConfidence === 'string' ? req.query.lowConfidence : 'all';
     
     // Get counts
     const totalUsers = await Session.count();
     
-    const totalInteractions = await ChatLog.count({
-      where: environmentFilter
-    });
+  // Apply lowConfidence filter to interactions count
+  const interactionsWhere: any = { ...environmentFilter };
+  if (lowConfidenceParam === 'low') interactionsWhere.confidence = { [Op.lt]: 0.5 };
+  else if (lowConfidenceParam === 'high') interactionsWhere.confidence = { [Op.gte]: 0.5 };
+
+  const totalInteractions = await ChatLog.count({ where: interactionsWhere });
     
     // Prefer file-backed FAQ counts when JSON files exist
     let totalFAQs = 0;
@@ -203,6 +215,7 @@ router.get('/overview', async (req: Request, res: Response) => {
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     
+    // recentActivity: respect environment filter; analytics rows are per-environment already
     const recentActivity = await Analytics.findAll({
       where: {
         date: {

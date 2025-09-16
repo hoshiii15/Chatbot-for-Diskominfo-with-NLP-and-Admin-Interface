@@ -70,12 +70,10 @@ router.post('/log', async (req: Request, res: Response) => {
       responseTimeValue = Math.max(0, Date.now() - _handlerStart);
     }
 
-    // Decide whether to persist the chat log based on confidence threshold
     const confNum = typeof confidence === 'number' ? confidence : (typeof confidence === 'string' && !Number.isNaN(Number(confidence)) ? Number(confidence) : 0);
-    if (confNum >= 0.5) {
-      logger.info('Chat interaction skipped due to confidence threshold', { sessionId: session.id, confidence: confNum });
-      return res.json({ success: true, skipped: true, reason: 'confidence >= 0.5', data: { sessionId: session.id } });
-    }
+
+    // persist all chat logs, but mark low-confidence in metadata
+    const metadata: any = { lowConfidence: confNum < 0.5 };
 
     // Use the canonical session.id (ensures it exists and matches the FK)
     const chatLog = await ChatLog.create({
@@ -86,7 +84,8 @@ router.post('/log', async (req: Request, res: Response) => {
       category: category || 'general',
       environment: (environment as any) || 'ppid',
       status: 'success',
-      responseTime: responseTimeValue
+      responseTime: responseTimeValue,
+      metadata
     });
 
     logger.info('Chat interaction logged', {
@@ -95,7 +94,8 @@ router.post('/log', async (req: Request, res: Response) => {
       category,
       confidence: confNum,
       environment,
-      responseTime: responseTimeValue
+      responseTime: responseTimeValue,
+      lowConfidence: metadata.lowConfidence
     });
 
     res.json({
@@ -103,7 +103,8 @@ router.post('/log', async (req: Request, res: Response) => {
       data: {
         logId: chatLog.id,
         sessionId: session.id,
-        responseTime: responseTimeValue
+        responseTime: responseTimeValue,
+        lowConfidence: metadata.lowConfidence
       }
     });
 
