@@ -1,239 +1,99 @@
-# FAQ Chatbot Admin Dashboard System
+# FAQ Chatbot — Development README
 
-A consolidated documentation for the FAQ Chatbot Admin Dashboard system. This file combines project-level documentation and the Python chatbot notes into a single reference.
+This repository contains a small FAQ chatbot project with three main parts:
 
----
+- `admin-backend` — Express.js / TypeScript admin API and health endpoints.
+- `admin-frontend` — Next.js (app router) admin dashboard UI.
+- `python-bot` — Python Flask-based chatbot server and NLP processor.
 
-## Quick links
+This README explains how to run the full development stack locally on Windows (PowerShell) and how to manage logs (including a new endpoint to trim bot logs older than 1 month).
 
-- Admin Frontend: `admin-frontend/`
-- Backend API: `admin-backend/`
-- Python bot: `python-bot/`
-- Shared types: `shared/types/`
-- Compose files: `docker-compose.yml`, `docker-compose.dev.yml`
+## Prerequisites
 
----
+- Node.js >= 18
+- npm (comes with Node.js)
+- Python 3.10+ (3.12 used in development here)
+- pip
+- Optional: `virtualenv` or `venv` for Python virtual environments
 
-## Features (high level)
+## Quick start (three terminals)
 
-- Admin dashboard: FAQ management (CRUD), environment switching (stunting / PPID), user management, and role-based access control.
-- Analytics: usage metrics, popular questions, confidence distribution, and category analytics.
-- Logs: real-time chat log viewer with export and pagination.
-- System health: automated health checks for Python bot, database, and filesystem; restart and quick actions.
-- Python bot: lightweight Flask-based FAQ assistant using simple NLP (NLTK/scikit-learn similarity matching) with JSON-based FAQ stores for PPID and Stunting domains.
-
----
-
-## Development quick start
-
-Prerequisites:
-
-- Node.js 18+ and npm
-- Python 3.8+ and pip
-- Docker (optional)
-
-Start services for local development (from repository root):
+1. Start the admin backend
 
 ```powershell
-# Start all (recommended if configured)
+cd "D:\Kuliah\Kuliah\Magang\FAQ Chatbotv2\admin-backend"
+npm install
 npm run dev
-
-# or individually
-# Python bot
-npm run dev:python
-
-# Backend
-npm run dev:backend
-
-# Frontend
-npm run dev:frontend
 ```
 
-Frontend runs at `http://localhost:3000`, backend at `http://localhost:3001`, and python bot at `http://localhost:5000` by default.
+This runs the backend in development mode using `nodemon` and the TypeScript source in `src/`.
 
-Default admin credentials for development:
-
-- username: `admin` / password: `admin123`
-
----
-
-## Python bot (summary)
-
-The Python bot is a simple Flask application that serves FAQ answers for two domains:
-
-- PPID: FAQ data located at `python-bot/data/faq_ppid.json`
-- Stunting: FAQ data located at `python-bot/data/faq_stunting.json`
-
-Core behaviors:
-
-- Accepts POST /ask with { question, env } and returns the best-matching FAQ answer.
-- Uses NLTK for tokenization and classic similarity matching to rank candidate FAQs.
-- Includes a small `bot.log` file to track interactions.
-
-Development:
+2. Start the admin frontend
 
 ```powershell
-cd python-bot
+cd "D:\Kuliah\Kuliah\Magang\FAQ Chatbotv2\admin-frontend"
+npm install
+npm run dev
+```
+
+The Next.js app will start (usually on http://localhost:3000). Open the dashboard and authenticate as needed.
+
+3. Start the Python bot (in a Python virtualenv)
+
+```powershell
+cd "D:\Kuliah\Kuliah\Magang\FAQ Chatbotv2\python-bot"
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 python app.py
 ```
 
----
+The bot listens by default on port 5000. It writes logs to `python-bot/bot.log` (development) and also attempts to forward chat events to the admin backend.
 
-## API highlights
+## Log management
 
-- `POST /api/auth/login` - login and receive JWT
-- `GET /api/faq/:env` - list FAQs for environment
-- `POST /api/faq/:env` - add question(s)
-- `PUT /api/faq/:env/:id` - update FAQ
-- `DELETE /api/faq/:env/:id` - delete FAQ
-- `GET /api/analytics` - analytics payload (query params: environment, days)
-- `GET /api/logs` - paginated chat logs
-- `GET /api/health` - system health
+- Backend combined logs are in `admin-backend/logs/combined.log` (if configured).
+- The Python bot writes `python-bot/bot.log` locally.
 
-Refer to code in `admin-backend/src/routes` for full request/response shapes.
+There is an admin API endpoint to view recent bot logs (tail):
 
----
+- GET /api/health/logs?source=bot — returns the tail (last ~50KB) of the bot log as plain text.
 
-## File locations & notes
+New: Trim bot logs older than N days (safe, creates backup)
 
-- Frontend: `admin-frontend/src/app/` — app router with dashboard pages, UI components under `components/ui`.
-- Backend: `admin-backend/src/` — controllers, services, models and routes. Python bot integration is in `services/PythonBotService.ts`.
-- Python bot data: `python-bot/data/` — edit JSON FAQ files to add or modify domain questions.
+- POST /api/health/logs/deleteOlderThan
+  - Body (JSON): { "days": 30 } — defaults to 30 if omitted.
+  - Behavior: creates a timestamped backup in the configured backup path, then rewrites `bot.log` keeping only lines whose timestamp is within the last N days. Lines that don't match a timestamp pattern are conservatively kept.
 
----
+Example (use curl or open the dashboard and click the "Delete >1 month" button in System Health → View Bot Log):
 
-## Maintenance: safe cleanup performed
-
-The following generated/cache files were removed to keep the repo clean:
-
-- `python-bot/__pycache__/*.pyc` (Python bytecode cache)
-- duplicate `python-bot/README.md` was merged into this file
-
-If you want additional cleanup (node_modules, build artifacts, backups), tell me which folders to target and I will prepare a safe plan.
-
----
-
-## Acknowledgements
-
-Made with ❤️ by Hosea Raka
-
-Special thanks to contributors and the Diskominfo team for guidance and data.
-
----
-
-### Code Structure
-
-#### Backend Architecture
-
-```
-admin-backend/src/
-├── app.ts              # Main application entry
-├── controllers/        # Route handlers
-├── middleware/         # Express middleware
-├── models/            # Database models
-├── routes/            # API route definitions
-├── services/          # Business logic
-│   ├── PythonBotService.ts    # Python bot integration
-│   ├── FileManagerService.ts  # FAQ file management
-│   ├── SocketService.ts       # WebSocket handling
-│   └── DatabaseService.ts     # Database operations
-└── utils/             # Utilities and config
-    ├── config.ts      # Configuration management
-    └── logger.ts      # Logging setup
+```powershell
+# example with PowerShell's Invoke-RestMethod (adjust URL/port if needed)
+$body = @{ days = 30 } | ConvertTo-Json
+Invoke-RestMethod -Uri http://localhost:3001/api/health/logs/deleteOlderThan -Method POST -Body $body -ContentType 'application/json' -Headers @{ Authorization = 'Bearer <TOKEN>' }
 ```
 
-#### Frontend Architecture
+The server will respond with JSON `{ success: true, kept: <num>, removed: <num>, backup: <path> }` on success.
 
-```
-admin-frontend/src/
-├── app/               # Next.js 14 app router
-│   ├── (auth)/       # Authentication pages
-│   ├── (dashboard)/  # Dashboard pages
-│   └── globals.css   # Global styles
-├── components/        # Reusable components
-│   ├── ui/           # shadcn/ui components
-│   ├── forms/        # Form components
-│   └── charts/       # Chart components
-├── hooks/            # Custom React hooks
-├── lib/              # Utilities and API clients
-└── types/            # TypeScript type definitions
-```
+## Notes and tips
 
-### Adding New Features
+- The frontend includes sanitization for log text to strip ANSI escape sequences and control characters so logs render cleanly in the dashboard.
+- The Bot Logs modal auto-scrolls to the latest entries when opened.
+- The backend `POST /api/logs/delete` and `POST /api/logs/deleteAll` endpoints let you delete database chat logs by range — use with care.
+- For production, consider using a process manager (systemd, supervisor, or PM2) and a rotating log handler (Python's RotatingFileHandler) instead of manual trimming.
 
-#### Backend: Adding New API Endpoint
+## Troubleshooting
 
-1. Create route handler in `routes/`
-2. Add business logic in `services/`
-3. Update middleware if needed
-4. Add tests
-5. Update API documentation
+- If the python bot isn't visible in the dashboard, check that it's running and reachable on the configured URL (default http://localhost:5000). The bot will log errors to `python-bot/bot.log` if it can't reach the admin backend.
+- If TypeScript checks fail for the frontend, run:
 
-#### Frontend: Adding New Page
-
-1. Create page component in `app/`
-2. Add to navigation
-3. Create necessary components
-4. Implement API integration
-5. Add TypeScript types
-
-### Testing
-
-```bash
-# Backend tests
-cd admin-backend
-npm run test
-npm run test:watch
-
-# Frontend tests
-cd admin-frontend
-npm run test
-npm run test:watch
-
-# E2E tests
-npm run test:e2e
+```powershell
+cd "D:\Kuliah\Kuliah\Magang\FAQ Chatbotv2\admin-frontend"
+npx tsc --noEmit -p tsconfig.json
 ```
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
-
-### Coding Standards
-
-- TypeScript for type safety
-- ESLint + Prettier for code formatting
-- Conventional commits
-- Comprehensive documentation
-- Unit tests for new features
-
-## 📞 Support
-
-For issues and questions:
-
-- **GitHub Issues**: Create an issue for bugs or feature requests
-- **Email**: admin@diskominfo.go.id
-- **Documentation**: Check this README and inline code comments
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🎯 Roadmap
-
-- [ ] Advanced analytics dashboard
-- [ ] Multi-language support
-- [ ] AI-powered FAQ suggestions
-- [ ] Mobile app for administrators
-- [ ] Advanced user management
-- [ ] API rate limiting by user
-- [ ] Backup and restore functionality
-- [ ] Integration with external services
+If you need me to further expand these instructions or add Docker / supervisor examples, tell me which format you prefer.
 
 ---
 
-**Built with ❤️ for Diskominfo by the Development Team**
+Generated: 2025-09-16T00:00:00.000Z
