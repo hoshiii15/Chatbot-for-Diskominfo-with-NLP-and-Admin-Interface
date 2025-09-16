@@ -4,23 +4,22 @@
   "private": true,
   "description": "Complete admin dashboard system for FAQ Chatbot with Express.js backend and Next.js frontend",
   "workspaces": [
+    "shared",
     "admin-backend",
     "admin-frontend"
   ],
   "scripts": {
     "dev": "concurrently \"npm:dev:*\"",
-    "dev:python": "cd python-bot && python app.py",
-    "dev:backend": "cd admin-backend && npm run dev",
-    "dev:frontend": "cd admin-frontend && npm run dev",
-    "build": "npm run build:backend && npm run build:frontend",
-    "build:backend": "cd admin-backend && npm run build",
-    "build:frontend": "cd admin-frontend && npm run build",
-    "install:all": "npm install && npm run install:backend && npm run install:frontend",
-    "install:backend": "cd admin-backend && npm install",
-    "install:frontend": "cd admin-frontend && npm install",
-    "docker:dev": "docker-compose -f docker-compose.dev.yml up",
-    "docker:prod": "docker-compose up -d",
-    "setup": "npm run install:all && cd python-bot && pip install -r requirements.txt"
+    "dev:python": "cd python-bot && ./venv/bin/python app.py",
+    "dev:backend": "npm run dev --workspace=admin-backend",
+    "dev:frontend": "npm run dev --workspace=admin-frontend",
+    "build": "npm run build --workspace=shared && npm run build --workspace=admin-backend && npm run build --workspace=admin-frontend",
+    "install:all": "npm install && cd python-bot && python3 -m venv venv && ./venv/bin/pip install -r requirements.txt",
+    "start": "npm run prod:start",
+    "prod:start": "pm2 start ecosystem.config.js",
+    "prod:stop": "pm2 delete ecosystem.config.js",
+    "prod:restart": "pm2 restart ecosystem.config.js",
+    "prod:logs": "pm2 logs"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
@@ -29,22 +28,7 @@
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/hoshiii15/Chatbot-for-Diskominfo-with-NLP.git"
-  },
-  "keywords": [
-    "chatbot",
-    "admin-dashboard",
-    "nlp",
-    "faq",
-    "express",
-    "nextjs",
-    "typescript"
-  ],
   "author": "Diskominfo",
-  "license": "MIT",
-  "dependencies": {
-    "node-fetch": "^2.7.0"
-  }
+  "license": "MIT"
 }
+

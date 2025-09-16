@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["admin-backend/src/*"],
+      "@shared/*": ["shared/types/*"]
+    }
+  },
+  "files": [],
+  "references": [
+    { "path": "./shared" },
+    { "path": "./admin-backend" },
+    { "path": "./admin-frontend" }
+  ]
+}
+

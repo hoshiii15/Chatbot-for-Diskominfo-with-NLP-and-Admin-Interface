@@ -121,3 +121,4 @@ function extractToken(req: Request): string | null {
   
   return null;
 }
+
