@@ -25,7 +25,18 @@ export default function FAQsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isCrudModalOpen, setIsCrudModalOpen] = useState(false)
   const [editingFaq, setEditingFaq] = useState<FAQ | null>(null)
-  const [formState, setFormState] = useState({
+  type Env = 'stunting' | 'ppid'
+  type FormState = {
+    id: string
+    environment: Env
+    question: string
+    questionsText: string
+    answer: string
+    category: string
+    isActive: boolean
+    links: { text: string; url: string }[]
+  }
+  const [formState, setFormState] = useState<FormState>({
     id: '',
     environment: 'stunting',
     question: '',
@@ -36,6 +47,8 @@ export default function FAQsPage() {
     links: [] as { text: string; url: string }[],
   })
   const [categories, setCategories] = useState<string[]>([])
+  const [manageOpenedFromAdd, setManageOpenedFromAdd] = useState(false)
+  const [categoriesFetchFailed, setCategoriesFetchFailed] = useState(false)
 
   // Load categories from localStorage saat pertama kali render
   useEffect(() => {
@@ -43,10 +56,39 @@ export default function FAQsPage() {
     if (saved) setCategories(JSON.parse(saved))
   }, [])
 
+  // Fetch categories from backend for a given environment
+  async function fetchCategoriesForEnv(env: 'stunting' | 'ppid') {
+    setCategoriesFetchFailed(false)
+    try {
+      const res = await fetch(`/api/faq/${env}/categories`)
+      if (res.ok) {
+        const data = await res.json()
+        const cats = Array.isArray(data?.data) ? data.data.filter((c: any) => c != null) : []
+        setCategories(cats)
+        return cats
+      }
+      // non-OK response
+      console.error('Failed to fetch categories, status', res.status)
+    } catch (e) {
+      console.error('Failed to fetch categories', e)
+      setCategoriesFetchFailed(true)
+    }
+    // clear list to force fallback input if nothing available
+    setCategories([])
+    return []
+  }
+
   // Simpan ke localStorage setiap kali categories berubah
   useEffect(() => {
     localStorage.setItem('faqCategories', JSON.stringify(categories))
   }, [categories])
+
+  // When FAQ modal opens, ensure categories for selected environment are loaded
+  useEffect(() => {
+    if (isModalOpen) {
+      void fetchCategoriesForEnv(formState.environment)
+    }
+  }, [isModalOpen, formState.environment])
 
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
   const [newCategory, setNewCategory] = useState("")
@@ -110,6 +152,8 @@ export default function FAQsPage() {
 
     setIsMutating(true)
     try {
+      // optimistic UI update
+      setFaqs(prev => prev.filter(f => f.id !== faq.id))
       const res = await fetch(`/api/faq/${encodeURIComponent(faq.id)}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
@@ -124,7 +168,8 @@ export default function FAQsPage() {
         const errText = await res.text()
         throw new Error(`Delete failed: ${res.status} ${errText}`)
       }
-      await fetchFAQs()
+      // re-sync
+      void fetchFAQs()
     } catch (err) {
       console.error(err)
       window.alert('Failed to delete FAQ')
@@ -182,26 +227,79 @@ export default function FAQsPage() {
             </Button>
           </div>
           <div className="space-y-4">
-            <div>
+                <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Add Category</label>
               <div className="flex gap-2">
                 <input
                   ref={addInputRef}
                   className="flex-1 border border-gray-300 p-2 rounded-lg"
                   value={newCategory}
-                  onChange={e => setNewCategory(e.target.value)}
+                      onChange={e => setNewCategory(e.target.value)}
                   placeholder="Category name"
                 />
                 <Button
-                  onClick={() => {
-                    if (newCategory.trim() && !categories.includes(newCategory.trim())) {
-                      setCategories([...categories, newCategory.trim()])
-                      setNewCategory("")
-                      setTimeout(() => {
-                        if (addInputRef.current) addInputRef.current.focus()
-                      }, 0)
-                    }
-                  }}
+                      onClick={async () => {
+                        const env = selectedEnvironment === 'all' ? formState.environment : selectedEnvironment
+                        const token = localStorage.getItem('authToken')
+                        if (!newCategory.trim()) return
+                        try {
+                          const res = await fetch(`/api/faq/${env}/categories`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+                            body: JSON.stringify({ name: newCategory.trim() }),
+                          })
+                          if (res.ok) {
+                            const data = await res.json()
+                            const createdName = newCategory.trim()
+                            setCategories(Array.isArray(data.data) ? data.data : [...categories, createdName])
+                            // ensure we refresh from server source-of-truth so other modals see the new category
+                            await fetchCategoriesForEnv(env as 'stunting' | 'ppid')
+                            // if user opened Manage from Add-FAQ, auto-select created category into formState
+                            if (manageOpenedFromAdd) {
+                              setFormState(prev => ({ ...prev, category: createdName }))
+                              // keep Add-FAQ open and close manage modal
+                              setIsCategoryModalOpen(false)
+                              setManageOpenedFromAdd(false)
+                            }
+                            setNewCategory('')
+                            setTimeout(() => { if (addInputRef.current) addInputRef.current.focus() }, 0)
+                          } else if (res.status === 401) {
+                            localStorage.removeItem('authToken')
+                            window.location.href = '/login'
+                          } else {
+                            // try to parse JSON error message from server
+                            let errBody: any = null
+                            try { errBody = await res.json() } catch (_) { /* ignore */ }
+                            // if server says category exists, re-sync categories and auto-select
+                            const createdName = newCategory.trim()
+                            if (errBody && (errBody.error?.toLowerCase?.().includes('exist') || errBody.success === false)) {
+                              // re-fetch categories and look for the created name
+                              const refreshed = await fetchCategoriesForEnv(env as 'stunting' | 'ppid')
+                              const found = Array.isArray(refreshed) ? refreshed.includes(createdName) : (Array.isArray(categories) && categories.includes(createdName))
+                              if (found) {
+                                if (manageOpenedFromAdd) {
+                                  setFormState(prev => ({ ...prev, category: createdName }))
+                                  setIsCategoryModalOpen(false)
+                                  setManageOpenedFromAdd(false)
+                                }
+                                // notify user lightly
+                                window.alert('Category already exists; selected existing category.')
+                                setNewCategory('')
+                                return
+                              }
+                            }
+                            const t = errBody ? JSON.stringify(errBody) : await res.text()
+                            // re-fetch categories to keep UI consistent
+                            await fetchCategoriesForEnv(env as 'stunting' | 'ppid')
+                            window.alert('Failed to add category: ' + t)
+                          }
+                        } catch (err) {
+                          console.error(err);
+                          // try to recover by refreshing category list
+                          try { await fetchCategoriesForEnv(env as 'stunting' | 'ppid') } catch (_) { /* ignore */ }
+                          window.alert('Failed to add category')
+                        }
+                      }}
                   disabled={!newCategory.trim()}
                 >
                   Add
@@ -223,15 +321,31 @@ export default function FAQsPage() {
                         />
                         <Button
                           size="default"
-                          onClick={() => {
-                            if (!editingCategoryValue.trim()) return;
-                            setCategories(categories =>
-                              categories.map((cat, i) =>
-                                i === editingCategoryIdx ? editingCategoryValue.trim() : cat
-                              )
-                            );
-                            setEditingCategoryIdx(null);
-                            setEditingCategoryValue("");
+                          onClick={async () => {
+                            if (!editingCategoryValue.trim() || editingCategoryIdx === null) return;
+                            const env = selectedEnvironment === 'all' ? formState.environment : selectedEnvironment
+                            const token = localStorage.getItem('authToken')
+                            const oldName = categories[editingCategoryIdx]
+                            try {
+                              const res = await fetch(`/api/faq/${env}/categories`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+                                body: JSON.stringify({ oldName, newName: editingCategoryValue.trim() }),
+                              })
+                              if (res.ok) {
+                                // refresh categories
+                                await fetchCategoriesForEnv(env as 'stunting' | 'ppid')
+                                setEditingCategoryIdx(null)
+                                setEditingCategoryValue('')
+                              } else if (res.status === 401) {
+                                localStorage.removeItem('authToken')
+                                window.location.href = '/login'
+                              } else {
+                                const t = await res.text(); window.alert('Rename failed: ' + t)
+                              }
+                            } catch (err) {
+                              console.error(err); window.alert('Rename failed')
+                            }
                           }}
                           disabled={!editingCategoryValue.trim()}
                         >Save</Button>
@@ -242,7 +356,31 @@ export default function FAQsPage() {
                         <span className="px-3 py-1 bg-gray-100 rounded">{cat}</span>
                         <Button size="default" variant="outline" onClick={() => { setEditingCategoryIdx(idx); setEditingCategoryValue(cat) }}>Edit</Button>
                         <Button size="default" variant="outline" className="border-red-200 text-red-700"
-                          onClick={() => setCategories(categories.filter((_, i) => i !== idx))}
+                          onClick={async () => {
+                            const env = selectedEnvironment === 'all' ? formState.environment : selectedEnvironment
+                            const token = localStorage.getItem('authToken')
+                            if (!confirm(`Delete category "${cat}"? This will unset category on any FAQs.`)) return
+                            try {
+                              const res = await fetch(`/api/faq/${env}/categories`, {
+                                method: 'DELETE',
+                                headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+                                body: JSON.stringify({ name: cat }),
+                              })
+                              if (res.ok) {
+                                const data = await res.json()
+                                setCategories(Array.isArray(data.data) ? data.data : categories.filter((_, i) => i !== idx))
+                                // refresh to ensure Add New FAQ sees updated categories from backend
+                                await fetchCategoriesForEnv(env as 'stunting' | 'ppid')
+                              } else if (res.status === 401) {
+                                localStorage.removeItem('authToken')
+                                window.location.href = '/login'
+                              } else {
+                                const t = await res.text(); window.alert('Delete failed: ' + t)
+                              }
+                            } catch (err) {
+                              console.error(err); window.alert('Delete failed')
+                            }
+                          }}
                         >Delete</Button>
                       </>
                     )}
@@ -329,7 +467,13 @@ export default function FAQsPage() {
                       Add New FAQ
                     </Button>
                     <Button
-                      onClick={() => setIsCategoryModalOpen(true)}
+                      onClick={async () => {
+                        const env = selectedEnvironment === 'all' ? 'stunting' : selectedEnvironment
+                        // indicate this open came from Add-FAQ flow so created category can be auto-selected
+                        setManageOpenedFromAdd(true)
+                        await fetchCategoriesForEnv(env as 'stunting' | 'ppid')
+                        setIsCategoryModalOpen(true)
+                      }}
                       disabled={isMutating}
                       className="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
                     >
@@ -517,16 +661,32 @@ export default function FAQsPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Category</label>
-                    <select
-                      className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/80 backdrop-blur-sm transition-all duration-200"
-                      value={formState.category}
-                      onChange={(e) => setFormState({ ...formState, category: e.target.value })}
-                    >
-                      <option value="">Pilih kategori</option>
-                      {categories.map(cat => (
-                        <option key={cat} value={cat}>{cat}</option>
-                      ))}
-                    </select>
+                    {categories.length > 0 && !categoriesFetchFailed ? (
+                      <select
+                        className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/80 backdrop-blur-sm transition-all duration-200"
+                        value={formState.category}
+                        onChange={(e) => setFormState({ ...formState, category: e.target.value })}
+                      >
+                        <option value="">Pilih kategori</option>
+                        {categories.map(cat => (
+                          <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <div className="flex gap-2">
+                        <input
+                          placeholder="Masukkan kategori (backend unavailable)"
+                          value={formState.category}
+                          onChange={(e) => setFormState({ ...formState, category: e.target.value })}
+                          className="flex-1 border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/80"
+                        />
+                        <Button variant="outline" onClick={async () => {
+                          // quick attempt to refresh categories
+                          await fetchCategoriesForEnv(formState.environment)
+                        }}>Refresh</Button>
+                      </div>
+                    )}
+                    {categoriesFetchFailed && <p className="text-xs text-red-500 mt-1">Failed to load categories — you can type a category or try refresh.</p>}
                   </div>
 
                   <div>
@@ -611,47 +771,59 @@ export default function FAQsPage() {
                       Cancel
                     </Button>
                     <Button 
-                      onClick={async () => {
-                        // submit form
-                        const token = localStorage.getItem('authToken')
-                        if (!token) { window.alert('Login required'); return }
-                        const questions = formState.questionsText.split('\n').map(s => s.trim()).filter(Boolean)
-                        const links = (formState.links || []).map(l => ({ text: l.text || '', url: l.url || '' }))
-                        const payload: any = { 
-                          question: questions[0] || formState.question, 
-                          questions, 
-                          answer: formState.answer, 
-                          category: formState.category || null, 
-                          isActive: formState.isActive, 
-                          links 
-                        }
-                        setIsMutating(true)
-                        try {
-                          if (editingFaq) {
-                            const res = await fetch(`/api/faq/${encodeURIComponent(editingFaq.id)}`, { 
-                              method: 'PUT', 
-                              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, 
-                              body: JSON.stringify(payload) 
-                            })
-                            if (!res.ok) throw new Error('Edit failed')
-                          } else {
-                            const res = await fetch('/api/faq', { 
-                              method: 'POST', 
-                              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, 
-                              body: JSON.stringify({ ...payload, environment: formState.environment }) 
-                            })
-                            if (!res.ok) throw new Error('Add failed')
-                          }
-                          await fetchFAQs()
-                          setIsModalOpen(false)
-                          setEditingFaq(null)
-                        } catch (e) {
-                          console.error(e)
-                          window.alert('Save failed')
-                        } finally { 
-                          setIsMutating(false) 
-                        }
-                      }} 
+                                      onClick={async () => {
+                                        // submit form
+                                        const token = localStorage.getItem('authToken')
+                                        if (!token) { window.alert('Login required'); return }
+                                        const questions = formState.questionsText.split('\n').map(s => s.trim()).filter(Boolean)
+                                        const links = (formState.links || []).map(l => ({ text: l.text || '', url: l.url || '' }))
+                                        const payload: any = { 
+                                          question: questions[0] || formState.question, 
+                                          questions, 
+                                          answer: formState.answer, 
+                                          category: formState.category || null, 
+                                          isActive: formState.isActive, 
+                                          links 
+                                        }
+                                        setIsMutating(true)
+                                        try {
+                                          if (editingFaq) {
+                                            const res = await fetch(`/api/faq/${encodeURIComponent(editingFaq.id)}`, { 
+                                              method: 'PUT', 
+                                              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, 
+                                              body: JSON.stringify(payload) 
+                                            })
+                                            if (!res.ok) throw new Error('Edit failed')
+                                            // update local state immediately to avoid UI flicker
+                                            try {
+                                              const data = await res.json()
+                                              setFaqs(prev => prev.map(f => (f.id === editingFaq.id ? (data.data || f) : f)))
+                                            } catch (_) { /* ignore parse errors */ }
+                                          } else {
+                                            const res = await fetch('/api/faq', { 
+                                              method: 'POST', 
+                                              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, 
+                                              body: JSON.stringify({ ...payload, environment: formState.environment }) 
+                                            })
+                                            if (!res.ok) throw new Error('Add failed')
+                                            // append created item to local list immediately
+                                            try {
+                                              const data = await res.json()
+                                              if (data && data.data) setFaqs(prev => [data.data, ...prev])
+                                            } catch (_) { /* ignore parse errors */ }
+                                          }
+                                          // close modal quickly, then refresh list to reconcile
+                                          setIsModalOpen(false)
+                                          setEditingFaq(null)
+                                          // refresh complete list to ensure consistency
+                                          void fetchFAQs()
+                                        } catch (e) {
+                                          console.error(e)
+                                          window.alert('Save failed')
+                                        } finally { 
+                                          setIsMutating(false) 
+                                        }
+                                      }} 
                       disabled={isMutating}
                       className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
                     >
