@@ -8,6 +8,10 @@ const router = Router();
 router.get('/debug/files', faqController.debugFiles);
 router.get('/file', faqController.fileFaqsDebug);
 router.get('/:env/categories', faqController.getCategories);
+// category management
+router.post('/:env/categories', authMiddleware, requireEditor, faqController.createCategory);
+router.put('/:env/categories', authMiddleware, requireEditor, faqController.renameCategory);
+router.delete('/:env/categories', authMiddleware, requireEditor, faqController.deleteCategory);
 router.get('/:env', faqController.getFaqsByEnv);
 router.get('/', faqController.getFaqs);
 
