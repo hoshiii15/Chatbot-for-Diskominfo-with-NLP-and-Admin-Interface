@@ -96,4 +96,6 @@ If you need me to further expand these instructions or add Docker / supervisor e
 
 ---
 
+Proudly Present By Hosea Raka Narwastudjati.
+
 Generated: 2025-09-16T00:00:00.000Z

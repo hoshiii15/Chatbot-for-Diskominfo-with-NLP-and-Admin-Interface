@@ -77,6 +77,9 @@ export const authMiddleware = async (
   }
 };
 
+// Backwards-compatible alias for older imports that expect `auth`
+export const auth = authMiddleware;
+
 export const requireRole = (roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     if (!req.user) {

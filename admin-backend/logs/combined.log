@@ -2626,3 +2626,114 @@
 {"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-09-16 07:59:50"}
 {"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-09-16 07:59:50"}
 {"level":"info","message":"Trimmed bot log: kept 5342 lines, removed 0 lines, backup created at D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\admin-backend\\backups\\bot.log.backup.2025-09-16T01-00-57-095Z","service":"admin-backend","timestamp":"2025-09-16 08:00:57"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 12, ppid: 16)","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-09-16 08:05:10"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 12, ppid: 16)","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-09-16 08:06:06"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-09-16 08:06:40"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-09-16 08:06:40"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-09-16 08:06:40"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-09-16 08:06:40"}
+{"level":"info","message":"Database connection closed","service":"admin-backend","timestamp":"2025-09-16 08:06:40"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 12, ppid: 16)","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-09-16 08:06:49"}
+{"ip":"::1","level":"info","message":"User logged in successfully","service":"admin-backend","timestamp":"2025-09-16 08:07:35","username":"admin"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":242,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:07:36"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":242,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:07:36"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":242,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:07:49"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":242,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:07:49"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":242,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:09:24"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":242,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:09:24"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":242,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:09:31"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":242,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:09:31"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":242,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:09:52"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":242,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:09:52"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":242,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:11:47"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":145,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:15:28"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":145,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:15:28"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":145,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:16:02"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":145,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:16:02"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":145,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:16:10"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":145,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:16:10"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":145,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:16:26"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":145,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:16:26"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":145,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:16:30"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 12, ppid: 16)","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-09-16 08:22:02"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 12, ppid: 16)","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-09-16 08:22:14"}
+{"dbCounts":{"totalFAQs":10,"totalQuestions":145,"totalSessions":204,"totalUsers":1},"fileFaqsCount":28,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":200,"systemHealth":"Healthy","totalFAQs":28,"totalQuestions":84,"totalSessions":204,"totalUsers":1},"timestamp":"2025-09-16 08:22:31"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-09-16 08:24:23"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-09-16 08:24:23"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-09-16 08:24:23"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-09-16 08:24:23"}

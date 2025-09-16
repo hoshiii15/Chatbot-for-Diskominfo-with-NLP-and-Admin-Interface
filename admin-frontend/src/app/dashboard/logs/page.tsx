@@ -124,7 +124,7 @@ export default function ChatLogsPage() {
         {/* Filters and Export */}
         <div className="mb-8">
           <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-sm border border-gray-100">
-            <div className="flex gap-4 items-center flex-wrap">
+            <div className="flex justify-between items-end gap-4 flex-wrap">
               <div className="flex flex-col">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Environment Filter</label>
                 <select 
@@ -138,7 +138,7 @@ export default function ChatLogsPage() {
                 </select>
               </div>
               <div className="flex flex-col">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Actions</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Export</label>
                 <Button 
                   onClick={() => exportLogsAsCSV(logs)}
                   className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-sm hover:shadow-md transition-all duration-200"
@@ -148,10 +148,16 @@ export default function ChatLogsPage() {
                   </svg>
                   Export Logs
                 </Button>
+              </div>
+              <div className="flex flex-col">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Danger Zone</label>
                 <Button
                   onClick={() => setIsModalOpen(true)}
-                  className="ml-3 bg-white/90 border border-gray-200 text-gray-700 hover:bg-gray-50 transition-all duration-200"
+                  className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-sm hover:shadow-md transition-all duration-200 border-red-500"
                 >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.963-.833-2.732 0L5.268 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
                   Manage Logs
                 </Button>
               </div>
@@ -218,11 +224,12 @@ export default function ChatLogsPage() {
                     if (!confirm('Are you sure you want to delete logs for the selected range? This cannot be undone.')) return
                     try {
                       const token = localStorage.getItem('authToken')
-                      const params = new URLSearchParams()
-                      params.set('range', modalRange)
-                      params.set('environment', selectedEnv)
-                      if (modalRange === 'pickmonth' && pickedMonth) params.set('month', pickedMonth)
-                      const res = await fetch(`/api/logs/delete?${params.toString()}`, { method: 'POST', headers: token ? { Authorization: `Bearer ${token}` } : undefined })
+                      // Send parameters in the POST body so the backend can read them from req.body
+                      const payload: any = { range: modalRange, environment: selectedEnv }
+                      if (modalRange === 'pickmonth' && pickedMonth) payload.month = pickedMonth
+                      const headers: any = { 'Content-Type': 'application/json' }
+                      if (token) headers.Authorization = `Bearer ${token}`
+                      const res = await fetch(`/api/logs/delete`, { method: 'POST', headers, body: JSON.stringify(payload) })
                       if (res.ok) {
                         window.alert('Logs deleted for selected range')
                         // refresh main list
