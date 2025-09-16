@@ -202,7 +202,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-blue-900 dark:to-indigo-900 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/10 to-indigo-600/10 rounded-full blur-3xl"></div>
@@ -221,16 +221,16 @@ export default function DashboardPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                   </svg>
                 </div>
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
                   Admin Dashboard
                 </h1>
               </div>
-              <p className="text-gray-600 text-lg">FAQ Chatbot Management System</p>
+              <p className="text-muted-foreground text-lg">FAQ Chatbot Management System</p>
             </div>
             <Button 
               onClick={handleLogout}
               variant="outline"
-              className="bg-white/80 backdrop-blur-sm border-gray-200 hover:bg-white hover:border-gray-300 transition-all duration-200"
+              className="bg-card/80 dark:bg-card/60 backdrop-blur-sm border-border/20 hover:bg-accent/50 transition-all duration-200"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -241,9 +241,9 @@ export default function DashboardPage() {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <Card className="backdrop-blur-sm bg-white/80 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
+            <Card className="backdrop-blur-sm bg-card/80 dark:bg-card/60 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600 flex items-center justify-between">
+                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center justify-between">
                   Total Questions
                   <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -251,15 +251,15 @@ export default function DashboardPage() {
                     </svg>
                   </div>
                 </CardTitle>
-                <CardDescription className="text-3xl font-bold text-gray-900">
+                <CardDescription className="text-3xl font-bold text-foreground">
                   {stats?.totalQuestions || 0}
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="backdrop-blur-sm bg-white/80 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
+            <Card className="backdrop-blur-sm bg-card/80 dark:bg-card/60 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600 flex items-center justify-between">
+                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center justify-between">
                   Total FAQs
                   <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -267,15 +267,15 @@ export default function DashboardPage() {
                     </svg>
                   </div>
                 </CardTitle>
-                <CardDescription className="text-3xl font-bold text-gray-900">
+                <CardDescription className="text-3xl font-bold text-foreground">
                   {stats?.totalFAQs || 0}
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="backdrop-blur-sm bg-white/80 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
+            <Card className="backdrop-blur-sm bg-card/80 dark:bg-card/60 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600 flex items-center justify-between">
+                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center justify-between">
                   Total Sessions
                   <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,15 +283,15 @@ export default function DashboardPage() {
                     </svg>
                   </div>
                 </CardTitle>
-                <CardDescription className="text-3xl font-bold text-gray-900">
+                <CardDescription className="text-3xl font-bold text-foreground">
                   {stats?.totalSessions || 0}
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="backdrop-blur-sm bg-white/80 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
+            <Card className="backdrop-blur-sm bg-card/80 dark:bg-card/60 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600 flex items-center justify-between">
+                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center justify-between">
                   System Health
                   <div className={`w-8 h-8 bg-gradient-to-r rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${
                     stats?.systemHealth === 'Healthy' ? 'from-green-500 to-green-600' : 'from-red-500 to-red-600'
@@ -313,9 +313,9 @@ export default function DashboardPage() {
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Quick Actions */}
-            <Card className="backdrop-blur-sm bg-white/80 border-0 shadow-xl">
+            <Card className="backdrop-blur-sm bg-card/80 dark:bg-card/60 border-0 shadow-xl">
               <CardHeader>
-                <CardTitle className="text-xl font-semibold text-gray-800 flex items-center gap-2">
+                <CardTitle className="text-xl font-semibold text-foreground flex items-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
@@ -326,20 +326,20 @@ export default function DashboardPage() {
                 <div className="space-y-3">
                   {quickActions.map((action, index) => (
                     <Link key={index} href={action.href}>
-                      <div className="group p-4 border border-gray-100 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-200 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                      <div className="group p-4 border border-border/20 rounded-xl hover:bg-accent/50 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
                         <div className="flex items-center space-x-4">
                           <div className={`w-12 h-12 bg-gradient-to-r ${action.color} rounded-xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                             {action.icon}
                           </div>
                           <div className="flex-1">
-                            <div className="font-semibold text-gray-800 group-hover:text-blue-700 transition-colors duration-200">
+                            <div className="font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
                               {action.title}
                             </div>
-                            <div className="text-sm text-gray-500 group-hover:text-gray-600 transition-colors duration-200">
+                            <div className="text-sm text-muted-foreground group-hover:text-muted-foreground/80 transition-colors duration-200">
                               {action.description}
                             </div>
                           </div>
-                          <svg className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transform group-hover:translate-x-1 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-5 h-5 text-muted-foreground group-hover:text-primary transform group-hover:translate-x-1 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
                         </div>
@@ -351,9 +351,9 @@ export default function DashboardPage() {
             </Card>
 
             {/* System Status */}
-            <Card className="backdrop-blur-sm bg-white/80 border-0 shadow-xl">
+            <Card className="backdrop-blur-sm bg-card/80 dark:bg-card/60 border-0 shadow-xl">
               <CardHeader>
-                <CardTitle className="text-xl font-semibold text-gray-800 flex items-center gap-2">
+                <CardTitle className="text-xl font-semibold text-foreground flex items-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -362,28 +362,28 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center p-3 bg-gray-50/50 rounded-lg">
+                  <div className="flex justify-between items-center p-3 bg-accent/30 rounded-lg">
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                      <span className="font-medium text-gray-700">Backend API</span>
+                      <span className="font-medium text-foreground">Backend API</span>
                     </div>
                     <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(systemStatus.backend)}`}>
                       {systemStatus.backend}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-gray-50/50 rounded-lg">
+                  <div className="flex justify-between items-center p-3 bg-accent/30 rounded-lg">
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                      <span className="font-medium text-gray-700">Python Chatbot</span>
+                      <span className="font-medium text-foreground">Python Chatbot</span>
                     </div>
                     <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(systemStatus.pythonBot)}`}>
                       {systemStatus.pythonBot}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-gray-50/50 rounded-lg">
+                  <div className="flex justify-between items-center p-3 bg-accent/30 rounded-lg">
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-                      <span className="font-medium text-gray-700">Database</span>
+                      <span className="font-medium text-foreground">Database</span>
                     </div>
                     <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(systemStatus.database)}`}>
                       {systemStatus.database}
@@ -396,11 +396,11 @@ export default function DashboardPage() {
 
           {/* Attribution */}
           <div className="text-center mt-12 pb-6">
-              <p className="text-sm text-gray-500 flex items-center justify-center gap-1">
+              <p className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                 Made with
                 <span className="text-red-500 animate-pulse">❤️</span>
                 for
-                <span className="font-semibold text-gray-700">diskomindo sukoharjo</span>
+                <span className="font-semibold text-foreground">diskominfo sukoharjo</span>
               </p>
           </div>
         </div>

@@ -415,10 +415,175 @@ export async function getCategories(req: Request, res: Response) {
       categoryNames = Array.from(new Set(fileFaqs.filter(f => f.environment === env).map(f => f.category).filter(c => c !== undefined))) as (string | null)[];
     }
 
+    // Also include categories present in the persistent categories file (categories_{env}.json)
+    try {
+      const fileCategories = await readCategoriesFile(env);
+      if (Array.isArray(fileCategories) && fileCategories.length > 0) {
+        // merge and dedupe
+  const merged = Array.from(new Set([...(categoryNames || []).filter((c: any) => c != null), ...fileCategories.filter((c: any) => c != null)])).map(String).filter(s => s.trim().length > 0);
+  // normalize to string[] and sort alphabetically
+  const mergedStrings: string[] = merged.filter((x): x is string => typeof x === 'string' && x.trim().length > 0);
+  mergedStrings.sort((a: string, b: string) => a.localeCompare(b));
+  categoryNames = mergedStrings as any;
+      } else {
+        // normalize categoryNames: remove nulls and sort
+  const normalized: string[] = (categoryNames || []).filter((c: any) => c != null).map(String).filter((s): s is string => typeof s === 'string' && s.trim().length > 0);
+  normalized.sort((a: string, b: string) => a.localeCompare(b));
+  categoryNames = normalized as any;
+      }
+    } catch (e) {
+      logger.debug('Could not read categories file, returning derived categories', e instanceof Error ? e.message : e);
+  const normalizedCatch: string[] = (categoryNames || []).filter((c: any) => c != null).map(String).filter((s): s is string => typeof s === 'string' && s.trim().length > 0);
+  normalizedCatch.sort((a: string, b: string) => a.localeCompare(b));
+  categoryNames = normalizedCatch as any;
+    }
+
     res.json({ success: true, data: categoryNames, timestamp: new Date().toISOString() });
   } catch (error) {
     logger.error('Error getting categories:', error);
     res.status(500).json({ success: false, error: error instanceof Error ? error.message : 'Failed to get categories', timestamp: new Date().toISOString() });
+  }
+}
+
+// --- category file helpers and CRUD ---
+async function getCategoriesFilePath(env: 'stunting' | 'ppid') {
+  const repoRoot = path.resolve(__dirname, '../../../');
+  const candidates = [
+    path.join(repoRoot, 'python-bot', 'data'),
+    path.join(process.cwd(), 'python-bot', 'data'),
+    path.join(__dirname, '..', '..', '..', 'python-bot', 'data'),
+    path.join(__dirname, '..', '..', '..', '..', 'python-bot', 'data'),
+  ];
+  for (const d of candidates) {
+    try {
+      const p = path.join(d, `categories_${env}.json`);
+      if (fsSync.existsSync(p)) return p;
+    } catch (_e) {
+      // ignore
+    }
+  }
+  // fallback to repo location
+  return path.join(repoRoot, 'python-bot', 'data', `categories_${env}.json`);
+}
+
+async function readCategoriesFile(env: 'stunting' | 'ppid') {
+  try {
+    const p = await getCategoriesFilePath(env);
+    const raw = await fs.readFile(p, 'utf-8');
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed as string[];
+    if (parsed && Array.isArray(parsed.categories)) return parsed.categories as string[];
+    return [];
+  } catch (e) {
+    return [];
+  }
+}
+
+async function writeCategoriesFile(env: 'stunting' | 'ppid', categories: string[]) {
+  try {
+    const p = await getCategoriesFilePath(env);
+    // ensure directory exists
+    await fs.mkdir(path.dirname(p), { recursive: true });
+    await fs.writeFile(p, JSON.stringify(categories, null, 2), 'utf-8');
+    return true;
+  } catch (e) {
+    logger.warn('writeCategoriesFile error', e instanceof Error ? e.message : e);
+    return false;
+  }
+}
+
+export async function createCategory(req: Request, res: Response) {
+  try {
+    const env = req.params.env as 'stunting' | 'ppid';
+    const { name } = req.body;
+    if (!name || typeof name !== 'string') return res.status(400).json({ success: false, error: 'Category name required', timestamp: new Date().toISOString() });
+    if (!['stunting', 'ppid'].includes(env)) return res.status(400).json({ success: false, error: 'Invalid environment', timestamp: new Date().toISOString() });
+
+    const cats = await readCategoriesFile(env);
+    if (cats.includes(name)) return res.status(409).json({ success: false, error: 'Category already exists', timestamp: new Date().toISOString() });
+    cats.push(name);
+    await writeCategoriesFile(env, cats);
+    res.status(201).json({ success: true, data: cats, timestamp: new Date().toISOString() });
+  } catch (error) {
+    logger.error('Error creating category:', error);
+    res.status(500).json({ success: false, error: error instanceof Error ? error.message : 'Failed to create category', timestamp: new Date().toISOString() });
+  }
+}
+
+export async function renameCategory(req: Request, res: Response) {
+  try {
+    const env = req.params.env as 'stunting' | 'ppid';
+    const { oldName, newName } = req.body;
+    if (!oldName || !newName) return res.status(400).json({ success: false, error: 'oldName and newName required', timestamp: new Date().toISOString() });
+    if (!['stunting', 'ppid'].includes(env)) return res.status(400).json({ success: false, error: 'Invalid environment', timestamp: new Date().toISOString() });
+
+    // update DB FAQs
+    try {
+      await FAQ.update({ category: newName }, { where: { category: oldName, environment: env } });
+    } catch (e) {
+      logger.debug('DB update categories failed', e instanceof Error ? e.message : e);
+    }
+
+    // update file FAQs
+    try {
+      const fileFaqs = await readFileFaqs(env);
+      for (const f of fileFaqs as any[]) {
+        if (f.category === oldName) f.category = newName;
+      }
+      await writeFileFaqs(env, fileFaqs as any[]);
+    } catch (e) {
+      logger.debug('File FAQ rename category failed', e instanceof Error ? e.message : e);
+    }
+
+    // update categories file
+    const cats = await readCategoriesFile(env);
+    const idx = cats.indexOf(oldName);
+    if (idx !== -1) {
+      cats[idx] = newName;
+      await writeCategoriesFile(env, cats);
+    }
+
+    res.json({ success: true, data: { oldName, newName }, timestamp: new Date().toISOString() });
+  } catch (error) {
+    logger.error('Error renaming category:', error);
+    res.status(500).json({ success: false, error: error instanceof Error ? error.message : 'Failed to rename category', timestamp: new Date().toISOString() });
+  }
+}
+
+export async function deleteCategory(req: Request, res: Response) {
+  try {
+    const env = req.params.env as 'stunting' | 'ppid';
+    const { name } = req.body;
+    if (!name) return res.status(400).json({ success: false, error: 'Category name required', timestamp: new Date().toISOString() });
+    if (!['stunting', 'ppid'].includes(env)) return res.status(400).json({ success: false, error: 'Invalid environment', timestamp: new Date().toISOString() });
+
+    // remove from DB (set to null)
+    try {
+      // cast null to any to satisfy Sequelize typings for nullable string update
+      await FAQ.update({ category: null as any }, { where: { category: name, environment: env } });
+    } catch (e) {
+      logger.debug('DB nullify category failed', e instanceof Error ? e.message : e);
+    }
+
+    // update file FAQs
+    try {
+      const fileFaqs = await readFileFaqs(env);
+      for (const f of fileFaqs as any[]) {
+        if (f.category === name) f.category = null;
+      }
+      await writeFileFaqs(env, fileFaqs as any[]);
+    } catch (e) {
+      logger.debug('File FAQ delete category failed', e instanceof Error ? e.message : e);
+    }
+
+    // remove from categories file
+    const cats = (await readCategoriesFile(env)).filter(c => c !== name);
+    await writeCategoriesFile(env, cats);
+
+    res.json({ success: true, data: cats, timestamp: new Date().toISOString() });
+  } catch (error) {
+    logger.error('Error deleting category:', error);
+    res.status(500).json({ success: false, error: error instanceof Error ? error.message : 'Failed to delete category', timestamp: new Date().toISOString() });
   }
 }
 

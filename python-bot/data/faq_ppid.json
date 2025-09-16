@@ -402,16 +402,14 @@
   {
     "id": 16,
     "questions": [
-      "siapakah yang membuat kamu?",
-      "siapa yang mengembangkan kamu?",
-      "developer yang membuatmu?"
+      "test functional"
     ],
-    "answer": "Yang membuat saya adalah Hosea Raka Narwastudjati (Student Intern) dari Universitas Kristen Satya Wacana yang menjalani masa Kerja Praktek di Diskominfo Sukoharjo pada periode 19 Agustus - 19 November 2025",
+    "answer": "tes bisa fungsional",
     "category": "umum",
     "links": [
       {
-        "text": "Portofolio",
-        "url": "hosearaka.vercel.app"
+        "text": "test",
+        "url": "https://test.com"
       }
     ]
   }

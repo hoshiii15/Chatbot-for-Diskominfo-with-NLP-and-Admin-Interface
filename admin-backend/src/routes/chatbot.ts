@@ -10,6 +10,8 @@ const router = Router();
  */
 router.post('/log', async (req: Request, res: Response) => {
   try {
+  // record server receive time to compute processing time as fallback
+  const _handlerStart = Date.now();
     const {
       sessionId,
       question,
@@ -45,31 +47,64 @@ router.post('/log', async (req: Request, res: Response) => {
       });
     }
 
+    // Determine responseTime: prefer explicit value from bot, else compute from provided timestamps, else use server processing time
+    let responseTimeValue: number | null = null;
+    try {
+      const rt = req.body?.responseTime;
+      if (typeof rt === 'number' && !Number.isNaN(rt) && rt >= 0) {
+        responseTimeValue = Math.max(0, Math.round(rt));
+      } else if (typeof rt === 'string' && !Number.isNaN(Number(rt))) {
+        responseTimeValue = Math.max(0, Math.round(Number(rt)));
+      } else if (req.body?.startTimestamp && req.body?.endTimestamp) {
+        const s = new Date(req.body.startTimestamp).getTime();
+        const e = new Date(req.body.endTimestamp).getTime();
+        if (!Number.isNaN(s) && !Number.isNaN(e) && e >= s) {
+          responseTimeValue = Math.max(0, Math.round(e - s));
+        }
+      }
+    } catch (e) {
+      // keep default
+    }
+    // If we still don't have a responseTime from client/timestamps, use server processing time
+    if (responseTimeValue === null) {
+      responseTimeValue = Math.max(0, Date.now() - _handlerStart);
+    }
+
+    const confNum = typeof confidence === 'number' ? confidence : (typeof confidence === 'string' && !Number.isNaN(Number(confidence)) ? Number(confidence) : 0);
+
+    // persist all chat logs, but mark low-confidence in metadata
+    const metadata: any = { lowConfidence: confNum < 0.5 };
+
     // Use the canonical session.id (ensures it exists and matches the FK)
     const chatLog = await ChatLog.create({
       sessionId: session.id,
       question,
       answer,
-      confidence: confidence || 0,
+      confidence: confNum,
       category: category || 'general',
       environment: (environment as any) || 'ppid',
       status: 'success',
-      responseTime: 500 // Default response time, can be passed from Python bot
+      responseTime: responseTimeValue,
+      metadata
     });
 
     logger.info('Chat interaction logged', {
-      sessionId,
-      question: question.substring(0, 100),
+      sessionId: session.id,
+      question: question?.substring ? question.substring(0, 100) : question,
       category,
-      confidence,
-      environment
+      confidence: confNum,
+      environment,
+      responseTime: responseTimeValue,
+      lowConfidence: metadata.lowConfidence
     });
 
     res.json({
       success: true,
       data: {
         logId: chatLog.id,
-        sessionId: session.id
+        sessionId: session.id,
+        responseTime: responseTimeValue,
+        lowConfidence: metadata.lowConfidence
       }
     });
 

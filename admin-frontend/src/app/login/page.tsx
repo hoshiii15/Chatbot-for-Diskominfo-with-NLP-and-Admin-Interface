@@ -38,11 +38,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-blue-900 dark:to-indigo-900 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-indigo-600/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-indigo-400/20 to-blue-600/20 rounded-full blur-3xl"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-indigo-600/20 dark:from-blue-400/10 dark:to-indigo-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-indigo-400/20 to-blue-600/20 dark:from-indigo-400/10 dark:to-blue-600/10 rounded-full blur-3xl"></div>
       </div>
       
       <div className="relative z-10 w-full max-w-md">
@@ -53,19 +53,19 @@ export default function LoginPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
             FAQ Chatbot
           </h1>
-          <p className="text-gray-600 mt-2">Admin Dashboard</p>
+          <p className="text-muted-foreground mt-2">Admin Dashboard</p>
         </div>
 
-        <Card className="backdrop-blur-sm bg-white/80 shadow-2xl border-0 overflow-hidden">
+        <Card className="backdrop-blur-sm bg-card/80 dark:bg-card/60 shadow-2xl border-0 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-indigo-600/5"></div>
           <CardHeader className="text-center relative z-10 pb-2">
-            <CardTitle className="text-2xl font-semibold text-gray-800">
+            <CardTitle className="text-2xl font-semibold text-foreground">
               Welcome Back
             </CardTitle>
-            <CardDescription className="text-gray-600 mt-2">
+            <CardDescription className="text-muted-foreground mt-2">
               Sign in to access your admin dashboard
             </CardDescription>
           </CardHeader>
@@ -83,7 +83,7 @@ export default function LoginPage() {
                     placeholder="Username"
                     value={credentials.username}
                     onChange={(e) => setCredentials({...credentials, username: e.target.value})}
-                    className="pl-10 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
+                    className="pl-10 h-12 bg-background/80 border-border/50 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                     required
                   />
                 </div>
@@ -98,7 +98,7 @@ export default function LoginPage() {
                     placeholder="Password"
                     value={credentials.password}
                     onChange={(e) => setCredentials({...credentials, password: e.target.value})}
-                    className="pl-10 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
+                    className="pl-10 h-12 bg-background/80 border-border/50 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                     required
                   />
                 </div>
@@ -127,11 +127,11 @@ export default function LoginPage() {
 
         {/* Attribution */}
         <div className="text-center mt-8">
-            <p className="text-sm text-gray-500 flex items-center justify-center gap-1">
+            <p className="text-sm text-muted-foreground flex items-center justify-center gap-1">
               Made with 
               <span className="text-red-500 animate-pulse">❤️</span>
               for
-              <span className="font-semibold text-gray-700">diskomindo sukoharjo</span>
+              <span className="font-semibold text-foreground">diskominfo sukoharjo</span>
             </p>
         </div>
       </div>
