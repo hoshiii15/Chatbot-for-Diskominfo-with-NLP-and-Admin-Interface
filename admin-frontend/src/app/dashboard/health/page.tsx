@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -49,6 +49,7 @@ export default function SystemHealthPage() {
   const [botLogs, setBotLogs] = useState<string>('')
   const [botLogsLoading, setBotLogsLoading] = useState(false)
   const [botLogsError, setBotLogsError] = useState<string | null>(null)
+  const logContainerRef = useRef<HTMLDivElement | null>(null)
 
   const fetchHealthStatus = async () => {
     setIsLoading(true)
@@ -163,6 +164,19 @@ export default function SystemHealthPage() {
     setShowBotLogModal(true)
     fetchBotLogs()
   }
+
+  // When modal opens or botLogs change, scroll log container to bottom
+  useEffect(() => {
+    if (!showBotLogModal) return
+    // Wait a tick for content to render
+    const t = setTimeout(() => {
+      const el = logContainerRef.current
+      if (el) {
+        el.scrollTop = el.scrollHeight
+      }
+    }, 50)
+    return () => clearTimeout(t)
+  }, [showBotLogModal, botLogs])
 
   useEffect(() => {
     fetchHealthStatus()
@@ -720,7 +734,7 @@ export default function SystemHealthPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="h-full overflow-y-auto bg-gray-900 text-green-400 p-4 font-mono text-sm">
+                  <div ref={logContainerRef} className="h-full overflow-y-auto bg-gray-900 text-green-400 p-4 font-mono text-sm">
                     <pre className="whitespace-pre-wrap break-words leading-relaxed">{sanitizeLogText(botLogs) || 'No logs available'}</pre>
                   </div>
                 )}

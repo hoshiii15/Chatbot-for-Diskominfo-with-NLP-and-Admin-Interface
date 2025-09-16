@@ -2591,3 +2591,21 @@
 {"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-09-16 07:54:07"}
 {"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-09-16 07:54:07"}
 {"level":"info","message":"Database connection closed","service":"admin-backend","timestamp":"2025-09-16 07:54:07"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 12, ppid: 16)","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-09-16 07:54:15"}
+{"environment":"ppid","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"304d9a04-9fa7-4e40-aee5-c6e932ed429f","timestamp":"2025-09-16 07:56:25"}
+{"category":"informasi","confidence":0.95,"environment":"ppid","level":"info","message":"Chat interaction logged","question":"dokumen lhkpn","service":"admin-backend","sessionId":"203a27ab-d506-4ccf-bbaa-3aa6a97d76fe","timestamp":"2025-09-16 07:56:25"}
