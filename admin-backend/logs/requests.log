@@ -3756,3 +3756,5 @@
 {"contentLength":"123","level":"info","message":"Request completed","method":"POST","responseTime":33,"statusCode":200,"timestamp":"2025-09-16 03:14:44","url":"/log"}
 {"contentLength":"452","contentType":"application/json","ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"POST","timestamp":"2025-09-16 03:14:45","url":"/api/chatbot/log","userAgent":"python-requests/2.31.0"}
 {"contentLength":"123","level":"info","message":"Request completed","method":"POST","responseTime":26,"statusCode":200,"timestamp":"2025-09-16 03:14:45","url":"/log"}
+{"ip":"::ffff:192.168.210.250","level":"info","message":"Incoming request","method":"GET","timestamp":"2025-09-17 02:20:38","url":"/","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"}
+{"contentLength":"260","level":"info","message":"Request completed","method":"GET","responseTime":8,"statusCode":200,"timestamp":"2025-09-17 02:20:38","url":"/"}

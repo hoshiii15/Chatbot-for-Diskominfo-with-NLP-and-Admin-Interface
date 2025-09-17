@@ -41,7 +41,9 @@
     "sequelize": "^6.35.2",
     "socket.io": "^4.7.5",
     "sqlite3": "^5.1.6",
-    "winston": "^3.11.0"
+    "winston": "^3.11.0",
+    "@chatbot/shared": "file:../shared"
+
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
