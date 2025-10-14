@@ -13,10 +13,15 @@ interface FileFAQ {
   answer?: string;
   category?: string | null | undefined;
   links?: any;
-  environment?: 'stunting' | 'ppid';
+  environment?: string;
+  isActive?: boolean;
+  priority?: number;
+  views?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-function getFilePathForEnv(env: 'stunting' | 'ppid') {
+function getFilePathForEnv(env: string) {
   const repoRoot = path.resolve(__dirname, '../../../');
   const candidates = [
     path.join(repoRoot, 'python-bot', 'data'),
@@ -25,8 +30,9 @@ function getFilePathForEnv(env: 'stunting' | 'ppid') {
     path.join('/srv', 'admin-backend', 'dist', 'python-bot', 'data'),
     path.join('/app', 'python-bot', 'data'),
   ];
+  const filename = `faq_${env}.json`;
   for (const d of candidates) {
-    const p = path.join(d, env === 'stunting' ? 'faq_stunting.json' : 'faq_ppid.json');
+    const p = path.join(d, filename);
     try {
       const s = fsSync.statSync(p);
       if (s) return p;
@@ -34,9 +40,8 @@ function getFilePathForEnv(env: 'stunting' | 'ppid') {
       // try next
     }
   }
-  // fallback
-  if (env === 'stunting') return path.join(repoRoot, 'python-bot', 'data', 'faq_stunting.json');
-  return path.join(repoRoot, 'python-bot', 'data', 'faq_ppid.json');
+  // fallback to repo-root data
+  return path.join(repoRoot, 'python-bot', 'data', filename);
 }
 
 export async function loadFaqsFromFiles(): Promise<FileFAQ[]> {
@@ -166,26 +171,30 @@ export async function loadFaqsFromFiles(): Promise<FileFAQ[]> {
   }
 }
 
-export async function readFileFaqs(env: 'stunting' | 'ppid'): Promise<FileFAQ[]> {
+export async function readFileFaqs(env: string): Promise<FileFAQ[]> {
   try {
-    const p = getFilePathForEnv(env);
+    const p = getFilePathForEnv(env as any);
     const raw = await fs.readFile(p, 'utf-8');
     const parsed = JSON.parse(raw);
-    if (env === 'stunting') return Array.isArray(parsed.faqs) ? parsed.faqs : [];
-    return Array.isArray(parsed) ? parsed : [];
+    if (parsed && Array.isArray(parsed.faqs)) return parsed.faqs as FileFAQ[];
+    if (Array.isArray(parsed)) return parsed as FileFAQ[];
+    return [];
   } catch (error) {
     logger.warn('readFileFaqs error', error instanceof Error ? error.message : error);
     return [];
   }
 }
 
-export async function writeFileFaqs(env: 'stunting' | 'ppid', faqs: FileFAQ[]): Promise<boolean> {
+export async function writeFileFaqs(env: string, faqs: FileFAQ[]): Promise<boolean> {
   try {
-    const p = getFilePathForEnv(env);
+    const p = getFilePathForEnv(env as any);
+    // For backward compatibility, keep stunting file as object with { faqs }
     if (env === 'stunting') {
       const payload = { faqs };
+      await fs.mkdir(path.dirname(p), { recursive: true });
       await fs.writeFile(p, JSON.stringify(payload, null, 2), 'utf-8');
     } else {
+      await fs.mkdir(path.dirname(p), { recursive: true });
       await fs.writeFile(p, JSON.stringify(faqs, null, 2), 'utf-8');
     }
     return true;
@@ -197,21 +206,42 @@ export async function writeFileFaqs(env: 'stunting' | 'ppid', faqs: FileFAQ[]): 
 
 export async function getFaqsByEnv(req: Request, res: Response) {
   try {
-    const env = req.params.env as 'stunting' | 'ppid';
-    if (!['stunting', 'ppid'].includes(env)) {
-      return res.status(400).json({ success: false, error: 'Invalid environment. Must be "stunting" or "ppid"', timestamp: new Date().toISOString() });
-    }
+    const env = String(req.params.env || '');
 
     let faqs: any[] = [];
-    const fileFaqsAll = await loadFaqsFromFiles();
-    const fileFaqsEnv = fileFaqsAll.filter(f => f.environment === env);
-    if (fileFaqsEnv.length > 0) {
-      faqs = fileFaqsEnv;
-    } else {
+    // Prefer reading file-backed faqs for this specific env first
+    try {
+      const fileFaqsEnv = await readFileFaqs(env);
+      if (fileFaqsEnv && fileFaqsEnv.length > 0) {
+        // Map to public shape where needed (readFileFaqs returns raw file entries)
+        faqs = fileFaqsEnv.map((f: FileFAQ, idx: number) => ({
+          id: f.id != null ? `${env}-${String(f.id)}` : `${env}-${idx + 1}`,
+          question: Array.isArray(f.questions) ? f.questions[0] : (f.question || ''),
+          questions: f.questions || (f.question ? [f.question] : []),
+          answer: f.answer || '',
+          category: f.category || null,
+          environment: env,
+          isActive: f.isActive !== undefined ? f.isActive : true,
+          priority: f.priority || 0,
+          views: f.views || 0,
+          metadata: f.links || null,
+          createdAt: f.createdAt || new Date().toISOString(),
+          updatedAt: f.updatedAt || new Date().toISOString(),
+        }));
+      } else {
+        // Fallback to database if no file data for this env
+        try {
+          faqs = await FAQ.findAll({ where: { environment: env }, order: [['priority', 'DESC'], ['createdAt', 'DESC']] });
+        } catch (e) {
+          logger.warn('Database error fetching FAQs for env', e instanceof Error ? e.message : e);
+        }
+      }
+    } catch (e) {
+      logger.warn('Error reading file faqs for env', e instanceof Error ? e.message : e);
       try {
         faqs = await FAQ.findAll({ where: { environment: env }, order: [['priority', 'DESC'], ['createdAt', 'DESC']] });
-      } catch (e) {
-        logger.warn('Database error fetching FAQs and no file data present', e instanceof Error ? e.message : e);
+      } catch (e2) {
+        logger.warn('Database error fetching FAQs and no file data present', e2 instanceof Error ? e2.message : e2);
       }
     }
 
@@ -258,9 +288,7 @@ export async function createFaq(req: Request, res: Response) {
     if (!question || !answer || !environment) {
       return res.status(400).json({ success: false, error: 'Question, answer, and environment are required', timestamp: new Date().toISOString() });
     }
-    if (!['stunting', 'ppid'].includes(environment)) {
-      return res.status(400).json({ success: false, error: 'Environment must be either "stunting" or "ppid"', timestamp: new Date().toISOString() });
-    }
+    // allow any environment string; file-backed handlers will determine availability
 
     let createdInDb: any = null;
     try {
@@ -376,7 +404,34 @@ export async function deleteFaq(req: Request, res: Response) {
         }
       }
     } else {
-      for (const env of ['stunting', 'ppid'] as const) {
+      // attempt to read dynamic environments list from python-bot/data/environments.json
+      const repoRoot = path.resolve(__dirname, '../../../');
+      const candidates = [
+        path.join(repoRoot, 'python-bot', 'data'),
+        path.join(process.cwd(), 'python-bot', 'data'),
+        path.join(__dirname, '..', '..', '..', 'python-bot', 'data'),
+        path.join('/srv', 'admin-backend', 'dist', 'python-bot', 'data'),
+        path.join('/app', 'python-bot', 'data'),
+      ];
+      let envsToCheck: string[] = [];
+      for (const d of candidates) {
+        try {
+          const p = path.join(d, 'environments.json');
+          if (fsSync.existsSync(p)) {
+            const raw = await fs.readFile(p, 'utf-8');
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) {
+              envsToCheck = parsed.map(String);
+              break;
+            }
+          }
+        } catch (_e) {
+          // ignore and try next
+        }
+      }
+      if (envsToCheck.length === 0) envsToCheck = ['stunting', 'ppid'];
+
+      for (const env of envsToCheck) {
         const fileFaqs = await readFileFaqs(env);
         const filtered = fileFaqs.filter((f: FileFAQ) => String(f.id) !== String(id));
         if (filtered.length !== fileFaqs.length) {

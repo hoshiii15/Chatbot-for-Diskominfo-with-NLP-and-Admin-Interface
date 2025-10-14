@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import useEnvironments from '@/lib/useEnvironments'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -10,7 +11,7 @@ interface FAQ {
   question: string
   answer: string
   category?: string
-  environment: 'stunting' | 'ppid'
+  environment: string
   isActive: boolean
   views: number
   createdAt: string
@@ -20,7 +21,8 @@ interface FAQ {
 export default function FAQsPage() {
   const [faqs, setFaqs] = useState<FAQ[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [selectedEnvironment, setSelectedEnvironment] = useState<'stunting' | 'ppid' | 'all'>('all')
+  const { envs } = useEnvironments()
+  const [selectedEnvironment, setSelectedEnvironment] = useState<string | 'all'>('all')
   const [isMutating, setIsMutating] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingFaq, setEditingFaq] = useState<FAQ | null>(null)
@@ -34,6 +36,13 @@ export default function FAQsPage() {
     isActive: true,
     links: [] as { text: string; url: string }[],
   })
+
+  // when envs are loaded, ensure default environment in formState is current first env
+  useEffect(() => {
+    if (envs && envs.length > 0) {
+      setFormState(prev => ({ ...prev, environment: prev.environment || envs[0] }))
+    }
+  }, [envs])
 
   const fetchFAQs = async () => {
     setIsLoading(true)
@@ -195,12 +204,13 @@ export default function FAQsPage() {
                   </div>
                   <select 
                     value={selectedEnvironment} 
-                    onChange={(e) => setSelectedEnvironment(e.target.value as any)}
+                    onChange={(e) => setSelectedEnvironment(e.target.value)}
                     className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/80 backdrop-blur-sm transition-all duration-200"
                   >
                     <option value="all">All Environments</option>
-                    <option value="stunting">Stunting</option>
-                    <option value="ppid">PPID</option>
+                    {envs.map(ev => (
+                      <option key={ev} value={ev}>{ev.charAt(0).toUpperCase() + ev.slice(1)}</option>
+                    ))}
                   </select>
                   <Button 
                     onClick={handleAdd} 

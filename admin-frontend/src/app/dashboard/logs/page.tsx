@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import useEnvironments from '@/lib/useEnvironments'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -22,7 +23,8 @@ export default function ChatLogsPage() {
   const [logs, setLogs] = useState<ChatLog[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
-  const [selectedEnv, setSelectedEnv] = useState('all')
+  const { envs } = useEnvironments()
+  const [selectedEnv, setSelectedEnv] = useState<string | 'all'>('all')
   const [totalPages, setTotalPages] = useState(1)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalRange, setModalRange] = useState<'1day'|'1week'|'1month'|'pickmonth'>('1day')
@@ -147,8 +149,9 @@ export default function ChatLogsPage() {
                     className="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-card text-foreground transition-all duration-200"
                   >
                     <option value="all">All Environments</option>
-                    <option value="stunting">Stunting</option>
-                    <option value="ppid">PPID</option>
+                    {envs.map((ev) => (
+                      <option key={ev} value={ev}>{ev.charAt(0).toUpperCase() + ev.slice(1)}</option>
+                    ))}
                   </select>
                 </div>
                 <div className="flex flex-col">

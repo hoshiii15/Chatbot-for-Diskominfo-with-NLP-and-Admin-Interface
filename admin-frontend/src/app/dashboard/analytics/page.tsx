@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import useEnvironments from '@/lib/useEnvironments'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -39,7 +40,8 @@ interface AnalyticsData {
 export default function AnalyticsPage() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [selectedEnv, setSelectedEnv] = useState<string>('all')
+  const { envs } = useEnvironments()
+  const [selectedEnv, setSelectedEnv] = useState<string | 'all'>('all')
   const [lowConfidenceFilter, setLowConfidenceFilter] = useState<string>('all')
 
   useEffect(() => {
@@ -151,8 +153,9 @@ export default function AnalyticsPage() {
               className="w-full max-w-xs px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-background transition-all duration-200"
             >
               <option value="all">All Environments</option>
-              <option value="stunting">Stunting</option>
-              <option value="ppid">PPID</option>
+              {envs.map((ev) => (
+                <option key={ev} value={ev}>{ev.charAt(0).toUpperCase() + ev.slice(1)}</option>
+              ))}
             </select>
 
             <div className="mt-4">

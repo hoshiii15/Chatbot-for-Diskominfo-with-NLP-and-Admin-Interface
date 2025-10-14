@@ -1,6 +1,7 @@
-'use client'
+ 'use client'
 
 import { useRef, useEffect, useState } from 'react'
+import useEnvironments from '@/lib/useEnvironments'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -10,7 +11,7 @@ interface FAQ {
   question: string
   answer: string
   category?: string
-  environment: 'stunting' | 'ppid'
+  environment: string
   isActive: boolean
   views: number
   createdAt: string
@@ -20,12 +21,92 @@ interface FAQ {
 export default function FAQsPage() {
   const [faqs, setFaqs] = useState<FAQ[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [selectedEnvironment, setSelectedEnvironment] = useState<'stunting' | 'ppid' | 'all'>('all')
+  const { envs, refresh } = useEnvironments()
+  const [selectedEnvironment, setSelectedEnvironment] = useState<string | 'all'>('all')
   const [isMutating, setIsMutating] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isCrudModalOpen, setIsCrudModalOpen] = useState(false)
   const [editingFaq, setEditingFaq] = useState<FAQ | null>(null)
-  type Env = 'stunting' | 'ppid'
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
+  const [confirmData, setConfirmData] = useState<{originalName: string, normalizedName: string} | null>(null)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [deleteData, setDeleteData] = useState<{name: string, index: number} | null>(null)
+  const [isAddEnvOpen, setIsAddEnvOpen] = useState(false)
+  const [newEnvName, setNewEnvName] = useState('')
+  const [isAddingEnv, setIsAddingEnv] = useState(false)
+  
+  // Handle confirmation modal functions
+  function handleConfirm() {
+    if (confirmData) {
+      createEnvironment(confirmData.normalizedName)
+      setIsConfirmModalOpen(false)
+      setConfirmData(null)
+    }
+  }
+
+  function handleCancel() {
+    setIsConfirmModalOpen(false)
+    setConfirmData(null)
+  }
+
+  // Handle delete confirmation modal functions
+  function handleDeleteConfirm() {
+    if (deleteData) {
+      deleteEnvironment(deleteData.name)
+      setIsDeleteModalOpen(false)
+      setDeleteData(null)
+    }
+  }
+
+  function handleDeleteCancel() {
+    setIsDeleteModalOpen(false)
+    setDeleteData(null)
+  }
+
+  async function deleteEnvironment(name: string) {
+    setIsAddingEnv(true)
+    try {
+      const token = localStorage.getItem('authToken')
+      const res = await fetch(`/api/environments/${encodeURIComponent(name)}`, { method: 'DELETE', headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } })
+      if (res.ok) {
+        await refresh()
+      } else if (res.status === 401) {
+        localStorage.removeItem('authToken')
+        window.location.href = '/login'
+      } else {
+        const t = await res.text()
+        alert('Failed to delete environment: ' + res.status + ' ' + t)
+      }
+    } catch (e) {
+      alert('Failed to delete environment')
+    } finally {
+      setIsAddingEnv(false)
+    }
+  }
+
+  async function createEnvironment(name: string) {
+    setIsAddingEnv(true)
+    try {
+      const token = localStorage.getItem('authToken')
+      const res = await fetch('/api/environments', { method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) }, body: JSON.stringify({ name }) })
+      if (res.ok) {
+        await refresh()
+        setNewEnvName('')
+      } else if (res.status === 401) {
+        localStorage.removeItem('authToken')
+        window.location.href = '/login'
+      } else {
+        const t = await res.text()
+        alert('Failed to add environment: ' + res.status + ' ' + t)
+      }
+    } catch (e) {
+      alert('Failed to add environment')
+    } finally {
+      setIsAddingEnv(false)
+    }
+  }
+
+  type Env = string
   type FormState = {
     id: string
     environment: Env
@@ -36,9 +117,233 @@ export default function FAQsPage() {
     isActive: boolean
     links: { text: string; url: string }[]
   }
+
+  function AddEnvironmentModal() {
+    // Manage Environments modal: view, create, rename, delete
+    const inputRef = useRef<HTMLInputElement | null>(null)
+    const [editingIndex, setEditingIndex] = useState<number | null>(null)
+    const [editValue, setEditValue] = useState('')
+
+    useEffect(() => {
+      if (isAddEnvOpen) setTimeout(() => { inputRef.current?.focus() }, 0)
+    }, [isAddEnvOpen])
+
+    const defaults = ['stunting', 'ppid']
+
+    async function handleCreate() {
+      const raw = (newEnvName || '').trim()
+      if (!raw) return alert('Enter a name')
+      const normalized = raw.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, '')
+      if (!normalized) return alert('Name must contain letters, numbers, dash or underscore')
+      if (normalized !== raw.toLowerCase()) {
+        // Show confirmation modal instead of browser confirm
+        setConfirmData({ originalName: raw, normalizedName: normalized })
+        setIsConfirmModalOpen(true)
+        return
+      }
+      await createEnvironment(normalized)
+    }
+
+    async function handleRename(idx: number) {
+      const oldName = envs[idx]
+      const raw = (editValue || '').trim()
+      if (!raw) return alert('Enter a new name')
+      const normalized = raw.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, '')
+      if (!normalized) return alert('Name must contain letters, numbers, dash or underscore')
+      if (normalized === oldName.toLowerCase()) {
+        setEditingIndex(null)
+        setEditValue('')
+        return
+      }
+      if (defaults.includes(oldName.toLowerCase())) return alert('Cannot rename default environment')
+      setIsAddingEnv(true)
+      try {
+        const token = localStorage.getItem('authToken')
+        const res = await fetch('/api/environments', { method: 'PUT', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) }, body: JSON.stringify({ oldName, newName: normalized }) })
+        if (res.ok) {
+          await refresh()
+          setEditingIndex(null)
+          setEditValue('')
+        } else if (res.status === 401) {
+          localStorage.removeItem('authToken')
+          window.location.href = '/login'
+        } else {
+          const t = await res.text()
+          alert('Failed to rename environment: ' + res.status + ' ' + t)
+        }
+      } catch (e) {
+        alert('Failed to rename environment')
+      } finally {
+        setIsAddingEnv(false)
+      }
+    }
+
+    async function handleDelete(idx: number) {
+      const name = envs[idx]
+      if (defaults.includes(name.toLowerCase())) return alert('Cannot delete default environment')
+      // Show delete confirmation modal instead of browser confirm
+      setDeleteData({ name, index: idx })
+      setIsDeleteModalOpen(true)
+    }
+
+    return isAddEnvOpen ? (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div className="bg-card/95 rounded-2xl shadow-2xl w-[90%] max-w-lg p-6 max-h-[90vh] overflow-y-auto border border-border">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold">Manage Environments</h3>
+            <Button variant="outline" onClick={() => { setIsAddEnvOpen(false); setNewEnvName(''); setEditingIndex(null); setEditValue('') }} className="rounded-full w-9 h-9 p-0">×</Button>
+          </div>
+
+          <p className="text-sm text-muted-foreground mb-4">Create, rename or delete environments. Default environments cannot be renamed or deleted.</p>
+
+          <div className="space-y-4 mb-4">
+            <div className="flex gap-2">
+              <input ref={inputRef} autoFocus value={newEnvName} onChange={(e) => setNewEnvName(e.target.value)} placeholder="New environment name" className="flex-1 px-3 py-2 border rounded-lg" />
+              <Button 
+                onClick={handleCreate} 
+                disabled={isAddingEnv}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                Create
+              </Button>
+            </div>
+            <div className="text-xs text-muted-foreground">Allowed characters: letters, numbers, dash (-), underscore (_). Spaces will be converted to dashes.</div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium mb-2">Existing Environments</h4>
+            <ul className="space-y-2">
+              {envs.map((ev, idx) => (
+                <li key={ev} className="flex items-center justify-between gap-2 p-2 bg-background/80 border border-border rounded">
+                  <div className="flex items-center gap-3">
+                    <div className="font-medium">{ev}</div>
+                    {defaults.includes(ev.toLowerCase()) && <span className="text-xs text-muted-foreground">(default)</span>}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {editingIndex === idx ? (
+                      <>
+                        <input className="px-2 py-1 border rounded" value={editValue} onChange={e => setEditValue(e.target.value)} />
+                        <Button 
+                          onClick={() => handleRename(idx)} 
+                          disabled={isAddingEnv}
+                          className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                        >
+                          Save
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          onClick={() => { setEditingIndex(null); setEditValue('') }}
+                          className="border-gray-300 text-gray-600 hover:bg-gray-50 font-medium shadow-sm hover:shadow-md transition-all duration-200"
+                        >
+                          Cancel
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button 
+                          onClick={() => { setEditingIndex(idx); setEditValue(ev) }} 
+                          disabled={defaults.includes(ev.toLowerCase())}
+                          className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                        >
+                          Rename
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          className="border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400 hover:text-red-700 font-medium shadow-sm hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" 
+                          onClick={() => handleDelete(idx)} 
+                          disabled={defaults.includes(ev.toLowerCase())}
+                        >
+                          Delete
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    ) : null
+  }
+
+  function ConfirmModal() {
+    return isConfirmModalOpen ? (
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Confirm Environment Name</h3>
+          </div>
+          
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
+            The environment name will be saved as <span className="font-mono bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded">"{confirmData?.normalizedName}"</span>. Proceed?
+          </p>
+          
+          <div className="flex gap-3 justify-end">
+            <Button 
+              variant="outline" 
+              onClick={handleCancel}
+              className="border-gray-300 text-gray-600 hover:bg-gray-50 font-medium shadow-sm hover:shadow-md transition-all duration-200"
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleConfirm}
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+            >
+              OK
+            </Button>
+          </div>
+        </div>
+      </div>
+    ) : null
+  }
+
+  function DeleteConfirmModal() {
+    return isDeleteModalOpen ? (
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-gradient-to-r from-red-600 to-rose-600 rounded-lg flex items-center justify-center">
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Delete Environment</h3>
+          </div>
+          
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
+            Delete environment <span className="font-mono bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-2 py-1 rounded">"{deleteData?.name}"</span>? This will remove it from dropdowns. This action cannot be undone.
+          </p>
+          
+          <div className="flex gap-3 justify-end">
+            <Button 
+              variant="outline" 
+              onClick={handleDeleteCancel}
+              className="border-gray-300 text-gray-600 hover:bg-gray-50 font-medium shadow-sm hover:shadow-md transition-all duration-200"
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleDeleteConfirm}
+              className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+            >
+              OK
+            </Button>
+          </div>
+        </div>
+      </div>
+    ) : null
+  }
+
   const [formState, setFormState] = useState<FormState>({
     id: '',
-    environment: 'stunting',
+  environment: envs && envs.length > 0 ? envs[0] : 'stunting',
     question: '',
     questionsText: '',
     answer: '',
@@ -57,7 +362,7 @@ export default function FAQsPage() {
   }, [])
 
   // Fetch categories from backend for a given environment
-  async function fetchCategoriesForEnv(env: 'stunting' | 'ppid') {
+  async function fetchCategoriesForEnv(env: string) {
     setCategoriesFetchFailed(false)
     try {
       const res = await fetch(`/api/faq/${env}/categories`)
@@ -396,6 +701,9 @@ export default function FAQsPage() {
 
   return (
     <>
+      <AddEnvironmentModal />
+      <ConfirmModal />
+      <DeleteConfirmModal />
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-blue-900 dark:to-indigo-900 relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
@@ -453,25 +761,32 @@ export default function FAQsPage() {
                       className="px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-background/80 backdrop-blur-sm transition-all duration-200"
                     >
                       <option value="all">All Environments</option>
-                      <option value="stunting">Stunting</option>
-                      <option value="ppid">PPID</option>
+                      {envs.map((ev) => (
+                        <option key={ev} value={ev}>{ev.charAt(0).toUpperCase() + ev.slice(1)}</option>
+                      ))}
                     </select>
                     <Button 
                       onClick={handleAdd} 
                       disabled={isMutating}
-                      className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                      className="ml-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
                     >
                       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                       </svg>
                       Add New FAQ
                     </Button>
+                      <Button 
+                        onClick={() => setIsAddEnvOpen(true)} 
+                        className="px-3 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                      >
+                        Manage Environment
+                      </Button>
                     <Button
                       onClick={async () => {
-                        const env = selectedEnvironment === 'all' ? 'stunting' : selectedEnvironment
+                        const env = selectedEnvironment === 'all' ? (envs && envs.length > 0 ? envs[0] : 'stunting') : selectedEnvironment
                         // indicate this open came from Add-FAQ flow so created category can be auto-selected
                         setManageOpenedFromAdd(true)
-                        await fetchCategoriesForEnv(env as 'stunting' | 'ppid')
+                        await fetchCategoriesForEnv(env)
                         setIsCategoryModalOpen(true)
                       }}
                       disabled={isMutating}
@@ -652,11 +967,12 @@ export default function FAQsPage() {
                     <label className="block text-sm font-semibold text-muted-foreground mb-2">Environment</label>
                     <select 
                       value={formState.environment} 
-                      onChange={(e) => setFormState({...formState, environment: e.target.value as 'stunting' | 'ppid'})} 
+                      onChange={(e) => setFormState({...formState, environment: e.target.value})} 
                       className="w-full border border-border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-background/80 backdrop-blur-sm transition-all duration-200"
                     >
-                      <option value="stunting">Stunting</option>
-                      <option value="ppid">PPID</option>
+                      {envs.map(ev => (
+                        <option key={ev} value={ev}>{ev.charAt(0).toUpperCase() + ev.slice(1)}</option>
+                      ))}
                     </select>
                   </div>
                   <div>
