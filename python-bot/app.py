@@ -60,11 +60,34 @@ except Exception as e:
     logger.error(f"Failed to initialize NLP Processor: {e}")
     nlp_processor = None
 
-# Mapping environment to FAQ file
-ENV_FAQ_MAP = {
-    'stunting': 'faq_stunting.json',
-    'ppid': 'faq_ppid.json'
-}
+def build_env_faq_map():
+    """Discover faq_*.json files in the data directory and build an env->filename map.
+    Keys are lower-cased environment names derived from the filename after the 'faq_' prefix.
+    """
+    env_map = {}
+    try:
+        data_dir = os.path.join(os.path.dirname(__file__), 'data')
+        if not os.path.isdir(data_dir):
+            logger.warning(f"Data directory not found: {data_dir}")
+            return env_map
+
+        for fname in os.listdir(data_dir):
+            if fname.startswith('faq_') and fname.lower().endswith('.json'):
+                # derive env name from filename: faq_<env>.json -> <env>
+                env_name = fname[4:-5].lower()
+                env_map[env_name] = fname
+    except Exception as e:
+        logger.error(f"Error building ENV_FAQ_MAP: {e}")
+    return env_map
+
+# Build dynamic mapping of environments to faq files at startup
+ENV_FAQ_MAP = build_env_faq_map()
+if not ENV_FAQ_MAP:
+    # ensure at least defaults exist for backward compatibility
+    ENV_FAQ_MAP = {
+        'stunting': 'faq_stunting.json',
+        'ppid': 'faq_ppid.json'
+    }
 
 def log_to_admin_backend(session_id, question, answer, confidence, category, environment, user_agent="", ip_address=""):
     """Send chat log to admin backend"""
