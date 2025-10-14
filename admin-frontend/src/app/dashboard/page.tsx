@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { Power } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -388,6 +389,44 @@ export default function DashboardPage() {
                     <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(systemStatus.database)}`}>
                       {systemStatus.database}
                     </span>
+                  </div>
+                  {/* Restart System Action */}
+                  <div className="flex justify-between items-center p-3">
+                    <div className="flex items-center gap-3">
+                      <Power className="h-5 w-5 text-muted-foreground" />
+                      <span className="font-medium text-foreground">Restart System</span>
+                    </div>
+                    <Button
+                      variant="destructive"
+                      onClick={async () => {
+                        if (!confirm('Are you sure you want to request a system restart?')) return
+                        try {
+                          const token = localStorage.getItem('authToken')
+                          const resp = await fetch('/api/system/restart', {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json',
+                              ...(token ? { Authorization: `Bearer ${token}` } : {})
+                            },
+                            body: JSON.stringify({ target: 'all' })
+                          })
+                          if (resp.ok) {
+                            alert('Restart request submitted. Check system logs for progress.')
+                          } else if (resp.status === 401) {
+                            localStorage.removeItem('authToken')
+                            window.location.href = '/login'
+                          } else {
+                            const js = await resp.json().catch(() => ({}))
+                            alert('Failed to request restart: ' + (js.error || resp.statusText))
+                          }
+                        } catch (error) {
+                          console.error('Restart request failed', error)
+                          alert('Failed to send restart request. See console for details.')
+                        }
+                      }}
+                    >
+                      Restart
+                    </Button>
                   </div>
                 </div>
               </CardContent>

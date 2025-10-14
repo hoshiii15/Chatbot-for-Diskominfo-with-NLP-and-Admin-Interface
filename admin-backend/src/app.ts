@@ -18,6 +18,7 @@ import websiteRoutes from './routes/websites';
 import dashboardRoutes from './routes/dashboard';
 import chatbotRoutes from './routes/chatbot';
 import environmentsRoutes from './routes/environments';
+import systemRoutes from './routes/system';
 
 // Import middleware
 import { errorHandler } from './middleware/errorHandler';
@@ -156,6 +157,8 @@ class App {
     this.app.use('/api/analytics', authMiddleware, analyticsRoutes);
     this.app.use('/api/websites', authMiddleware, websiteRoutes);
   this.app.use('/api/environments', environmentsRoutes);
+  // System management (restart) - requires auth
+  this.app.use('/api/system', authMiddleware, systemRoutes);
   // Dashboard stats are read-only and should be available to the frontend
   // even when Authorization headers are not forwarded by proxies. Mount
   // the dashboard routes without the auth middleware so the client can
