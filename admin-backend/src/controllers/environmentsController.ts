@@ -80,6 +80,33 @@ export async function createEnvironment(req: Request, res: Response) {
     const ok = await writeEnvsFile(envs);
     if (!ok) return res.status(500).json({ success: false, error: 'Failed to persist environment', timestamp: new Date().toISOString() });
 
+    // initialize an empty categories file for the new environment so
+    // frontend consumers can immediately fetch categories (returns []).
+    try {
+      const repoRoot = path.resolve(__dirname, '../../../');
+      const p = path.join(repoRoot, 'python-bot', 'data', `categories_${normalized}.json`);
+      await fs.mkdir(path.dirname(p), { recursive: true });
+      // write empty array
+      await fs.writeFile(p, JSON.stringify([], null, 2), 'utf-8');
+    } catch (e) {
+      logger.debug('Failed to write initial categories file for new env', e instanceof Error ? e.message : e);
+    }
+    // initialize an empty faq file for the new environment so the UI can
+    // derive categories and allow adding FAQs immediately
+    try {
+      const repoRoot = path.resolve(__dirname, '../../../');
+      const faqPath = path.join(repoRoot, 'python-bot', 'data', `faq_${normalized}.json`);
+      await fs.mkdir(path.dirname(faqPath), { recursive: true });
+      // keep stunting style (object with { faqs }) only for 'stunting'
+      if (normalized === 'stunting') {
+        await fs.writeFile(faqPath, JSON.stringify({ faqs: [] }, null, 2), 'utf-8');
+      } else {
+        await fs.writeFile(faqPath, JSON.stringify([], null, 2), 'utf-8');
+      }
+    } catch (e) {
+      logger.debug('Failed to write initial faq file for new env', e instanceof Error ? e.message : e);
+    }
+
     res.status(201).json({ success: true, data: envs, timestamp: new Date().toISOString() });
   } catch (error) {
     logger.error('Error creating environment:', error);

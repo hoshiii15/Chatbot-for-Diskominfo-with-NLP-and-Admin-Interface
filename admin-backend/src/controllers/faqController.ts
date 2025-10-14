@@ -57,111 +57,106 @@ export async function loadFaqsFromFiles(): Promise<FileFAQ[]> {
       path.join('/srv', 'admin-backend', 'dist', 'python-bot', 'data'),
       path.join('/app', 'python-bot', 'data'),
     ];
-    const stuntingPathCandidates = candidates.map(d => path.join(d, 'faq_stunting.json'));
-    const ppidPathCandidates = candidates.map(d => path.join(d, 'faq_ppid.json'));
+
+    // Find the first existing data directory among candidates
+    let dataDir: string | null = null;
+    for (const d of candidates) {
+      try {
+        if (fsSync.existsSync(d)) {
+          dataDir = d;
+          break;
+        }
+      } catch (_e) {
+        // ignore
+      }
+    }
+    if (!dataDir) dataDir = path.join(repoRoot, 'python-bot', 'data');
 
     const results: any[] = [];
 
-    // Stunting file has shape { faqs: [...] }
+    // Read directory and find files matching faq_*.json
     try {
-      let stuntingRaw: string | null = null;
-      for (const p of stuntingPathCandidates) {
-        try {
-          stuntingRaw = await fs.readFile(p, 'utf-8');
-          break;
-        } catch (_) {
-          // try next candidate
-        }
-      }
-      if (stuntingRaw) {
-        const stuntingJson = JSON.parse(stuntingRaw);
-        if (stuntingJson && Array.isArray(stuntingJson.faqs)) {
-        for (let i = 0; i < stuntingJson.faqs.length; i++) {
-          const f = stuntingJson.faqs[i];
-          const now = new Date().toISOString();
-          const metadata = Array.isArray(f.links)
-            ? f.links.map((l: any) => {
-                const text = typeof l === 'string' ? l : (l && (l.text ?? l.title ?? l.name)) ?? '';
-                const url = (l && (l.url ?? l.href)) ?? '';
-                const questionRef = l && (l.question ?? null);
-                const questionIndex = l && (typeof l.questionIndex !== 'undefined' ? Number(l.questionIndex) : undefined);
-                const question = typeof questionIndex === 'number' && Array.isArray(f.questions)
-                  ? f.questions[questionIndex] ?? questionRef
-                  : questionRef ?? null;
-                return { text, url, question };
-              })
-            : null;
+      const dirEntries = await fs.readdir(dataDir);
+      const faqFiles = dirEntries.filter(n => /^faq_.+\.json$/i.test(n));
 
-          results.push({
-            id: f.id != null ? `stunting-${String(f.id)}` : `stunting-${i + 1}`,
-            question: Array.isArray(f.questions) ? f.questions[0] : (f.question || ''),
-            questions: f.questions || (f.question ? [f.question] : []),
-            answer: f.answer || '',
-            category: f.category || null,
-            environment: 'stunting',
-            isActive: f.isActive !== undefined ? f.isActive : true,
-            priority: f.priority || 0,
-            views: f.views || 0,
-            metadata,
-            createdAt: f.createdAt || now,
-            updatedAt: f.updatedAt || now,
-          });
-        }
+      for (const fname of faqFiles) {
+        const p = path.join(dataDir, fname);
+        try {
+          const raw = await fs.readFile(p, 'utf-8');
+          const parsed = JSON.parse(raw);
+          const m = fname.match(/^faq_(.+)\.json$/i);
+          const env = m ? m[1] : 'unknown';
+
+          // helper to build metadata array from links
+          const buildMetadata = (links: any, questionsArr: any) => {
+            if (!Array.isArray(links)) return null;
+            return links.map((l: any) => {
+              const text = typeof l === 'string' ? l : (l && (l.text ?? l.title ?? l.name)) ?? '';
+              const url = (l && (l.url ?? l.href)) ?? '';
+              const questionRef = l && (l.question ?? null);
+              const questionIndex = l && (typeof l.questionIndex !== 'undefined' ? Number(l.questionIndex) : undefined);
+              const question = typeof questionIndex === 'number' && Array.isArray(questionsArr)
+                ? questionsArr[questionIndex] ?? questionRef
+                : questionRef ?? null;
+              return { text, url, question };
+            });
+          };
+
+          const now = new Date().toISOString();
+
+          // If file shape is { faqs: [...] }
+          if (parsed && Array.isArray(parsed.faqs)) {
+            for (let i = 0; i < parsed.faqs.length; i++) {
+              const f = parsed.faqs[i];
+              const metadata = buildMetadata(f.links, f.questions);
+              results.push({
+                id: f.id != null ? `${env}-${String(f.id)}` : `${env}-${i + 1}`,
+                question: Array.isArray(f.questions) ? f.questions[0] : (f.question || ''),
+                questions: f.questions || (f.question ? [f.question] : []),
+                answer: f.answer || '',
+                category: f.category || null,
+                environment: env,
+                isActive: f.isActive !== undefined ? f.isActive : true,
+                priority: f.priority || 0,
+                views: f.views || 0,
+                metadata,
+                createdAt: f.createdAt || now,
+                updatedAt: f.updatedAt || now,
+              });
+            }
+            continue;
+          }
+
+          // If file is an array of faqs
+          if (Array.isArray(parsed)) {
+            for (let i = 0; i < parsed.length; i++) {
+              const f = parsed[i];
+              const metadata = buildMetadata(f.links, f.questions);
+              results.push({
+                id: f.id != null ? `${env}-${String(f.id)}` : `${env}-${i + 1}`,
+                question: Array.isArray(f.questions) ? f.questions[0] : (f.question || ''),
+                questions: f.questions || (f.question ? [f.question] : []),
+                answer: f.answer || '',
+                category: f.category || null,
+                environment: env,
+                isActive: f.isActive !== undefined ? f.isActive : true,
+                priority: f.priority || 0,
+                views: f.views || 0,
+                metadata,
+                createdAt: f.createdAt || now,
+                updatedAt: f.updatedAt || now,
+              });
+            }
+            continue;
+          }
+
+          // Unknown shape: skip
+        } catch (e) {
+          logger.debug('Could not read/parse faq file', p, e instanceof Error ? e.message : e);
         }
       }
     } catch (e) {
-      logger.debug('No stunting FAQ file or parse error', e instanceof Error ? e.message : e);
-    }
-
-    // PPID file is an array of faq objects
-    try {
-      let ppidRaw: string | null = null;
-      for (const p of ppidPathCandidates) {
-        try {
-          ppidRaw = await fs.readFile(p, 'utf-8');
-          break;
-        } catch (_) {
-          // try next candidate
-        }
-      }
-      if (ppidRaw) {
-        const ppidJson = JSON.parse(ppidRaw);
-        if (Array.isArray(ppidJson)) {
-        for (let i = 0; i < ppidJson.length; i++) {
-          const f = ppidJson[i];
-          const now = new Date().toISOString();
-          const metadata = Array.isArray(f.links)
-            ? f.links.map((l: any) => {
-                const text = typeof l === 'string' ? l : (l && (l.text ?? l.title ?? l.name)) ?? '';
-                const url = (l && (l.url ?? l.href)) ?? '';
-                const questionRef = l && (l.question ?? null);
-                const questionIndex = l && (typeof l.questionIndex !== 'undefined' ? Number(l.questionIndex) : undefined);
-                const question = typeof questionIndex === 'number' && Array.isArray(f.questions)
-                  ? f.questions[questionIndex] ?? questionRef
-                  : questionRef ?? null;
-                return { text, url, question };
-              })
-            : null;
-
-          results.push({
-            id: f.id != null ? `ppid-${String(f.id)}` : `ppid-${i + 1}`,
-            question: Array.isArray(f.questions) ? f.questions[0] : (f.question || ''),
-            questions: f.questions || (f.question ? [f.question] : []),
-            answer: f.answer || '',
-            category: f.category || null,
-            environment: 'ppid',
-            isActive: f.isActive !== undefined ? f.isActive : true,
-            priority: f.priority || 0,
-            views: f.views || 0,
-            metadata,
-            createdAt: f.createdAt || now,
-            updatedAt: f.updatedAt || now,
-          });
-        }
-        }
-      }
-    } catch (e) {
-      logger.debug('No ppid FAQ file or parse error', e instanceof Error ? e.message : e);
+      logger.debug('Failed to scan faq data directory', dataDir, e instanceof Error ? e.message : e);
     }
 
     return results;
@@ -452,8 +447,12 @@ export async function deleteFaq(req: Request, res: Response) {
 
 export async function getCategories(req: Request, res: Response) {
   try {
-    const env = req.params.env as 'stunting' | 'ppid';
-    if (!['stunting', 'ppid'].includes(env)) return res.status(400).json({ success: false, error: 'Invalid environment. Must be "stunting" or "ppid"', timestamp: new Date().toISOString() });
+    const env = String(req.params.env || '');
+    // Be lenient for UI consumers: if env is missing, return an empty list
+    // instead of a 400 so the frontend can gracefully handle new/empty envs.
+    if (!env) {
+      return res.json({ success: true, data: [], timestamp: new Date().toISOString() });
+    }
 
     let categories: any[] = [];
     try {
@@ -466,8 +465,19 @@ export async function getCategories(req: Request, res: Response) {
     if (categories && categories.length > 0) {
       categoryNames = categories.map(cat => cat.category);
     } else {
-      const fileFaqs = await loadFaqsFromFiles();
-      categoryNames = Array.from(new Set(fileFaqs.filter(f => f.environment === env).map(f => f.category).filter(c => c !== undefined))) as (string | null)[];
+      // Prefer per-env file-backed faqs for deriving categories (supports arbitrary envs)
+      try {
+        const fileFaqsEnv = await readFileFaqs(env);
+        categoryNames = Array.from(new Set((fileFaqsEnv || []).map(f => f.category).filter((c: any) => typeof c === 'string' && c.trim().length > 0))) as (string | null)[];
+      } catch (e) {
+        // fallback to older loader (reads only default files) as last resort
+        try {
+          const fileFaqs = await loadFaqsFromFiles();
+          categoryNames = Array.from(new Set(fileFaqs.filter(f => f.environment === env).map(f => f.category).filter(c => c !== undefined))) as (string | null)[];
+        } catch (_e) {
+          categoryNames = [];
+        }
+      }
     }
 
     // Also include categories present in the persistent categories file (categories_{env}.json)
@@ -475,22 +485,55 @@ export async function getCategories(req: Request, res: Response) {
       const fileCategories = await readCategoriesFile(env);
       if (Array.isArray(fileCategories) && fileCategories.length > 0) {
         // merge and dedupe
-  const merged = Array.from(new Set([...(categoryNames || []).filter((c: any) => c != null), ...fileCategories.filter((c: any) => c != null)])).map(String).filter(s => s.trim().length > 0);
-  // normalize to string[] and sort alphabetically
-  const mergedStrings: string[] = merged.filter((x): x is string => typeof x === 'string' && x.trim().length > 0);
-  mergedStrings.sort((a: string, b: string) => a.localeCompare(b));
-  categoryNames = mergedStrings as any;
+        const merged = Array.from(new Set([...(categoryNames || []).filter((c: any) => c != null), ...fileCategories.filter((c: any) => c != null)])).map(String).filter(s => s.trim().length > 0);
+        // normalize to string[] and sort alphabetically
+        const mergedStrings: string[] = merged.filter((x): x is string => typeof x === 'string' && x.trim().length > 0);
+        mergedStrings.sort((a: string, b: string) => a.localeCompare(b));
+        categoryNames = mergedStrings as any;
       } else {
         // normalize categoryNames: remove nulls and sort
-  const normalized: string[] = (categoryNames || []).filter((c: any) => c != null).map(String).filter((s): s is string => typeof s === 'string' && s.trim().length > 0);
-  normalized.sort((a: string, b: string) => a.localeCompare(b));
-  categoryNames = normalized as any;
+        const normalized: string[] = (categoryNames || []).filter((c: any) => c != null).map(String).filter((s): s is string => typeof s === 'string' && s.trim().length > 0);
+        normalized.sort((a: string, b: string) => a.localeCompare(b));
+        categoryNames = normalized as any;
+
+        // If there's no persistent categories file yet for this env, ensure one exists
+        // so subsequent requests (and the frontend) can reliably fetch it.
+        if (categoryNames.length === 0) {
+          try {
+            await writeCategoriesFile(env, []);
+            logger.info(`Created empty categories file for environment '${env}'`);
+          } catch (wErr) {
+            logger.debug('Could not create categories file for env', wErr instanceof Error ? wErr.message : wErr);
+          }
+        }
       }
     } catch (e) {
       logger.debug('Could not read categories file, returning derived categories', e instanceof Error ? e.message : e);
-  const normalizedCatch: string[] = (categoryNames || []).filter((c: any) => c != null).map(String).filter((s): s is string => typeof s === 'string' && s.trim().length > 0);
-  normalizedCatch.sort((a: string, b: string) => a.localeCompare(b));
-  categoryNames = normalizedCatch as any;
+      const normalizedCatch: string[] = (categoryNames || []).filter((c: any) => c != null).map(String).filter((s): s is string => typeof s === 'string' && s.trim().length > 0);
+      normalizedCatch.sort((a: string, b: string) => a.localeCompare(b));
+      categoryNames = normalizedCatch as any;
+      // attempt to create the categories file if missing
+      try {
+        await writeCategoriesFile(env, []);
+        logger.info(`Created empty categories file for environment '${env}' after read error`);
+      } catch (_w) {
+        // ignore
+      }
+    }
+
+    // Final normalization: remove nulls, ensure strings and sort alphabetically
+    try {
+      const normalizedFinal: string[] = (categoryNames || [])
+        .filter((c: any) => c != null)
+        .map(String)
+        .map(s => s.trim())
+        .filter((s): s is string => typeof s === 'string' && s.length > 0);
+      // dedupe and sort
+      const unique = Array.from(new Set(normalizedFinal));
+      unique.sort((a, b) => a.localeCompare(b));
+      categoryNames = unique as any;
+    } catch (_e) {
+      categoryNames = [];
     }
 
     res.json({ success: true, data: categoryNames, timestamp: new Date().toISOString() });
@@ -501,7 +544,7 @@ export async function getCategories(req: Request, res: Response) {
 }
 
 // --- category file helpers and CRUD ---
-async function getCategoriesFilePath(env: 'stunting' | 'ppid') {
+async function getCategoriesFilePath(env: string) {
   const repoRoot = path.resolve(__dirname, '../../../');
   const candidates = [
     path.join(repoRoot, 'python-bot', 'data'),
@@ -521,7 +564,7 @@ async function getCategoriesFilePath(env: 'stunting' | 'ppid') {
   return path.join(repoRoot, 'python-bot', 'data', `categories_${env}.json`);
 }
 
-async function readCategoriesFile(env: 'stunting' | 'ppid') {
+async function readCategoriesFile(env: string) {
   try {
     const p = await getCategoriesFilePath(env);
     const raw = await fs.readFile(p, 'utf-8');
@@ -534,7 +577,7 @@ async function readCategoriesFile(env: 'stunting' | 'ppid') {
   }
 }
 
-async function writeCategoriesFile(env: 'stunting' | 'ppid', categories: string[]) {
+async function writeCategoriesFile(env: string, categories: string[]) {
   try {
     const p = await getCategoriesFilePath(env);
     // ensure directory exists
@@ -547,17 +590,85 @@ async function writeCategoriesFile(env: 'stunting' | 'ppid', categories: string[
   }
 }
 
+// --- category audit log helpers ---
+async function getCategoryAuditLogPath() {
+  const repoRoot = path.resolve(__dirname, '../../../');
+  const candidates = [
+    path.join(repoRoot, 'python-bot', 'data'),
+    path.join(process.cwd(), 'python-bot', 'data'),
+    path.join(__dirname, '..', '..', '..', 'python-bot', 'data'),
+    path.join(__dirname, '..', '..', '..', '..', 'python-bot', 'data'),
+  ];
+  for (const d of candidates) {
+    try {
+      // pick a path even if file doesn't exist yet
+      const p = path.join(d, `category_audit.jsonl`);
+      // return the first candidate directory (file may not exist yet)
+      return p;
+    } catch (_e) {
+      // ignore
+    }
+  }
+  return path.join(repoRoot, 'python-bot', 'data', `category_audit.jsonl`);
+}
+
+async function appendCategoryAuditEntry(entry: Record<string, any>) {
+  try {
+    const p = await getCategoryAuditLogPath();
+    await fs.mkdir(path.dirname(p), { recursive: true });
+    const line = JSON.stringify(entry) + '\n';
+    await fs.appendFile(p, line, 'utf-8');
+    return true;
+  } catch (e) {
+    logger.warn('appendCategoryAuditEntry error', e instanceof Error ? e.message : e);
+    return false;
+  }
+}
+
+async function readCategoryAuditEntries(limit = 100) {
+  try {
+    const p = await getCategoryAuditLogPath();
+    if (!fsSync.existsSync(p)) return [] as any[];
+    const raw = await fs.readFile(p, 'utf-8');
+    const lines = raw.split(/\r?\n/).filter(Boolean);
+    const entries = lines.map(l => {
+      try {
+        return JSON.parse(l);
+      } catch (_e) {
+        return null;
+      }
+    }).filter(Boolean) as any[];
+    // return last `limit` entries
+    return entries.slice(-limit);
+  } catch (e) {
+    logger.warn('readCategoryAuditEntries error', e instanceof Error ? e.message : e);
+    return [] as any[];
+  }
+}
+
 export async function createCategory(req: Request, res: Response) {
   try {
-    const env = req.params.env as 'stunting' | 'ppid';
+    const env = String(req.params.env || '');
     const { name } = req.body;
     if (!name || typeof name !== 'string') return res.status(400).json({ success: false, error: 'Category name required', timestamp: new Date().toISOString() });
-    if (!['stunting', 'ppid'].includes(env)) return res.status(400).json({ success: false, error: 'Invalid environment', timestamp: new Date().toISOString() });
+    if (!env) return res.status(400).json({ success: false, error: 'Environment parameter is required', timestamp: new Date().toISOString() });
 
     const cats = await readCategoriesFile(env);
     if (cats.includes(name)) return res.status(409).json({ success: false, error: 'Category already exists', timestamp: new Date().toISOString() });
     cats.push(name);
     await writeCategoriesFile(env, cats);
+    // append audit entry
+    try {
+      await appendCategoryAuditEntry({
+        ts: new Date().toISOString(),
+        action: 'create',
+        env,
+        name,
+        ip: req.ip || (req.headers['x-forwarded-for'] || null),
+      });
+    } catch (_e) {
+      // ignore audit errors
+    }
     res.status(201).json({ success: true, data: cats, timestamp: new Date().toISOString() });
   } catch (error) {
     logger.error('Error creating category:', error);
@@ -567,10 +678,10 @@ export async function createCategory(req: Request, res: Response) {
 
 export async function renameCategory(req: Request, res: Response) {
   try {
-    const env = req.params.env as 'stunting' | 'ppid';
+    const env = String(req.params.env || '');
     const { oldName, newName } = req.body;
     if (!oldName || !newName) return res.status(400).json({ success: false, error: 'oldName and newName required', timestamp: new Date().toISOString() });
-    if (!['stunting', 'ppid'].includes(env)) return res.status(400).json({ success: false, error: 'Invalid environment', timestamp: new Date().toISOString() });
+    if (!env) return res.status(400).json({ success: false, error: 'Environment parameter is required', timestamp: new Date().toISOString() });
 
     // update DB FAQs
     try {
@@ -596,6 +707,19 @@ export async function renameCategory(req: Request, res: Response) {
     if (idx !== -1) {
       cats[idx] = newName;
       await writeCategoriesFile(env, cats);
+      // append audit entry
+      try {
+        await appendCategoryAuditEntry({
+          ts: new Date().toISOString(),
+          action: 'rename',
+          env,
+          oldName,
+          newName,
+          ip: req.ip || (req.headers['x-forwarded-for'] || null),
+        });
+      } catch (_e) {
+        // ignore
+      }
     }
 
     res.json({ success: true, data: { oldName, newName }, timestamp: new Date().toISOString() });
@@ -607,10 +731,10 @@ export async function renameCategory(req: Request, res: Response) {
 
 export async function deleteCategory(req: Request, res: Response) {
   try {
-    const env = req.params.env as 'stunting' | 'ppid';
+    const env = String(req.params.env || '');
     const { name } = req.body;
     if (!name) return res.status(400).json({ success: false, error: 'Category name required', timestamp: new Date().toISOString() });
-    if (!['stunting', 'ppid'].includes(env)) return res.status(400).json({ success: false, error: 'Invalid environment', timestamp: new Date().toISOString() });
+    if (!env) return res.status(400).json({ success: false, error: 'Environment parameter is required', timestamp: new Date().toISOString() });
 
     // remove from DB (set to null)
     try {
@@ -634,6 +758,18 @@ export async function deleteCategory(req: Request, res: Response) {
     // remove from categories file
     const cats = (await readCategoriesFile(env)).filter(c => c !== name);
     await writeCategoriesFile(env, cats);
+    // append audit entry
+    try {
+      await appendCategoryAuditEntry({
+        ts: new Date().toISOString(),
+        action: 'delete',
+        env,
+        name,
+        ip: req.ip || (req.headers['x-forwarded-for'] || null),
+      });
+    } catch (_e) {
+      // ignore
+    }
 
     res.json({ success: true, data: cats, timestamp: new Date().toISOString() });
   } catch (error) {
@@ -659,5 +795,16 @@ export async function fileFaqsDebug(req: Request, res: Response) {
   } catch (error) {
     logger.error('Error returning file FAQs:', error);
     res.status(500).json({ success: false, error: 'Failed to load file FAQs', timestamp: new Date().toISOString() });
+  }
+}
+
+export async function getCategoryAudit(req: Request, res: Response) {
+  try {
+    const limit = Number(req.query.limit || 200);
+    const entries = await readCategoryAuditEntries(limit);
+    res.json({ success: true, data: entries, timestamp: new Date().toISOString() });
+  } catch (error) {
+    logger.error('Error reading category audit:', error instanceof Error ? error.message : error);
+    res.status(500).json({ success: false, error: 'Failed to read category audit', timestamp: new Date().toISOString() });
   }
 }
