@@ -5221,3 +5221,157 @@
 {"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-10-14 15:06:12"}
 {"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-14 15:06:12"}
 {"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-14 15:06:12"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-14 19:04:10"}
+{"ip":"::1","level":"info","message":"User logged in successfully","service":"admin-backend","timestamp":"2025-10-14 19:04:37","username":"admin"}
+{"dbCounts":{"totalFAQs":14,"totalQuestions":162,"totalSessions":223,"totalUsers":1},"fileFaqsCount":30,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":219,"systemHealth":"Healthy","totalFAQs":30,"totalQuestions":84,"totalSessions":223,"totalUsers":1},"timestamp":"2025-10-14 19:04:39"}
+{"dbCounts":{"totalFAQs":14,"totalQuestions":162,"totalSessions":223,"totalUsers":1},"fileFaqsCount":30,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":219,"systemHealth":"Healthy","totalFAQs":30,"totalQuestions":84,"totalSessions":223,"totalUsers":1},"timestamp":"2025-10-14 19:04:39"}
+{"level":"info","message":"Created empty categories file for environment 'tes-2'","service":"admin-backend","timestamp":"2025-10-14 19:04:55"}
+{"environment":"tes-2","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"3e273fce-f7d4-4146-b308-0ced91a09521","timestamp":"2025-10-14 19:06:02"}
+{"category":"umum","confidence":0.95,"environment":"tes-2","level":"info","lowConfidence":false,"message":"Chat interaction logged","question":"tes","responseTime":9,"service":"admin-backend","sessionId":"3e273fce-f7d4-4146-b308-0ced91a09521","timestamp":"2025-10-14 19:06:02"}
+{"dbCounts":{"totalFAQs":15,"totalQuestions":163,"totalSessions":224,"totalUsers":1},"fileFaqsCount":31,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":220,"systemHealth":"Healthy","totalFAQs":31,"totalQuestions":85,"totalSessions":224,"totalUsers":1},"timestamp":"2025-10-14 19:06:09"}
+{"dbCounts":{"totalFAQs":15,"totalQuestions":163,"totalSessions":224,"totalUsers":1},"fileFaqsCount":31,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":220,"systemHealth":"Healthy","totalFAQs":31,"totalQuestions":85,"totalSessions":224,"totalUsers":1},"timestamp":"2025-10-14 19:06:09"}
+{"level":"info","message":"System restart requested by ::1 for target=all","service":"admin-backend","timestamp":"2025-10-14 19:06:12"}
+{"level":"info","message":"Restart request written to D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\admin-backend\\tmp\\restart-requests.jsonl","service":"admin-backend","timestamp":"2025-10-14 19:06:12"}
+{"dbCounts":{"totalFAQs":15,"totalQuestions":163,"totalSessions":224,"totalUsers":1},"fileFaqsCount":31,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":220,"systemHealth":"Healthy","totalFAQs":31,"totalQuestions":85,"totalSessions":224,"totalUsers":1},"timestamp":"2025-10-14 19:06:18"}
+{"dbCounts":{"totalFAQs":15,"totalQuestions":163,"totalSessions":224,"totalUsers":1},"fileFaqsCount":31,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":220,"systemHealth":"Healthy","totalFAQs":31,"totalQuestions":85,"totalSessions":224,"totalUsers":1},"timestamp":"2025-10-14 19:06:18"}
+{"environment":"tes-2","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"db16907b-3a5e-4acc-b943-db486f6f8c96","timestamp":"2025-10-14 19:06:20"}
+{"category":"umum","confidence":0.95,"environment":"tes-2","level":"info","lowConfidence":false,"message":"Chat interaction logged","question":"tes","responseTime":22,"service":"admin-backend","sessionId":"db16907b-3a5e-4acc-b943-db486f6f8c96","timestamp":"2025-10-14 19:06:20"}
+{"environment":"tes-2","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"8eb4b71e-6de7-4efd-8018-44c583a1ce5d","timestamp":"2025-10-14 19:06:22"}
+{"category":"umum","confidence":0.95,"environment":"tes-2","level":"info","lowConfidence":false,"message":"Chat interaction logged","question":"tes","responseTime":19,"service":"admin-backend","sessionId":"8eb4b71e-6de7-4efd-8018-44c583a1ce5d","timestamp":"2025-10-14 19:06:22"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-14 19:10:46"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-10-14 19:11:24"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-10-14 19:11:24"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-10-14 19:11:24"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-10-14 19:11:24"}
+{"level":"info","message":"Database connection closed","service":"admin-backend","timestamp":"2025-10-14 19:11:24"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-14 19:11:57"}
+{"ip":"::1","level":"info","message":"User logged in successfully","service":"admin-backend","timestamp":"2025-10-14 19:12:09","username":"admin"}
+{"dbCounts":{"totalFAQs":15,"totalQuestions":165,"totalSessions":226,"totalUsers":1},"fileFaqsCount":31,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":222,"systemHealth":"Healthy","totalFAQs":31,"totalQuestions":85,"totalSessions":226,"totalUsers":1},"timestamp":"2025-10-14 19:12:10"}
+{"dbCounts":{"totalFAQs":15,"totalQuestions":165,"totalSessions":226,"totalUsers":1},"fileFaqsCount":31,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":222,"systemHealth":"Healthy","totalFAQs":31,"totalQuestions":85,"totalSessions":226,"totalUsers":1},"timestamp":"2025-10-14 19:12:10"}
+{"level":"info","message":"System restart requested by ::1 for target=all","service":"admin-backend","timestamp":"2025-10-14 19:12:14"}
+{"level":"info","message":"Restart request written to D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\admin-backend\\tmp\\restart-requests.jsonl","service":"admin-backend","timestamp":"2025-10-14 19:12:14"}
+{"level":"info","message":"System restart requested by ::1 for target=all","service":"admin-backend","timestamp":"2025-10-14 19:12:29"}
+{"level":"info","message":"Restart request written to D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\admin-backend\\tmp\\restart-requests.jsonl","service":"admin-backend","timestamp":"2025-10-14 19:12:29"}
+{"dbCounts":{"totalFAQs":15,"totalQuestions":165,"totalSessions":226,"totalUsers":1},"fileFaqsCount":31,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":222,"systemHealth":"Healthy","totalFAQs":31,"totalQuestions":85,"totalSessions":226,"totalUsers":1},"timestamp":"2025-10-14 19:12:34"}
+{"level":"info","message":"System restart requested by ::1 for target=all","service":"admin-backend","timestamp":"2025-10-14 19:12:37"}
+{"level":"info","message":"Restart request written to D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\admin-backend\\tmp\\restart-requests.jsonl","service":"admin-backend","timestamp":"2025-10-14 19:12:37"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-14 19:12:50"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-10-14 19:17:34"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-10-14 19:17:34"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-10-14 19:17:34"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-10-14 19:17:34"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-14 19:17:44"}
+{"ip":"::1","level":"info","message":"User logged in successfully","service":"admin-backend","timestamp":"2025-10-14 19:18:13","username":"admin"}
+{"dbCounts":{"totalFAQs":15,"totalQuestions":165,"totalSessions":226,"totalUsers":1},"fileFaqsCount":31,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":222,"systemHealth":"Healthy","totalFAQs":31,"totalQuestions":85,"totalSessions":226,"totalUsers":1},"timestamp":"2025-10-14 19:18:14"}
+{"dbCounts":{"totalFAQs":15,"totalQuestions":165,"totalSessions":226,"totalUsers":1},"fileFaqsCount":31,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":222,"systemHealth":"Healthy","totalFAQs":31,"totalQuestions":85,"totalSessions":226,"totalUsers":1},"timestamp":"2025-10-14 19:18:14"}
+{"level":"info","message":"System restart requested by ::1 for target=all","service":"admin-backend","timestamp":"2025-10-14 19:18:18"}
+{"level":"info","message":"Restart request written to D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\admin-backend\\tmp\\restart-requests.jsonl","service":"admin-backend","timestamp":"2025-10-14 19:18:18"}
+{"level":"info","message":"System restart requested by ::1 for target=python-bot","service":"admin-backend","timestamp":"2025-10-14 19:24:22"}
+{"level":"info","message":"Restart request written to D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\admin-backend\\tmp\\restart-requests.jsonl","service":"admin-backend","timestamp":"2025-10-14 19:24:22"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:41:36"}
+{"ip":"::1","level":"info","message":"User logged in successfully","service":"admin-backend","timestamp":"2025-10-15 07:42:13","username":"admin"}
+{"dbCounts":{"totalFAQs":15,"totalQuestions":165,"totalSessions":226,"totalUsers":1},"fileFaqsCount":31,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":222,"systemHealth":"Healthy","totalFAQs":31,"totalQuestions":85,"totalSessions":226,"totalUsers":1},"timestamp":"2025-10-15 07:42:14"}
+{"dbCounts":{"totalFAQs":15,"totalQuestions":165,"totalSessions":226,"totalUsers":1},"fileFaqsCount":31,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":222,"systemHealth":"Healthy","totalFAQs":31,"totalQuestions":85,"totalSessions":226,"totalUsers":1},"timestamp":"2025-10-15 07:42:14"}
+{"level":"info","message":"System restart requested by ::1 for target=python-bot","service":"admin-backend","timestamp":"2025-10-15 07:42:35"}
+{"level":"info","message":"Restart request written to D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\admin-backend\\tmp\\restart-requests.jsonl","service":"admin-backend","timestamp":"2025-10-15 07:42:35"}
+{"level":"info","message":"System restart requested by ::1 for target=all","service":"admin-backend","timestamp":"2025-10-15 07:45:03"}
+{"level":"info","message":"Restart request written to D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\admin-backend\\tmp\\restart-requests.jsonl","service":"admin-backend","timestamp":"2025-10-15 07:45:03"}
+{"level":"info","message":"System restart requested by ::1 for target=all","service":"admin-backend","timestamp":"2025-10-15 07:45:47"}
+{"level":"info","message":"Restart request written to D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\admin-backend\\tmp\\restart-requests.jsonl","service":"admin-backend","timestamp":"2025-10-15 07:45:47"}
+{"level":"info","message":"System restart requested by ::1 for target=python-bot","service":"admin-backend","timestamp":"2025-10-15 08:06:00"}
+{"level":"info","message":"Restart request written to D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\admin-backend\\tmp\\restart-requests.jsonl","service":"admin-backend","timestamp":"2025-10-15 08:06:00"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-10-15 08:08:25"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-10-15 08:08:25"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-10-15 08:08:25"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-10-15 08:08:25"}
+{"level":"info","message":"Database connection closed","service":"admin-backend","timestamp":"2025-10-15 08:08:25"}

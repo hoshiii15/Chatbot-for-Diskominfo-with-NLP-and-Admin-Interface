@@ -408,7 +408,8 @@ export default function DashboardPage() {
                               'Content-Type': 'application/json',
                               ...(token ? { Authorization: `Bearer ${token}` } : {})
                             },
-                            body: JSON.stringify({ target: 'all' })
+                            // Only request restart for the python bot from the frontend
+                            body: JSON.stringify({ target: 'python-bot' })
                           })
                           if (resp.ok) {
                             alert('Restart request submitted. Check system logs for progress.')

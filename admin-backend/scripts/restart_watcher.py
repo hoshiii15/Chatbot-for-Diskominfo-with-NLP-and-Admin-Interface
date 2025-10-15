@@ -57,10 +57,40 @@ def process_new_lines():
             continue
         print('Processing restart request:', entry)
         if RESTART_COMMAND:
-            ok = run_command(RESTART_COMMAND)
+            # Sanitize RESTART_COMMAND: some shells (PowerShell) may pass
+            # strings with escaped quotes or backslashes (e.g. \"). Normalize
+            # common escape sequences so the command we run is valid.
+            rc = RESTART_COMMAND
+            # If someone included literal surrounding quotes, strip them
+            if rc.startswith('"') and rc.endswith('"'):
+                rc = rc[1:-1]
+            # Replace escaped quotes \" with " and double backslashes with single
+            rc = rc.replace('\\"', '"').replace('\\\\', '\\')
+            # Also replace single-escaped backslashes commonly produced by some shells
+            rc = rc.replace('\\', '\\')
+            cmd = rc
+            # Allow the command to include a {target} placeholder which will be
+            # substituted with the entry target. Example:
+            # RESTART_COMMAND='supervisorctl restart {target}'
+            cmd = RESTART_COMMAND
+            try:
+                # Safely format the command with the target field. Use get()
+                # to avoid KeyError for missing fields.
+                target = entry.get('target') if isinstance(entry, dict) else None
+                if target:
+                    try:
+                        cmd = rc.format(target=target)
+                    except Exception:
+                        # fallback to naive replacement
+                        cmd = rc.replace('{target}', str(target))
+            except Exception as e:
+                print('Failed to format RESTART_COMMAND with target, using raw command', e)
+                cmd = RESTART_COMMAND
+
+            ok = run_command(cmd)
             # write processed record
             with PROCESSED.open('a', encoding='utf8') as pf:
-                pf.write(json.dumps({'entry': entry, 'command': RESTART_COMMAND, 'ok': ok, 'ts': time.time()}) + "\n")
+                pf.write(json.dumps({'entry': entry, 'command': cmd, 'ok': ok, 'ts': time.time()}) + "\n")
         else:
             print('No RESTART_COMMAND set; skipping actual restart step')
             with PROCESSED.open('a', encoding='utf8') as pf:

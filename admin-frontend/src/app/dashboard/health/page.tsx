@@ -226,8 +226,30 @@ export default function SystemHealthPage() {
 
   const restartService = async (serviceName: string) => {
     if (!confirm(`Are you sure you want to restart the ${serviceName} service?`)) return
-    // Placeholder for API call
-    console.log(`Restarting ${serviceName}...`)
+    try {
+      const token = localStorage.getItem('authToken')
+      const resp = await fetch('/api/system/restart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        // Force restart target to python-bot when triggered from UI
+        body: JSON.stringify({ target: 'python-bot' })
+      })
+      if (resp.ok) {
+        alert('Restart requested for python-bot. Check system logs for status.')
+      } else if (resp.status === 401) {
+        localStorage.removeItem('authToken')
+        window.location.href = '/login'
+      } else {
+        const js = await resp.json().catch(() => ({}))
+        alert('Failed to request restart: ' + (js.error || resp.statusText))
+      }
+    } catch (error) {
+      console.error('Restart request failed', error)
+      alert('Failed to send restart request. See console for details.')
+    }
   }
 
   

@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "questions": [
+      "tes 2"
+    ],
+    "answer": "tes 2 jawaban",
+    "category": "tes 2",
+    "links": [
+      {
+        "text": "link tes 2",
+        "url": "https://tes2.com"
+      }
+    ]
+  }
+]
