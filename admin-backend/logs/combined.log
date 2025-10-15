@@ -5375,3 +5375,137 @@
 {"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-10-15 08:08:25"}
 {"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-10-15 08:08:25"}
 {"level":"info","message":"Database connection closed","service":"admin-backend","timestamp":"2025-10-15 08:08:25"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-15 07:21:57"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-10-15 07:21:57"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-15 07:21:57"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-15 07:21:57"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-15 07:21:57"}
+{"level":"info","message":"📁 Resolved FAQ data directory: /home/sukokab/Chatbot-for-Diskominfo-with-NLP-and-Admin-Interface/python-bot/data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-15 07:21:57"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-15 07:21:57"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-15 07:21:58"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-10-15 07:21:58"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-10-15 07:21:58"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-10-15 07:21:58"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-10-15 07:21:58"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-10-15 07:21:58"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-10-15 07:21:58"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:21:58"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:21:58"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-10-15 07:23:20"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-10-15 07:23:20"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-10-15 07:23:20"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-10-15 07:23:20"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"📁 Resolved FAQ data directory: /home/sukokab/Chatbot-for-Diskominfo-with-NLP-and-Admin-Interface/python-bot/data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:32:43"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-10-15 07:32:55"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-10-15 07:32:55"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-10-15 07:32:55"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-10-15 07:32:55"}
+{"level":"info","message":"Database connection closed","service":"admin-backend","timestamp":"2025-10-15 07:32:55"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-15 07:33:23"}
+{"level":"info","message":"📊 Environment: production","service":"admin-backend","timestamp":"2025-10-15 07:33:23"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-15 07:33:23"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-15 07:33:23"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-15 07:33:23"}
+{"level":"info","message":"📁 Resolved FAQ data directory: /home/sukokab/Chatbot-for-Diskominfo-with-NLP-and-Admin-Interface/python-bot/data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-15 07:33:23"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-15 07:33:23"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-15 07:33:23"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:33:23"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:33:23"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-10-15 07:34:09"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-10-15 07:34:09"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-10-15 07:34:09"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-10-15 07:34:09"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-15 07:34:15"}
+{"level":"info","message":"📊 Environment: production","service":"admin-backend","timestamp":"2025-10-15 07:34:15"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-15 07:34:15"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-15 07:34:15"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-15 07:34:15"}
+{"level":"info","message":"📁 Resolved FAQ data directory: /home/sukokab/Chatbot-for-Diskominfo-with-NLP-and-Admin-Interface/python-bot/data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-15 07:34:15"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-15 07:34:15"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-15 07:34:16"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:34:16"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:34:16"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-10-15 07:37:49"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-10-15 07:37:49"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-10-15 07:37:49"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-10-15 07:37:49"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-15 07:38:05"}
+{"level":"info","message":"📊 Environment: production","service":"admin-backend","timestamp":"2025-10-15 07:38:05"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-15 07:38:05"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-15 07:38:05"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-15 07:38:05"}
+{"level":"info","message":"📁 Resolved FAQ data directory: /home/sukokab/Chatbot-for-Diskominfo-with-NLP-and-Admin-Interface/python-bot/data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-15 07:38:05"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-15 07:38:05"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-15 07:38:05"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:38:05"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:38:05"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-10-15 07:38:44"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-10-15 07:38:44"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-10-15 07:38:44"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-10-15 07:38:44"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-15 07:38:49"}
+{"level":"info","message":"📊 Environment: production","service":"admin-backend","timestamp":"2025-10-15 07:38:49"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-15 07:38:49"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-15 07:38:49"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-15 07:38:49"}
+{"level":"info","message":"📁 Resolved FAQ data directory: /home/sukokab/Chatbot-for-Diskominfo-with-NLP-and-Admin-Interface/python-bot/data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-15 07:38:49"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-15 07:38:49"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-15 07:38:49"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:38:49"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:38:49"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-10-15 07:40:33"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-10-15 07:40:33"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-10-15 07:40:33"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-10-15 07:40:33"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-15 07:40:43"}
+{"level":"info","message":"📊 Environment: production","service":"admin-backend","timestamp":"2025-10-15 07:40:43"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-15 07:40:43"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-15 07:40:43"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-15 07:40:43"}
+{"level":"info","message":"📁 Resolved FAQ data directory: /home/sukokab/Chatbot-for-Diskominfo-with-NLP-and-Admin-Interface/python-bot/data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-15 07:40:43"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-15 07:40:43"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-15 07:40:43"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:40:43"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:40:43"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-10-15 07:41:09"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-10-15 07:41:09"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-10-15 07:41:09"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-10-15 07:41:09"}
+{"level":"info","message":"Database connection closed","service":"admin-backend","timestamp":"2025-10-15 07:41:09"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-15 07:41:14"}
+{"level":"info","message":"📊 Environment: production","service":"admin-backend","timestamp":"2025-10-15 07:41:14"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-15 07:41:14"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-15 07:41:14"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-15 07:41:14"}
+{"level":"info","message":"📁 Resolved FAQ data directory: /home/sukokab/Chatbot-for-Diskominfo-with-NLP-and-Admin-Interface/python-bot/data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-15 07:41:14"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-15 07:41:14"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-15 07:41:14"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:41:14"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-15 07:41:14"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"User logged in successfully","service":"admin-backend","timestamp":"2025-10-15 07:41:50","username":"admin"}
+{"dbCounts":{"totalFAQs":15,"totalQuestions":165,"totalSessions":226,"totalUsers":1},"fileFaqsCount":27,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":222,"systemHealth":"Healthy","totalFAQs":27,"totalQuestions":81,"totalSessions":226,"totalUsers":1},"timestamp":"2025-10-15 07:41:50"}
+{"environment":"ppid","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"080a6908-a2fe-4def-ae20-3abc4bf3c348","timestamp":"2025-10-15 07:42:44"}
+{"category":"umum","confidence":0.95,"environment":"ppid","level":"info","lowConfidence":false,"message":"Chat interaction logged","question":"Apa itu PPID?","responseTime":45,"service":"admin-backend","sessionId":"080a6908-a2fe-4def-ae20-3abc4bf3c348","timestamp":"2025-10-15 07:42:44"}
+{"environment":"ppid","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"c29f6d9a-3dc2-466c-b5f6-9a9865254b0c","timestamp":"2025-10-15 07:42:45"}
+{"category":"layanan","confidence":0.95,"environment":"ppid","level":"info","lowConfidence":false,"message":"Chat interaction logged","question":"Jenis informasi apa saja yang tersedia di website PPID Kabupaten Sukoharjo?","responseTime":20,"service":"admin-backend","sessionId":"c29f6d9a-3dc2-466c-b5f6-9a9865254b0c","timestamp":"2025-10-15 07:42:45"}
+{"environment":"ppid","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"a53485d6-f4ae-4358-b8d1-bf44ca171ebb","timestamp":"2025-10-15 07:42:47"}
+{"category":"unknown","confidence":0.099,"environment":"ppid","level":"info","lowConfidence":true,"message":"Chat interaction logged","question":"halo","responseTime":12,"service":"admin-backend","sessionId":"a53485d6-f4ae-4358-b8d1-bf44ca171ebb","timestamp":"2025-10-15 07:42:47"}
+{"environment":"stunting","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"5ee47deb-09d8-4839-bc7f-237cf90cbea7","timestamp":"2025-10-15 07:43:26"}
+{"category":"definisi","confidence":1,"environment":"stunting","level":"info","lowConfidence":false,"message":"Chat interaction logged","question":"apa itu stunting?","responseTime":15,"service":"admin-backend","sessionId":"5ee47deb-09d8-4839-bc7f-237cf90cbea7","timestamp":"2025-10-15 07:43:26"}
+{"environment":"stunting","level":"info","message":"Created session for incoming sessionId","service":"admin-backend","sessionId":"6816106d-6563-48dc-9e17-a22669e74b01","timestamp":"2025-10-15 07:43:31"}
+{"category":"gejala","confidence":1,"environment":"stunting","level":"info","lowConfidence":false,"message":"Chat interaction logged","question":"gejala stunting","responseTime":16,"service":"admin-backend","sessionId":"6816106d-6563-48dc-9e17-a22669e74b01","timestamp":"2025-10-15 07:43:31"}

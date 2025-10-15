@@ -8,6 +8,10 @@
     "admin-frontend"
   ],
   "scripts": {
+    "start": "concurrently \"npm:start:*\"",
+    "start:python": "cd python-bot && python app.py",
+    "start:backend": "cd admin-backend && npm start",
+    "start:frontend": "cd admin-frontend && npm start",
     "dev": "concurrently \"npm:dev:*\"",
     "dev:python": "cd python-bot && python app.py",
     "dev:backend": "cd admin-backend && npm run dev",
