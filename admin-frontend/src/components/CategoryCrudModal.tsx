@@ -185,7 +185,7 @@ export default function CategoryCrudModal({ isOpen, onClose, envs, initialEnv, m
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-semibold text-muted-foreground mb-2">Environment</label>
-            <select value={selectedEnv} onChange={e => setSelectedEnv(e.target.value)} className="w-full border border-border p-2 rounded-lg mb-2">
+            <select value={selectedEnv} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedEnv(e.target.value)} className="w-full border border-border p-2 rounded-lg mb-2">
               {envs.map(ev => <option key={ev} value={ev}>{ev}</option>)}
             </select>
           </div>
@@ -193,7 +193,7 @@ export default function CategoryCrudModal({ isOpen, onClose, envs, initialEnv, m
           <div>
             <label className="block text-sm font-semibold text-muted-foreground mb-2">Add Category</label>
             <div className="flex gap-2">
-              <input ref={inputRef} value={newCategory} onChange={e => setNewCategory(e.target.value)} placeholder="Category name" className="flex-1 px-3 py-2 border rounded-lg" />
+              <input ref={inputRef} value={newCategory} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewCategory(e.target.value)} placeholder="Category name" className="flex-1 px-3 py-2 border rounded-lg" />
               <button onClick={handleAdd} disabled={!newCategory.trim()} className="px-3 py-1 bg-blue-600 text-white rounded">Add</button>
             </div>
           </div>
@@ -208,7 +208,7 @@ export default function CategoryCrudModal({ isOpen, onClose, envs, initialEnv, m
                   <li key={cat} className="flex items-center gap-2">
                     {editingIdx === idx ? (
                       <>
-                        <input className="px-2 py-1 border rounded" value={editingValue} onChange={e => setEditingValue(e.target.value)} />
+                        <input className="px-2 py-1 border rounded" value={editingValue} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditingValue(e.target.value)} />
                         <button onClick={() => handleRename(cat)} className="px-2 py-1 bg-green-600 text-white rounded">Save</button>
                         <button onClick={() => { setEditingIdx(null); setEditingValue('') }} className="px-2 py-1 border rounded">Cancel</button>
                       </>
