@@ -65,7 +65,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
     logger.info('User logged in successfully', {
       username: user.username,
-      ip: req.ip,
+  ip: (req as any).ip,
     });
 
     res.json({

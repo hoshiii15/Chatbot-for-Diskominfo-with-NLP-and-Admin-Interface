@@ -18,8 +18,8 @@ export const errorHandler = (
     stack: err.stack,
     url: req.url,
     method: req.method,
-    ip: req.ip,
-    userAgent: req.get('User-Agent'),
+  ip: (req as any).ip,
+  userAgent: (req as any).get && (req as any).get('User-Agent'),
   });
 
   // Default error status and message

@@ -190,7 +190,8 @@ router.get('/logs', async (req: Request, res: Response) => {
     // Return tail of the file (last ~50KB)
     const content = await fs.promises.readFile(filePath, 'utf8');
     const tail = content.length > 50000 ? content.slice(-50000) : content;
-    res.type('text/plain').send(tail);
+  (res as any).type && (res as any).type('text/plain');
+  res.send(tail);
   } catch (error) {
     logger.error('Error reading logs:', error);
     res.status(500).json({ success: false, error: 'Failed to read logs' });

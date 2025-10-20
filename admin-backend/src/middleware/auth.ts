@@ -40,7 +40,7 @@ export const authMiddleware = async (
     
     // In a real application, you would fetch the user from the database
     // For now, we'll create a user object from the JWT payload
-    req.user = {
+    (req as any).user = {
       id: decoded.id,
       username: decoded.username,
       email: decoded.email,
@@ -82,7 +82,7 @@ export const auth = authMiddleware;
 
 export const requireRole = (roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
-    if (!req.user) {
+  if (!(req as any).user) {
       res.status(401).json({
         success: false,
         error: 'Authentication required',
@@ -91,7 +91,7 @@ export const requireRole = (roles: string[]) => {
       return;
     }
 
-    if (!roles.includes(req.user.role)) {
+  if (!roles.includes((req as any).user.role)) {
       res.status(403).json({
         success: false,
         error: 'Insufficient permissions',

@@ -8,10 +8,10 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
   expressLogger.info('Incoming request', {
     method: req.method,
     url: req.url,
-    ip: req.ip,
-    userAgent: req.get('User-Agent'),
-    contentLength: req.get('Content-Length'),
-    contentType: req.get('Content-Type'),
+    ip: (req as any).ip,
+    userAgent: (req as any).get && (req as any).get('User-Agent'),
+    contentLength: (req as any).get && (req as any).get('Content-Length'),
+    contentType: (req as any).get && (req as any).get('Content-Type'),
     timestamp: new Date().toISOString(),
   });
 
@@ -25,7 +25,7 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
       url: req.url,
       statusCode: res.statusCode,
       responseTime,
-      contentLength: res.get('Content-Length'),
+      contentLength: (res as any).get && (res as any).get('Content-Length'),
       timestamp: new Date().toISOString(),
     });
 

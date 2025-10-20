@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
@@ -37,7 +37,7 @@ import { config } from './utils/config';
 dotenv.config();
 
 class App {
-  public app: express.Application;
+  public app: ReturnType<typeof express>;
   public server: any;
   public io!: SocketIOServer;
   private databaseService!: DatabaseService;
@@ -166,7 +166,7 @@ class App {
   this.app.use('/api/dashboard', dashboardRoutes);
 
     // Root endpoint
-    this.app.get('/', (req, res) => {
+  this.app.get('/', (req: Request, res: Response) => {
       res.json({
         name: 'FAQ Chatbot Admin Backend',
         version: '1.0.0',
@@ -184,7 +184,7 @@ class App {
     });
 
     // 404 handler
-    this.app.use('*', (req, res) => {
+  this.app.use('*', (req: Request, res: Response) => {
       res.status(404).json({
         success: false,
         error: 'Endpoint not found',

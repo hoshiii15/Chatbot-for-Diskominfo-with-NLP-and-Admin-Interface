@@ -20,7 +20,7 @@ function ensureTmpDir() {
  */
 router.post('/restart', async (req: Request, res: Response) => {
   try {
-    const caller = (req.ip as string) || (req.headers['x-forwarded-for'] as string) || 'unknown'
+  const caller = ((req as any).ip as string) || (req.headers['x-forwarded-for'] as string) || 'unknown'
     const target = (req.body && req.body.target) || 'all'
     const user = (req as any).user?.username || null
 

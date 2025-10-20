@@ -664,7 +664,7 @@ export async function createCategory(req: Request, res: Response) {
         action: 'create',
         env,
         name,
-        ip: req.ip || (req.headers['x-forwarded-for'] || null),
+  ip: (req as any).ip || (req.headers['x-forwarded-for'] || null),
       });
     } catch (_e) {
       // ignore audit errors
@@ -715,7 +715,7 @@ export async function renameCategory(req: Request, res: Response) {
           env,
           oldName,
           newName,
-          ip: req.ip || (req.headers['x-forwarded-for'] || null),
+          ip: (req as any).ip || (req.headers['x-forwarded-for'] || null),
         });
       } catch (_e) {
         // ignore
@@ -765,7 +765,7 @@ export async function deleteCategory(req: Request, res: Response) {
         action: 'delete',
         env,
         name,
-        ip: req.ip || (req.headers['x-forwarded-for'] || null),
+  ip: (req as any).ip || (req.headers['x-forwarded-for'] || null),
       });
     } catch (_e) {
       // ignore
