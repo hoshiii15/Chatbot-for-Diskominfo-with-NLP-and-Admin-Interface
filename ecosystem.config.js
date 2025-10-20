@@ -42,12 +42,9 @@ module.exports = {
     },
     {
       name: 'chatbot-python',
-      // use relative cwd so config is portable across machines
       cwd: './python-bot',
-      // run the Python app directly (app.py must exist in python-bot)
-      // interpreter 'python' works on Windows and on many Linux setups; change to 'python3' if needed on Linux
-      script: 'app.py',
-      interpreter: 'python',
+      script: './start.sh',
+      interpreter: 'bash',
       env: {
         PYTHONUNBUFFERED: '1',
         FLASK_RUN_PORT: '5000',
