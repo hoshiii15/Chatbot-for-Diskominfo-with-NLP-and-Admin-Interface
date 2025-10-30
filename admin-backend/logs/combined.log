@@ -5555,3 +5555,28 @@
 {"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-10-17 12:43:35"}
 {"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-10-17 12:43:35"}
 {"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-10-17 12:43:35"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-29 11:14:34"}
+{"ip":"::1","level":"info","message":"User logged in successfully","service":"admin-backend","timestamp":"2025-10-29 11:14:44","username":"admin"}
+{"dbCounts":{"totalFAQs":15,"totalQuestions":170,"totalSessions":231,"totalUsers":1},"fileFaqsCount":31,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":227,"systemHealth":"Healthy","totalFAQs":31,"totalQuestions":85,"totalSessions":231,"totalUsers":1},"timestamp":"2025-10-29 11:14:45"}
+{"dbCounts":{"totalFAQs":15,"totalQuestions":170,"totalSessions":231,"totalUsers":1},"fileFaqsCount":31,"level":"info","message":"Dashboard stats computed","service":"admin-backend","stats":{"activeUsers":227,"systemHealth":"Healthy","totalFAQs":31,"totalQuestions":85,"totalSessions":231,"totalUsers":1},"timestamp":"2025-10-29 11:14:45"}
+{"level":"info","message":"Created empty categories file for environment 'portal'","service":"admin-backend","timestamp":"2025-10-29 11:15:04"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"admin-backend","timestamp":"2025-10-29 15:26:14"}
+{"level":"info","message":"Starting graceful shutdown...","service":"admin-backend","timestamp":"2025-10-29 15:26:14"}
+{"level":"info","message":"HTTP server closed","service":"admin-backend","timestamp":"2025-10-29 15:26:14"}
+{"level":"info","message":"Socket.IO server closed","service":"admin-backend","timestamp":"2025-10-29 15:26:14"}
+{"level":"info","message":"Database connection closed","service":"admin-backend","timestamp":"2025-10-29 15:26:14"}
