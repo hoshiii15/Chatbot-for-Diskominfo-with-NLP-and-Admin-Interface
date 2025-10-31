@@ -158,6 +158,31 @@ export async function deleteEnvironment(req: Request, res: Response) {
     const ok = await writeEnvsFile(filtered)
     if (!ok) return res.status(500).json({ success: false, error: 'Failed to persist environment', timestamp: new Date().toISOString() })
 
+    // Delete associated files: faq_*.json and categories_*.json
+    try {
+      const repoRoot = path.resolve(__dirname, '../../../');
+      const dataDir = path.join(repoRoot, 'python-bot', 'data');
+      
+      const filesToDelete = [
+        path.join(dataDir, `faq_${normalized}.json`),
+        path.join(dataDir, `categories_${normalized}.json`)
+      ];
+
+      for (const filePath of filesToDelete) {
+        try {
+          if (fsSync.existsSync(filePath)) {
+            await fs.unlink(filePath);
+            logger.info(`Deleted file: ${filePath}`);
+          }
+        } catch (err) {
+          logger.warn(`Failed to delete file ${filePath}:`, err instanceof Error ? err.message : err);
+        }
+      }
+    } catch (err) {
+      logger.error('Error deleting environment files:', err);
+      // Don't fail the request if file deletion fails
+    }
+
     res.json({ success: true, data: filtered, timestamp: new Date().toISOString() })
   } catch (error) {
     logger.error('Error deleting environment:', error)

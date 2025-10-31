@@ -5931,3 +5931,72 @@
 {"level":"info","message":"[deleteFaq] Comparing file id \"3\" with rawId \"3\": MATCH","service":"admin-backend","timestamp":"2025-10-31 07:47:37"}
 {"level":"info","message":"[deleteFaq] Deleted from file: test-tambah - 3","service":"admin-backend","timestamp":"2025-10-31 07:47:37"}
 {"level":"info","message":"[deleteFaq] Successfully deleted FAQ: test-tambah-3","service":"admin-backend","timestamp":"2025-10-31 07:47:37"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-31 07:47:51"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-10-31 07:47:51"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-31 07:47:51"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-31 07:47:51"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-31 07:47:51"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-31 07:47:51"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-31 07:47:51"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-31 07:47:51"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-10-31 07:47:51"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-10-31 07:47:51"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-10-31 07:47:51"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-10-31 07:47:51"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-10-31 07:47:52"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-10-31 07:47:52"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-31 07:47:52"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-31 07:47:52"}
+{"level":"info","message":"[deleteFaq] Attempting to delete FAQ with id: test-tambah-2","service":"admin-backend","timestamp":"2025-10-31 07:49:07"}
+{"level":"info","message":"[deleteFaq] Available environments: stunting, ppid, portal, test-tambah, tes-2","service":"admin-backend","timestamp":"2025-10-31 07:49:07"}
+{"level":"info","message":"[deleteFaq] Matched env: test-tambah, rawId: 2","service":"admin-backend","timestamp":"2025-10-31 07:49:07"}
+{"level":"info","message":"[deleteFaq] Found 2 FAQs in test-tambah, searching for id: 2","service":"admin-backend","timestamp":"2025-10-31 07:49:07"}
+{"level":"info","message":"[deleteFaq] FAQ IDs in file: 1, 2","service":"admin-backend","timestamp":"2025-10-31 07:49:07"}
+{"level":"info","message":"[deleteFaq] Comparing file id \"1\" with rawId \"2\": NOT MATCH","service":"admin-backend","timestamp":"2025-10-31 07:49:07"}
+{"level":"info","message":"[deleteFaq] Comparing file id \"2\" with rawId \"2\": MATCH","service":"admin-backend","timestamp":"2025-10-31 07:49:07"}
+{"level":"info","message":"[deleteFaq] Deleted from file: test-tambah - 2","service":"admin-backend","timestamp":"2025-10-31 07:49:07"}
+{"level":"info","message":"[deleteFaq] Successfully deleted FAQ: test-tambah-2","service":"admin-backend","timestamp":"2025-10-31 07:49:07"}
+{"level":"info","message":"[deleteFaq] Attempting to delete FAQ with id: test-tambah-1","service":"admin-backend","timestamp":"2025-10-31 07:49:11"}
+{"level":"info","message":"[deleteFaq] Available environments: stunting, ppid, portal, test-tambah, tes-2","service":"admin-backend","timestamp":"2025-10-31 07:49:11"}
+{"level":"info","message":"[deleteFaq] Matched env: test-tambah, rawId: 1","service":"admin-backend","timestamp":"2025-10-31 07:49:11"}
+{"level":"info","message":"[deleteFaq] Found 1 FAQs in test-tambah, searching for id: 1","service":"admin-backend","timestamp":"2025-10-31 07:49:11"}
+{"level":"info","message":"[deleteFaq] FAQ IDs in file: 1","service":"admin-backend","timestamp":"2025-10-31 07:49:11"}
+{"level":"info","message":"[deleteFaq] Comparing file id \"1\" with rawId \"1\": MATCH","service":"admin-backend","timestamp":"2025-10-31 07:49:11"}
+{"level":"info","message":"[deleteFaq] Deleted from file: test-tambah - 1","service":"admin-backend","timestamp":"2025-10-31 07:49:11"}
+{"level":"info","message":"[deleteFaq] Successfully deleted FAQ: test-tambah-1","service":"admin-backend","timestamp":"2025-10-31 07:49:11"}
+{"level":"info","message":"[deleteFaq] Attempting to delete FAQ with id: tes-2-1","service":"admin-backend","timestamp":"2025-10-31 07:49:17"}
+{"level":"info","message":"[deleteFaq] Available environments: stunting, ppid, portal, test-tambah, tes-2","service":"admin-backend","timestamp":"2025-10-31 07:49:17"}
+{"level":"info","message":"[deleteFaq] Matched env: tes-2, rawId: 1","service":"admin-backend","timestamp":"2025-10-31 07:49:17"}
+{"level":"info","message":"[deleteFaq] Found 1 FAQs in tes-2, searching for id: 1","service":"admin-backend","timestamp":"2025-10-31 07:49:17"}
+{"level":"info","message":"[deleteFaq] FAQ IDs in file: 1","service":"admin-backend","timestamp":"2025-10-31 07:49:17"}
+{"level":"info","message":"[deleteFaq] Comparing file id \"1\" with rawId \"1\": MATCH","service":"admin-backend","timestamp":"2025-10-31 07:49:17"}
+{"level":"info","message":"[deleteFaq] Deleted from file: tes-2 - 1","service":"admin-backend","timestamp":"2025-10-31 07:49:17"}
+{"level":"info","message":"[deleteFaq] Successfully deleted FAQ: tes-2-1","service":"admin-backend","timestamp":"2025-10-31 07:49:17"}
+{"level":"info","message":"Created empty categories file for environment 'portal'","service":"admin-backend","timestamp":"2025-10-31 07:49:33"}
+{"level":"info","message":"Created empty categories file for environment 'portal'","service":"admin-backend","timestamp":"2025-10-31 07:49:38"}
+{"level":"info","message":"[deleteFaq] Attempting to delete FAQ with id: portal-1","service":"admin-backend","timestamp":"2025-10-31 07:50:29"}
+{"level":"info","message":"[deleteFaq] Available environments: stunting, ppid, portal","service":"admin-backend","timestamp":"2025-10-31 07:50:29"}
+{"level":"info","message":"[deleteFaq] Matched env: portal, rawId: 1","service":"admin-backend","timestamp":"2025-10-31 07:50:29"}
+{"level":"info","message":"[deleteFaq] Found 1 FAQs in portal, searching for id: 1","service":"admin-backend","timestamp":"2025-10-31 07:50:29"}
+{"level":"info","message":"[deleteFaq] FAQ IDs in file: 1","service":"admin-backend","timestamp":"2025-10-31 07:50:29"}
+{"level":"info","message":"[deleteFaq] Comparing file id \"1\" with rawId \"1\": MATCH","service":"admin-backend","timestamp":"2025-10-31 07:50:29"}
+{"level":"info","message":"[deleteFaq] Deleted from file: portal - 1","service":"admin-backend","timestamp":"2025-10-31 07:50:29"}
+{"level":"info","message":"[deleteFaq] Successfully deleted FAQ: portal-1","service":"admin-backend","timestamp":"2025-10-31 07:50:29"}
+{"level":"info","message":"🚀 Admin Backend Server started on port 3001","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"📊 Environment: development","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"🔗 Python Bot URL: http://127.0.0.1:5000","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"💾 Database: sqlite","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"📁 FAQ Data Path: ../python-bot/data","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"📁 Resolved FAQ data directory: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data (stunting: 11, ppid: 16)","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"Database connection established successfully","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"Database models synchronized successfully","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"Starting database seeding...","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"Admin user already exists","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"FAQs already exist","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"Websites already exist","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"Analytics already exist","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"Database seeding completed successfully","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"Database service initialized successfully","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"All services initialized successfully","service":"admin-backend","timestamp":"2025-10-31 07:54:45"}
+{"level":"info","message":"Deleted file: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data\\faq_portal.json","service":"admin-backend","timestamp":"2025-10-31 07:56:22"}
+{"level":"info","message":"Deleted file: D:\\Kuliah\\Kuliah\\Magang\\FAQ Chatbotv2\\python-bot\\data\\categories_portal.json","service":"admin-backend","timestamp":"2025-10-31 07:56:22"}
