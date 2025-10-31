@@ -71,7 +71,8 @@ export const logger = winston.createLogger({
 if (process.env.NODE_ENV !== 'production') {
   logger.add(
     new winston.transports.Console({
-  level: 'error',
+  // show informational logs to the console during development for easier debugging
+  level: process.env.LOG_CONSOLE_LEVEL || 'info',
   format: consoleFormat,
     })
   );

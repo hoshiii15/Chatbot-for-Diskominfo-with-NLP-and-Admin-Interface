@@ -26,7 +26,7 @@ export default function FAQsPage() {
   const [selectedEnvironment, setSelectedEnvironment] = useState<string | 'all'>('all')
   const [isMutating, setIsMutating] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isCrudModalOpen, setIsCrudModalOpen] = useState(false)
+  // const [isCrudModalOpen, setIsCrudModalOpen] = useState(false)
   const [editingFaq, setEditingFaq] = useState<FAQ | null>(null)
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
   const [confirmData, setConfirmData] = useState<{originalName: string, normalizedName: string} | null>(null)
@@ -34,6 +34,8 @@ export default function FAQsPage() {
   const [deleteData, setDeleteData] = useState<{name: string, index: number} | null>(null)
   const [isDeleteCategoryModalOpen, setIsDeleteCategoryModalOpen] = useState(false)
   const [deleteCategoryData, setDeleteCategoryData] = useState<{name: string, index: number, env: string} | null>(null)
+  const [isDeleteFaqModalOpen, setIsDeleteFaqModalOpen] = useState(false)
+  const [deleteFaqData, setDeleteFaqData] = useState<FAQ | null>(null)
   const [isAddEnvOpen, setIsAddEnvOpen] = useState(false)
   const [newEnvName, setNewEnvName] = useState('')
   const [isAddingEnv, setIsAddingEnv] = useState(false)
@@ -78,6 +80,20 @@ export default function FAQsPage() {
   function handleDeleteCategoryCancel() {
     setIsDeleteCategoryModalOpen(false)
     setDeleteCategoryData(null)
+  }
+
+  // Handle delete FAQ confirmation modal functions
+  function handleDeleteFaqConfirm() {
+    if (deleteFaqData) {
+      deleteFaqFunc(deleteFaqData)
+      setIsDeleteFaqModalOpen(false)
+      setDeleteFaqData(null)
+    }
+  }
+
+  function handleDeleteFaqCancel() {
+    setIsDeleteFaqModalOpen(false)
+    setDeleteFaqData(null)
   }
 
   async function deleteCategoryFunc(categoryName: string, env: string, index: number) {
@@ -421,6 +437,43 @@ export default function FAQsPage() {
     ) : null
   }
 
+  function DeleteFaqModal() {
+    return isDeleteFaqModalOpen ? (
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[60]">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-gradient-to-r from-red-600 to-rose-600 rounded-lg flex items-center justify-center">
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Delete FAQ</h3>
+          </div>
+          
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
+            Delete FAQ: <span className="font-mono bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-2 py-1 rounded">"{deleteFaqData?.question}"</span>? This action cannot be undone.
+          </p>
+          
+          <div className="flex gap-3 justify-end">
+            <Button 
+              variant="outline" 
+              onClick={handleDeleteFaqCancel}
+              className="border-gray-300 text-gray-600 hover:bg-gray-50 font-medium shadow-sm hover:shadow-md transition-all duration-200"
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleDeleteFaqConfirm}
+              className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+            >
+              OK
+            </Button>
+          </div>
+        </div>
+      </div>
+    ) : null
+  }
+
   const [formState, setFormState] = useState<FormState>({
     id: '',
   environment: envs && envs.length > 0 ? envs[0] : 'stunting',
@@ -611,8 +664,11 @@ export default function FAQsPage() {
   }
 
   const handleDelete = async (faq: FAQ) => {
-    const ok = window.confirm(`Delete FAQ: "${faq.question}" ? This cannot be undone.`)
-    if (!ok) return
+    setDeleteFaqData(faq)
+    setIsDeleteFaqModalOpen(true)
+  }
+
+  const deleteFaqFunc = async (faq: FAQ) => {
     const token = localStorage.getItem('authToken')
     if (!token) {
       window.alert('You must be logged in to delete FAQs. Please login first.')
@@ -683,6 +739,7 @@ export default function FAQsPage() {
       <ConfirmModal />
       <DeleteConfirmModal />
       <DeleteCategoryModal />
+      <DeleteFaqModal />
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-blue-900 dark:to-indigo-900 relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">

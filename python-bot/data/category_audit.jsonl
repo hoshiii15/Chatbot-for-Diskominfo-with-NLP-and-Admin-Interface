@@ -1,3 +1,4 @@
 {"ts":"2025-10-14T07:14:07.830Z","action":"create","env":"test-tambah","name":"tes tambah","ip":"::1"}
 {"ts":"2025-10-14T12:05:00.218Z","action":"create","env":"tes-2","name":"tes 2","ip":"::1"}
 {"ts":"2025-10-29T04:15:13.925Z","action":"create","env":"portal","name":"baru-portal","ip":"::1"}
+{"ts":"2025-10-31T00:49:45.962Z","action":"create","env":"portal","name":"kategori portal","ip":"::1"}

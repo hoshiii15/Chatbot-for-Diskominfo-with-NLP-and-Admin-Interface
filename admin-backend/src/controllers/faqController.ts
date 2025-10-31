@@ -374,70 +374,107 @@ export async function updateFaq(req: Request, res: Response) {
 export async function deleteFaq(req: Request, res: Response) {
   try {
     const { id } = req.params;
+    logger.info(`[deleteFaq] Attempting to delete FAQ with id: ${id}`);
+    
     let deletedInDb = false;
     try {
       const faq = await FAQ.findByPk(id);
       if (faq) {
         await faq.destroy();
         deletedInDb = true;
+        logger.info(`[deleteFaq] Deleted from DB: ${id}`);
       }
     } catch (e) {
       logger.debug('DB delete skipped or failed', e instanceof Error ? e.message : e);
     }
 
     let deletedInFile = false;
-    if (typeof id === 'string' && id.includes('-')) {
-      const parts = id.split('-');
-      if (parts.length >= 2 && (parts[0] === 'stunting' || parts[0] === 'ppid')) {
-        const env = parts[0] as 'stunting' | 'ppid';
-        const rawId = parts.slice(1).join('-');
-        const fileFaqs = await readFileFaqs(env);
-        const filtered = fileFaqs.filter((f: FileFAQ) => String(f.id) !== String(rawId));
-        if (filtered.length !== fileFaqs.length) {
-          await writeFileFaqs(env, filtered);
-          deletedInFile = true;
-        }
-      }
-    } else {
-      // attempt to read dynamic environments list from python-bot/data/environments.json
-      const repoRoot = path.resolve(__dirname, '../../../');
-      const candidates = [
-        path.join(repoRoot, 'python-bot', 'data'),
-        path.join(process.cwd(), 'python-bot', 'data'),
-        path.join(__dirname, '..', '..', '..', 'python-bot', 'data'),
-        path.join('/srv', 'admin-backend', 'dist', 'python-bot', 'data'),
-        path.join('/app', 'python-bot', 'data'),
-      ];
-      let envsToCheck: string[] = [];
-      for (const d of candidates) {
-        try {
-          const p = path.join(d, 'environments.json');
-          if (fsSync.existsSync(p)) {
-            const raw = await fs.readFile(p, 'utf-8');
-            const parsed = JSON.parse(raw);
-            if (Array.isArray(parsed)) {
-              envsToCheck = parsed.map(String);
-              break;
-            }
+    // Load dynamic environments list
+    const repoRoot = path.resolve(__dirname, '../../../');
+    const candidates = [
+      path.join(repoRoot, 'python-bot', 'data'),
+      path.join(process.cwd(), 'python-bot', 'data'),
+      path.join(__dirname, '..', '..', '..', 'python-bot', 'data'),
+      path.join('/srv', 'admin-backend', 'dist', 'python-bot', 'data'),
+      path.join('/app', 'python-bot', 'data'),
+    ];
+    let allEnvs: string[] = [];
+    for (const d of candidates) {
+      try {
+        const p = path.join(d, 'environments.json');
+        if (fsSync.existsSync(p)) {
+          const raw = await fs.readFile(p, 'utf-8');
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) {
+            allEnvs = parsed.map(String);
+            break;
           }
-        } catch (_e) {
-          // ignore and try next
+        }
+      } catch (_e) {
+        // ignore and try next
+      }
+    }
+    if (allEnvs.length === 0) allEnvs = ['stunting', 'ppid'];
+    logger.info(`[deleteFaq] Available environments: ${allEnvs.join(', ')}`);
+
+    if (typeof id === 'string' && id.includes('-')) {
+      // Try to match environment by checking if ID starts with any known environment
+      // Sort environments by length (longest first) to match "test-tambah" before "test"
+      const sortedEnvs = [...allEnvs].sort((a, b) => b.length - a.length);
+      let matchedEnv: string | null = null;
+      let rawId: string | null = null;
+      
+      for (const env of sortedEnvs) {
+        if (id.startsWith(env + '-')) {
+          matchedEnv = env;
+          rawId = id.substring(env.length + 1); // +1 for the dash
+          break;
         }
       }
-      if (envsToCheck.length === 0) envsToCheck = ['stunting', 'ppid'];
-
-      for (const env of envsToCheck) {
+      
+      if (matchedEnv && rawId) {
+        logger.info(`[deleteFaq] Matched env: ${matchedEnv}, rawId: ${rawId}`);
+        const fileFaqs = await readFileFaqs(matchedEnv);
+        logger.info(`[deleteFaq] Found ${fileFaqs.length} FAQs in ${matchedEnv}, searching for id: ${rawId}`);
+        logger.info(`[deleteFaq] FAQ IDs in file: ${fileFaqs.map((f: FileFAQ) => String(f.id)).join(', ')}`);
+        const filtered = fileFaqs.filter((f: FileFAQ) => {
+          const match = String(f.id) !== String(rawId);
+          logger.info(`[deleteFaq] Comparing file id "${f.id}" with rawId "${rawId}": ${match ? 'NOT MATCH' : 'MATCH'}`);
+          return match;
+        });
+        if (filtered.length !== fileFaqs.length) {
+          await writeFileFaqs(matchedEnv, filtered);
+          deletedInFile = true;
+          logger.info(`[deleteFaq] Deleted from file: ${matchedEnv} - ${rawId}`);
+        } else {
+          logger.info(`[deleteFaq] FAQ not found in ${matchedEnv} file`);
+        }
+      } else {
+        logger.info(`[deleteFaq] Could not match ID to any environment`);
+      }
+    }
+    
+    // If not deleted yet, try searching all environments
+    if (!deletedInFile) {
+      logger.info(`[deleteFaq] Searching all environments for id: ${id}`);
+      for (const env of allEnvs) {
         const fileFaqs = await readFileFaqs(env);
         const filtered = fileFaqs.filter((f: FileFAQ) => String(f.id) !== String(id));
         if (filtered.length !== fileFaqs.length) {
           await writeFileFaqs(env, filtered);
           deletedInFile = true;
+          logger.info(`[deleteFaq] Deleted from file in fallback search: ${env} - ${id}`);
+          break;
         }
       }
     }
 
-    if (!deletedInDb && !deletedInFile) return res.status(404).json({ success: false, error: 'FAQ not found', timestamp: new Date().toISOString() });
+    if (!deletedInDb && !deletedInFile) {
+      logger.warn(`[deleteFaq] FAQ not found anywhere: ${id}`);
+      return res.status(404).json({ success: false, error: 'FAQ not found', timestamp: new Date().toISOString() });
+    }
 
+    logger.info(`[deleteFaq] Successfully deleted FAQ: ${id}`);
     res.json({ success: true, message: 'FAQ deleted successfully', timestamp: new Date().toISOString() });
   } catch (error) {
     logger.error('Error deleting FAQ:', error);
